@@ -1,0 +1,26 @@
+* Standalone TI OPA548 ON-state sanity check: no U4, no R10/TLP185, ideal rails.
+.include "../../../实际遇到的问题/opa548_shutdown_branch_spice_20260904/models/OPA548.LIB"
+.param TEMP=27
+.options method=gear maxord=2 reltol=2e-4 abstol=1e-11 vntol=1e-8 gmin=1e-12 rshunt=1e12
+VPP VP 0 5
+VNN VN 0 -5
+VES ES VN 3.5
+VIN IN 0 PULSE(0 1m 10u 20n 20n 2u 1)
+RIL ILIM VN 57.6k
+XU1 IN OUTN ILIM VN VP OUT ES OPA548
+RF OUT OUTN 1m
+R12 OUT ZMID 4.7
+C4 ZMID 0 47n
+.control
+set noaskquit
+set wr_singlescale
+set wr_vecnames
+tran 0.1u 0.3m 0 0.1u
+meas tran OUT_MAX MAX v(OUT) from=0.15m to=0.3m
+meas tran OUT_MIN MIN v(OUT) from=0.15m to=0.3m
+let OUT_PP=OUT_MAX-OUT_MIN
+print OUT_PP
+wrdata ../results_h12_official/opa548_standalone_on.dat v(OUT)
+quit
+.endc
+.end

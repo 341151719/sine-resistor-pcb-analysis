@@ -1,0 +1,253 @@
+* ============================================================================
+* OPA548 E/S dynamic loop investigation - project-grounded hybrid SPICE
+* Purpose: test whether the real R10 + TLP185 + OPA548 E/S state dynamics +
+*          non-ideal J1 PDN can NATURALLY create a persistent 100-110 kHz mode.
+*
+* No 100-110 kHz source is injected. No arbitrary U4B pole is added.
+* U4B and the OPA548 electrical core use TI vendor macromodels.
+* The only added behavioral block is the missing finite E/S state delay.
+*
+* Project-grounded board values retained:
+*   U4B: OPA1656, R15=1k, R16=39k
+*   R5=100R
+*   U1: OPA548 follower, R7=57.6k
+*   E/S: R10=100k (V7 fault board; sweepable), TLP185, R11=1k
+*   J1: +/-5 V, C5/C6=470u, C7/C8=100n, C27=10p
+*   Output snubber: R12=4.7R, C4=47n
+*   AGND-PGND bridge: 5mR + 2nH proxy
+*
+* E/S hybrid model:
+*   - physical E/S node receives parameterized internal source current IESVAL
+*   - upper clamp approximates the ~3.5 V E/S internal clamp seen in TI macro
+*   - hysteretic decision: OFF below VOFF, ON above VON, hold in between
+*   - state transition time: TON / TOFF
+*   - delayed state drives the official OPA548 E/S control pin
+*
+* This is a mechanism-search model, not a vendor-guaranteed shutdown model.
+* ============================================================================
+
+.include "../../实际遇到的问题/opa548_shutdown_branch_spice_20260904/models/OPA548.LIB"
+
+.options method=gear maxord=2 reltol=2e-4 abstol=1e-11 vntol=1e-8 gmin=1e-12 rshunt=1e12
+
+* ------------------------- sweepable parameters -----------------------------
+.param TEMP=27 J1=5 J2=10
+.param R10VAL=100k R5VAL=100
+.param IESVAL=70u CES=2p
+.param VOFF=0.8 VON=2.4 TON=3u TOFF=1u
+.param CTR=1 IDARK=1u CCE=10p CISO=0.8p CLED=30p
+.param TOPTO_ON=3u TOPTO_OFF=10u
+.param RSRC=0.15 LSRC=1u
+.param ESR_BULK=80m ESL_BULK=8n
+.param ESR_CER=20m ESL_CER=1n
+.param ENHIGH=0 EN_DELAY=100u EN_WIDTH=100u
+.param GND_R=5m GND_L=2n
+
+* --------------------------- AGND / PGND ------------------------------------
+VAG AGND 0 0
+RG3 AGND G3M {GND_R}
+LG3 G3M PGND {GND_L}
+RGD AGND DGND 5m
+
+* --------------------------- U4 +/-10 V rails -------------------------------
+VJ2P J2P AGND {J2}
+RFBP J2P FBP 0.25
+LFBP FBP APBEAD 240n
+RAPS APBEAD APSM 3.5586m
+LAPS APSM APU4 2.9988n
+C15 APU4 AGND 100n
+C11 APU4 AGND 1u
+
+VJ2N J2N AGND {-J2}
+RFBN J2N FBN 0.25
+LFBN FBN ANBEAD 240n
+RANS ANBEAD ANSM 49.93m
+LANS ANSM ANU4 20.106n
+C16 ANU4 AGND 100n
+C10 ANU4 AGND 100n
+C12 ANU4 AGND 1u
+
+* --------------------------- healthy U4B -----------------------------------
+* Only one 1 mV / 2 us startup kick. No periodic excitation.
+VSTART TP7 AGND PULSE(0 1m 10u 20n 20n 2u 1)
+XU4B TP7 U4N U4O APU4 ANU4 OPA1656_NG_SURR
+
+* Extracted feedback-route parasitics from the project diagnostic deck.
+ROR16 U4O OR16M 5.380m
+LOR16 OR16M R16O 4.1652n
+COR16A U4O AGND 0.3471p
+COR16B R16O AGND 0.3471p
+RNR16 U4N NR16M 5.780m
+LNR16 NR16M R16N 4.4694n
+CNR16A U4N AGND 0.37245p
+CNR16B R16N AGND 0.37245p
+RNR15 U4N NR15M 6.723m
+LNR15 NR15M R15N 5.6334n
+CNR15A U4N AGND 0.46945p
+CNR15B R15N AGND 0.46945p
+R16 R16O R16N 39k
+R15 R15N AGND 1k
+CDNP14 R16O R16N 0.05p
+CDNP37 R16O R16N 0.05p
+CDNP38 R16O R16N 0.05p
+CDNP39 R16O R16N 0.05p
+CDNP40 R16O R16N 0.05p
+CDNP41 R16O R16N 0.05p
+
+* TP8 + real long route to R5 / OPA548 +IN.
+RTP8 U4O TP8 1m
+RTP8P TP8 AGND 10Meg
+CTP8 TP8 AGND 10p
+RVR5 U4O VR5M 59.938m
+LVR5 VR5M R5V 35.2578n
+CVR5A U4O AGND 2.93815p
+CVR5B R5V AGND 2.93815p
+R5 R5V OPA_P {R5VAL}
+
+* --------------------------- non-ideal J1 PDN -------------------------------
+* Bench source / cable series impedance is explicit and sweepable.
+VJ1P_SRC J1P_IDEAL PGND {J1}
+RJ1P J1P_IDEAL J1P_LIN {RSRC}
+LJ1P J1P_LIN PWR_P {LSRC}
+
+VJ1N_SRC J1N_IDEAL PGND {-J1}
+RJ1N J1N_IDEAL J1N_LIN {RSRC}
+LJ1N J1N_LIN PWR_N {LSRC}
+
+* 470 uF bulk: ESR + ESL explicit.
+LBULKP PWR_P C5L {ESL_BULK}
+RBULKP C5L C5R {ESR_BULK}
+C5 C5R PGND 470u
+LBULKN PWR_N C6L {ESL_BULK}
+RBULKN C6L C6R {ESR_BULK}
+C6 C6R PGND 470u
+
+* 100 nF ceramic: ESR + ESL explicit.
+LCERP PWR_P C7L {ESL_CER}
+RCERP C7L C7R {ESR_CER}
+C7 C7R PGND 100n
+LCERN PWR_N C8L {ESL_CER}
+RCERN C8L C8R {ESR_CER}
+C8 C8R PGND 100n
+C27 PWR_P PWR_N 10p
+
+* --------------------------- real TLP185 / R10 path -------------------------
+* ENHIGH=0: optocoupler remains off.
+* ENHIGH=3.3: one finite enable pulse is applied; period is 1 s so it occurs once.
+VMCU_EN MCU_EN DGND PULSE(0 {ENHIGH} {EN_DELAY} 50n 50n {EN_WIDTH} 1)
+R11 MCU_EN LED_A 1k
+XU7 LED_A DGND PWR_P OPA_ES TLP185_DYNAMIC
++ params: CTR={CTR} IDARK={IDARK} CCE={CCE} CISO={CISO} CLED={CLED} \
++ TON={TOPTO_ON} TOFF={TOPTO_OFF}
+R10 OPA_ES PWR_N {R10VAL}
+
+* --------------------------- OPA548 + dynamic E/S ---------------------------
+* Pin order: +IN -IN ILIM V- V+ OUT E/S STATE_MON
+XU1 OPA_P OPA_N ILIM PWR_N PWR_P OPA_OUT OPA_ES ES_STATE
++ OPA548_ES_DELAYED params: IES={IESVAL} CES={CES} VOFF={VOFF} VON={VON} TON={TON} TOFF={TOFF}
+R7 ILIM PWR_N 57.6k
+
+* Unit follower + populated output network. J4/speaker is open here.
+R46 OPA_OUT DRV 10m
+RSH2 DRV SPK 0.1
+R6 SPK OPA_N 10m
+RSPK_OPEN SPK PGND 1G
+R12 DRV SNUB_MID 4.7
+C4 SNUB_MID PGND 47n
+
+* SS56B rail clamps approximated only for junction capacitance / hard excursions.
+.model DSS D(Is=5u N=1.05 Rs=0.02 Cjo=320p M=0.45 Vj=0.35 Bv=60 Ibv=1m)
+D1 DRV PWR_P DSS
+D2 PWR_N DRV DSS
+
+
+* Project-provided ngspice-compatible OPA1656 mechanism-screening surrogate.
+* Pin order: +IN -IN OUT VPOS VNEG.
+.SUBCKT OPA1656_NG_SURR INP INN OUT VPOS VNEG PARAMS: A0=3.16e7 GBW=53e6 ROUT=12 IOUT=0.1 VHEAD=0.25 RIN=1e12 CIN=5p
+RINP INP 0 {RIN}
+RINN INN 0 {RIN}
+CINP INP 0 {CIN}
+CINN INN 0 {CIN}
+.param FP={GBW/A0}
+BRAW NRAW 0 V={min(max(A0*V(INP,INN),V(VNEG)-2),V(VPOS)+2)}
+RDOM NRAW NDOM 1k
+CDOM NDOM 0 {1/(2*3.141592653589793*1k*FP)}
+RLEAKDOM NDOM 0 1e12
+BOUT OUT 0 I={min(max((V(OUT)-min(max(V(NDOM),V(VNEG)+VHEAD),V(VPOS)-VHEAD))/ROUT,-IOUT),IOUT)}
+COUT OUT 0 8p
+ROUTL OUT 0 100Meg
+.ENDS OPA1656_NG_SURR
+
+* ============================================================================
+* TLP185 dynamic surrogate
+* - LED electrical input + CLED
+* - phototransistor current follows LED current with finite on/off time
+* - CCE and isolation capacitance are explicit
+* ============================================================================
+.subckt TLP185_DYNAMIC A K C E params: CTR=1 IDARK=1u CCE=10p CISO=0.8p CLED=30p TON=3u TOFF=10u
+.model DLED_T D(Is=1e-14 N=1.8 Rs=3 Cjo={CLED} Vj=0.7 M=0.5 Bv=5 Ibv=5u)
+DLED A K DLED_T
+.param CPH=1n
+CPH_STATE PH 0 {CPH}
+RPH_LEAK PH 0 1G
+* PH voltage numerically represents collector current in amperes (1 V == 1 A).
+BPH 0 PH I={if(CTR*max(I(DLED),0)>V(PH),CPH*(CTR*max(I(DLED),0)-V(PH))/TON,CPH*(CTR*max(I(DLED),0)-V(PH))/TOFF)}
+BPHOTO C E I={max(V(PH),0)}
+IDARK_SRC C E DC {IDARK}
+CCE_DEV C E {CCE}
+CISO_DEV A E {CISO}
+RISO_DEV A E 1e12
+.ends TLP185_DYNAMIC
+
+* ============================================================================
+* OPA548 delayed-E/S wrapper
+* - retains TI official OPA548 as the analog power-op-amp core
+* - physical ES pin gets IES + capacitance + internal high clamp proxy
+* - state variable is hysteretic and has finite TON/TOFF
+* - delayed state drives official model's E/S control pin
+* ============================================================================
+.subckt OPA548_ES_DELAYED INP INN ILIM VNEG VPOS OUT ES ESMON
++ params: IES=70u CES=2p VOFF=0.8 VON=2.4 TON=3u TOFF=1u
+
+* External-pin loading that is otherwise lost when the vendor E/S pin is isolated.
+IES_PHYS VPOS ES DC {IES}
+CES_PHYS ES VNEG {CES}
+* Smooth high clamp near 3.5 V above V-. 10 ohm incremental resistance above clamp.
+BES_CLAMP ES VNEG I={max((V(ES,VNEG)-3.5)/10,0)}
+R_ES_LEAK ES VNEG 1G
+
+* State 0=OFF, 1=ON. Hold state in the datasheet's undefined threshold region.
+.param CST=1n
+C_ES_STATE ESTATE 0 {CST}
+R_ES_STATE ESTATE 0 1G
+B_ES_STATE 0 ESTATE I={if(V(ES,VNEG)>=VON,CST*(1-V(ESTATE))/TON,if(V(ES,VNEG)<=VOFF,CST*(0-V(ESTATE))/TOFF,0))}
+
+* Delayed state drives the official model from 0 to 3.5 V above V-.
+B_ES_CTRL ESCTRL VNEG V={3.5*min(max(V(ESTATE),0),1)}
+B_ES_MON ESMON 0 V={min(max(V(ESTATE),0),1)}
+
+* Official TI OPA548 electrical core.
+XCORE INP INN ILIM VNEG VPOS OUT ESCTRL OPA548
+.ends OPA548_ES_DELAYED
+
+* --------------------------- analyses ---------------------------------------
+.control
+set noaskquit
+set wr_singlescale
+set wr_vecnames
+op
+print v(OPA_ES) v(PWR_N) v(PWR_P) v(ES_STATE) v(TP8) v(OPA_OUT)
+tran 0.05u 1m 0 0.05u
+meas tran TP8_MAX MAX v(TP8) from=0.25m to=1m
+meas tran TP8_MIN MIN v(TP8) from=0.25m to=1m
+meas tran OPA_MAX MAX v(OPA_OUT) from=0.25m to=1m
+meas tran OPA_MIN MIN v(OPA_OUT) from=0.25m to=1m
+meas tran STATE_MAX MAX v(ES_STATE) from=0.25m to=1m
+meas tran STATE_MIN MIN v(ES_STATE) from=0.25m to=1m
+let TP8_PP=TP8_MAX-TP8_MIN
+let OPA_PP=OPA_MAX-OPA_MIN
+print TP8_PP OPA_PP STATE_MAX STATE_MIN
+wrdata results_h12_fast/tran.dat v(TP8) v(U4O) v(OPA_OUT) v(OPA_ES) v(PWR_N) v(PWR_P) v(ES_STATE) i(VJ1P_SRC) i(VJ1N_SRC)
+quit
+.endc
+.end
