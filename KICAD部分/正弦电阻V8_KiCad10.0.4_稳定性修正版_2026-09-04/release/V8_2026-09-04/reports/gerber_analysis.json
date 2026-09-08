@@ -1,0 +1,3516 @@
+{
+  "analyzer_type": "gerber",
+  "schema_version": "1.4.0",
+  "directory": "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber",
+  "generator": "Pcbnew 10.0.4",
+  "layer_count": 2,
+  "board_dimensions": {
+    "width_mm": 116.59,
+    "height_mm": 112.78,
+    "area_mm2": 13148.1,
+    "source": "gbrjob"
+  },
+  "statistics": {
+    "gerber_files": 9,
+    "drill_files": 2,
+    "total_holes": 219,
+    "total_flashes": 2040,
+    "total_draws": 45417
+  },
+  "completeness": {
+    "found_layers": [
+      "B.Cu",
+      "B.Mask",
+      "B.Paste",
+      "B.SilkS",
+      "Edge.Cuts",
+      "F.Cu",
+      "F.Mask",
+      "F.Paste",
+      "F.SilkS"
+    ],
+    "expected_layers": [
+      "B.Cu",
+      "B.Mask",
+      "B.Paste",
+      "B.SilkS",
+      "Edge.Cuts",
+      "F.Cu",
+      "F.Mask",
+      "F.Paste",
+      "F.SilkS"
+    ],
+    "missing": [],
+    "extra": [],
+    "has_pth_drill": true,
+    "has_npth_drill": true,
+    "complete": true,
+    "source": "gbrjob"
+  },
+  "alignment": {
+    "aligned": true,
+    "issues": [],
+    "layer_extents": {
+      "B.Cu": {
+        "width": 115.331,
+        "height": 111.521
+      },
+      "B.Paste": {
+        "width": 82.602,
+        "height": 82.423
+      },
+      "B.SilkS": {
+        "width": 110.376,
+        "height": 107.315
+      },
+      "B.Mask": {
+        "width": 110.376,
+        "height": 107.315
+      },
+      "Edge.Cuts": {
+        "width": 116.332,
+        "height": 112.522
+      },
+      "F.Cu": {
+        "width": 115.331,
+        "height": 111.521
+      },
+      "F.Paste": {
+        "width": 108.204,
+        "height": 103.966
+      },
+      "F.SilkS": {
+        "width": 113.328,
+        "height": 109.997
+      },
+      "F.Mask": {
+        "width": 110.376,
+        "height": 107.315
+      },
+      "drill_NPTH": {
+        "width": 0,
+        "height": 0
+      },
+      "drill_PTH": {
+        "width": 110.363,
+        "height": 107.315
+      }
+    }
+  },
+  "drill_classification": {
+    "vias": {
+      "count": 174,
+      "tools": [
+        {
+          "diameter_mm": 0.457,
+          "count": 65
+        },
+        {
+          "diameter_mm": 0.762,
+          "count": 12
+        },
+        {
+          "diameter_mm": 0.914,
+          "count": 12
+        },
+        {
+          "diameter_mm": 1.067,
+          "count": 13
+        },
+        {
+          "diameter_mm": 1.219,
+          "count": 72
+        }
+      ]
+    },
+    "component_holes": {
+      "count": 45,
+      "tools": [
+        {
+          "diameter_mm": 0.65,
+          "count": 5
+        },
+        {
+          "diameter_mm": 0.7,
+          "count": 20
+        },
+        {
+          "diameter_mm": 0.85,
+          "count": 10
+        },
+        {
+          "diameter_mm": 1.02,
+          "count": 10
+        }
+      ]
+    },
+    "mounting_holes": {
+      "count": 0,
+      "tools": []
+    },
+    "classification_method": "x2_attributes"
+  },
+  "pad_summary": {
+    "smd_apertures": 357,
+    "via_apertures": 348,
+    "heatsink_apertures": 0,
+    "tht_holes": 45,
+    "smd_source": "x2_aperture_function",
+    "smd_ratio": 0.89
+  },
+  "trace_widths": {
+    "unique_widths_mm": [
+      0.381,
+      0.5,
+      0.635,
+      0.762,
+      0.889,
+      1.016,
+      1.143,
+      1.27,
+      1.524,
+      2.032,
+      2.159
+    ],
+    "min_trace_mm": 0.381,
+    "max_trace_mm": 2.159,
+    "width_count": 11,
+    "min_feature_mm": 0.27
+  },
+  "component_analysis": {
+    "total_unique": 147,
+    "front_side": 112,
+    "back_side": 35,
+    "component_refs": [
+      "C1",
+      "C10",
+      "C11",
+      "C12",
+      "C13",
+      "C14",
+      "C15",
+      "C16",
+      "C17",
+      "C18",
+      "C19",
+      "C2",
+      "C20",
+      "C21",
+      "C22",
+      "C23",
+      "C24",
+      "C25",
+      "C26",
+      "C27",
+      "C28",
+      "C29",
+      "C3",
+      "C30",
+      "C31",
+      "C32",
+      "C33",
+      "C34",
+      "C35",
+      "C36",
+      "C37",
+      "C38",
+      "C39",
+      "C4",
+      "C40",
+      "C41",
+      "C42",
+      "C5",
+      "C6",
+      "C7",
+      "C8",
+      "C9",
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "FB1",
+      "FB2",
+      "FB3",
+      "FID1",
+      "FID2",
+      "FID3",
+      "FID4",
+      "FID5",
+      "FID6",
+      "J1",
+      "J10",
+      "J11",
+      "J12",
+      "J13",
+      "J14",
+      "J2",
+      "J3",
+      "J4",
+      "J5",
+      "J6",
+      "J7",
+      "J8",
+      "J9",
+      "R1",
+      "R10",
+      "R11",
+      "R12",
+      "R13",
+      "R14",
+      "R15",
+      "R16",
+      "R17",
+      "R18",
+      "R19",
+      "R2",
+      "R20",
+      "R21",
+      "R22",
+      "R23",
+      "R24",
+      "R25",
+      "R26",
+      "R27",
+      "R28",
+      "R29",
+      "R3",
+      "R30",
+      "R31",
+      "R32",
+      "R33",
+      "R34",
+      "R35",
+      "R36",
+      "R37",
+      "R38",
+      "R39",
+      "R4",
+      "R40",
+      "R41",
+      "R42",
+      "R43",
+      "R44",
+      "R45",
+      "R46",
+      "R5",
+      "R6",
+      "R7",
+      "R8",
+      "R9",
+      "RSH2",
+      "TP1",
+      "TP10",
+      "TP11",
+      "TP12",
+      "TP13",
+      "TP14",
+      "TP15",
+      "TP16",
+      "TP17",
+      "TP18",
+      "TP19",
+      "TP2",
+      "TP20",
+      "TP21",
+      "TP3",
+      "TP4",
+      "TP5",
+      "TP6",
+      "TP7",
+      "TP8",
+      "TP9",
+      "U1",
+      "U10",
+      "U2",
+      "U3",
+      "U4",
+      "U5",
+      "U6",
+      "U7",
+      "U8",
+      "U9"
+    ],
+    "has_x2_data": true,
+    "pads_per_component": {
+      "C1": 2,
+      "C10": 2,
+      "C11": 2,
+      "C12": 2,
+      "C13": 2,
+      "C14": 2,
+      "C15": 2,
+      "C16": 2,
+      "C17": 2,
+      "C18": 2,
+      "C19": 2,
+      "C2": 2,
+      "C20": 2,
+      "C21": 2,
+      "C22": 2,
+      "C23": 2,
+      "C24": 2,
+      "C25": 2,
+      "C26": 2,
+      "C27": 2,
+      "C28": 2,
+      "C29": 2,
+      "C3": 2,
+      "C30": 2,
+      "C31": 2,
+      "C32": 2,
+      "C33": 2,
+      "C34": 2,
+      "C35": 2,
+      "C36": 2,
+      "C37": 2,
+      "C38": 2,
+      "C39": 2,
+      "C4": 2,
+      "C40": 2,
+      "C41": 2,
+      "C42": 2,
+      "C5": 2,
+      "C6": 2,
+      "C7": 2,
+      "C8": 2,
+      "C9": 2,
+      "D1": 2,
+      "D2": 2,
+      "D3": 2,
+      "D4": 2,
+      "FB1": 2,
+      "FB2": 2,
+      "FB3": 2,
+      "FID1": 1,
+      "FID2": 1,
+      "FID3": 1,
+      "FID4": 1,
+      "FID5": 1,
+      "FID6": 1,
+      "J1": 6,
+      "J10": 5,
+      "J11": 5,
+      "J12": 5,
+      "J13": 5,
+      "J14": 2,
+      "J2": 6,
+      "J3": 4,
+      "J4": 4,
+      "J5": 6,
+      "J6": 6,
+      "J7": 5,
+      "J8": 6,
+      "J9": 4,
+      "R1": 2,
+      "R10": 2,
+      "R11": 2,
+      "R12": 2,
+      "R13": 2,
+      "R14": 2,
+      "R15": 2,
+      "R16": 2,
+      "R17": 2,
+      "R18": 2,
+      "R19": 2,
+      "R2": 2,
+      "R20": 2,
+      "R21": 2,
+      "R22": 2,
+      "R23": 2,
+      "R24": 2,
+      "R25": 2,
+      "R26": 2,
+      "R27": 2,
+      "R28": 2,
+      "R29": 2,
+      "R3": 2,
+      "R30": 2,
+      "R31": 2,
+      "R32": 2,
+      "R33": 2,
+      "R34": 2,
+      "R35": 2,
+      "R36": 2,
+      "R37": 2,
+      "R38": 2,
+      "R39": 2,
+      "R4": 2,
+      "R40": 2,
+      "R41": 2,
+      "R42": 2,
+      "R43": 2,
+      "R44": 2,
+      "R45": 2,
+      "R46": 2,
+      "R5": 2,
+      "R6": 2,
+      "R7": 2,
+      "R8": 2,
+      "R9": 2,
+      "RSH2": 4,
+      "TP1": 1,
+      "TP10": 1,
+      "TP11": 1,
+      "TP12": 1,
+      "TP13": 1,
+      "TP14": 1,
+      "TP15": 1,
+      "TP16": 1,
+      "TP17": 1,
+      "TP18": 1,
+      "TP19": 1,
+      "TP2": 1,
+      "TP20": 1,
+      "TP21": 1,
+      "TP3": 1,
+      "TP4": 1,
+      "TP5": 1,
+      "TP6": 1,
+      "TP7": 1,
+      "TP8": 1,
+      "TP9": 1,
+      "U1": 8,
+      "U10": 8,
+      "U2": 8,
+      "U3": 8,
+      "U4": 8,
+      "U5": 48,
+      "U6": 4,
+      "U7": 4,
+      "U8": 8,
+      "U9": 8
+    },
+    "total_pads": 402
+  },
+  "net_analysis": {
+    "total_unique": 77,
+    "named_nets": 77,
+    "unnamed_nets": 0,
+    "power_nets": [
+      "AGND",
+      "DGND"
+    ],
+    "signal_nets": [
+      "$1N56724",
+      "$1N56728",
+      "AD633_Z",
+      "ADC_ISIG",
+      "ADC_PWR_N",
+      "ADC_PWR_P",
+      "ADC_SPK",
+      "ADC_TEMP",
+      "ANA_N",
+      "ANA_N_EXT",
+      "ANA_P",
+      "ANA_P_EXT",
+      "DAC_AUX_RAW",
+      "DAC_BUF",
+      "DAC_BUF_N",
+      "DAC_R_FILT",
+      "DAC_R_RAW",
+      "DRV",
+      "FAULT_IN",
+      "GPIO_SPARE1",
+      "GPIO_SPARE2",
+      "GPIO_SPARE3",
+      "GPIO_SPARE4",
+      "GPIO_SPARE5",
+      "GPIO_SPARE6",
+      "GPIO_SPARE7",
+      "GPIO_SPARE8",
+      "I2C_SCL",
+      "I2C_SDA",
+      "ILIM_SET",
+      "IPORT",
+      "ISIG",
+      "ISIG_TRIM",
+      "MCU_OPA_EN",
+      "MUL_RAW",
+      "N/C",
+      "NRST",
+      "OPA_EN_LED_A",
+      "OPA_ES",
+      "OPA_IN_N",
+      "OPA_IN_P",
+      "OPA_OUT",
+      "PGND",
+      "PWR_N",
+      "PWR_P",
+      "SENSE_DRV",
+      "SENSE_SPK",
+      "SERVO_INT_N",
+      "SNUB_MID",
+      "SPI_MISO",
+      "SPI_MOSI",
+      "SPI_NSS",
+      "SPI_SCK",
+      "SPK",
+      "SWCLK",
+      "SWDIO",
+      "TIM_SYNC",
+      "U4A_LEAD_MID",
+      "U4A_N",
+      "U4B_LEAD_MID",
+      "U4B_N",
+      "UART_RX",
+      "UART_TX",
+      "V3V3",
+      "V3V3A",
+      "V5_IN",
+      "VCMD",
+      "VK",
+      "VK_AMP_N",
+      "VK_EXT",
+      "VK_MCU",
+      "VREF_0V477",
+      "VSENSE_RAW",
+      "ZSERVO_OUT",
+      "ZTRIM"
+    ],
+    "total_pins": 381
+  },
+  "gerbers": [
+    {
+      "filename": "project-Bottom Layer.gbl",
+      "layer_type": "B.Cu",
+      "units": "mm",
+      "aperture_count": 20,
+      "flash_count": 292,
+      "draw_count": 14472,
+      "region_count": 6,
+      "x2_attributes": {
+        "GenerationSoftware": "KiCad,Pcbnew,10.0.4",
+        "CreationDate": "2026-09-04T19:59:28+08:00",
+        "ProjectId": "project,70726f6a-6563-4742-9e6b-696361645f70,rev?",
+        "SameCoordinates": "Original",
+        "FileFunction": "Copper,L2,Bot",
+        "FilePolarity": "Positive"
+      },
+      "aperture_analysis": {
+        "by_function": {
+          "ComponentPad": 4,
+          "SMDPad": 6,
+          "ViaPad": 4,
+          "Conductor": 6
+        },
+        "by_function_flashes": {
+          "ComponentPad": 45,
+          "SMDPad": 73,
+          "ViaPad": 174,
+          "Conductor": 0
+        },
+        "conductor_widths_mm": [
+          0.381,
+          0.635,
+          0.762,
+          0.889,
+          1.016,
+          1.27
+        ],
+        "min_feature_mm": 0.381
+      },
+      "x2_component_count": 0,
+      "x2_net_count": 61,
+      "x2_pin_count": 118
+    },
+    {
+      "filename": "project-Bottom Paste Mask Layer.gbp",
+      "layer_type": "B.Paste",
+      "units": "mm",
+      "aperture_count": 6,
+      "flash_count": 70,
+      "draw_count": 744,
+      "region_count": 62,
+      "x2_attributes": {
+        "GenerationSoftware": "KiCad,Pcbnew,10.0.4",
+        "CreationDate": "2026-09-04T19:59:28+08:00",
+        "ProjectId": "project,70726f6a-6563-4742-9e6b-696361645f70,rev?",
+        "SameCoordinates": "Original",
+        "FileFunction": "Paste,Bot",
+        "FilePolarity": "Positive"
+      },
+      "aperture_analysis": {
+        "min_feature_mm": 0.588
+      },
+      "x2_component_count": 32,
+      "x2_net_count": 0,
+      "x2_pin_count": 0
+    },
+    {
+      "filename": "project-Bottom Silkscreen Layer.gbo",
+      "layer_type": "B.SilkS",
+      "units": "mm",
+      "aperture_count": 12,
+      "flash_count": 118,
+      "draw_count": 266,
+      "region_count": 0,
+      "x2_attributes": {
+        "GenerationSoftware": "KiCad,Pcbnew,10.0.4",
+        "CreationDate": "2026-09-04T19:59:28+08:00",
+        "ProjectId": "project,70726f6a-6563-4742-9e6b-696361645f70,rev?",
+        "SameCoordinates": "Original",
+        "FileFunction": "Legend,Bot",
+        "FilePolarity": "Positive"
+      },
+      "aperture_analysis": {
+        "min_feature_mm": 0.1525
+      },
+      "x2_component_count": 60,
+      "x2_net_count": 0,
+      "x2_pin_count": 0
+    },
+    {
+      "filename": "project-Bottom Solder Mask Layer.gbs",
+      "layer_type": "B.Mask",
+      "units": "mm",
+      "aperture_count": 10,
+      "flash_count": 118,
+      "draw_count": 0,
+      "region_count": 0,
+      "x2_attributes": {
+        "GenerationSoftware": "KiCad,Pcbnew,10.0.4",
+        "CreationDate": "2026-09-04T19:59:28+08:00",
+        "ProjectId": "project,70726f6a-6563-4742-9e6b-696361645f70,rev?",
+        "SameCoordinates": "Original",
+        "FileFunction": "Soldermask,Bot",
+        "FilePolarity": "Negative"
+      },
+      "aperture_analysis": {
+        "min_feature_mm": 0.588
+      },
+      "x2_component_count": 60,
+      "x2_net_count": 0,
+      "x2_pin_count": 0
+    },
+    {
+      "filename": "project-Multi-Layer.gm1",
+      "layer_type": "Edge.Cuts",
+      "units": "mm",
+      "aperture_count": 1,
+      "flash_count": 0,
+      "draw_count": 8,
+      "region_count": 0,
+      "x2_attributes": {
+        "GenerationSoftware": "KiCad,Pcbnew,10.0.4",
+        "CreationDate": "2026-09-04T19:59:28+08:00",
+        "ProjectId": "project,70726f6a-6563-4742-9e6b-696361645f70,rev?",
+        "SameCoordinates": "Original",
+        "FileFunction": "Profile,NP"
+      },
+      "aperture_analysis": {
+        "by_function": {
+          "Profile": 1
+        },
+        "by_function_flashes": {
+          "Profile": 0
+        },
+        "min_feature_mm": 0.254
+      }
+    },
+    {
+      "filename": "project-Top Layer.gtl",
+      "layer_type": "F.Cu",
+      "units": "mm",
+      "aperture_count": 46,
+      "flash_count": 503,
+      "draw_count": 27495,
+      "region_count": 26,
+      "x2_attributes": {
+        "GenerationSoftware": "KiCad,Pcbnew,10.0.4",
+        "CreationDate": "2026-09-04T19:59:28+08:00",
+        "ProjectId": "project,70726f6a-6563-4742-9e6b-696361645f70,rev?",
+        "SameCoordinates": "Original",
+        "FileFunction": "Copper,L1,Top",
+        "FilePolarity": "Positive"
+      },
+      "aperture_analysis": {
+        "by_function": {
+          "SMDPad": 27,
+          "ComponentPad": 4,
+          "ViaPad": 4,
+          "Conductor": 11
+        },
+        "by_function_flashes": {
+          "SMDPad": 284,
+          "ComponentPad": 45,
+          "ViaPad": 174,
+          "Conductor": 0
+        },
+        "conductor_widths_mm": [
+          0.381,
+          0.5,
+          0.635,
+          0.762,
+          0.889,
+          1.016,
+          1.143,
+          1.27,
+          1.524,
+          2.032,
+          2.159
+        ],
+        "min_feature_mm": 0.27
+      },
+      "x2_component_count": 0,
+      "x2_net_count": 73,
+      "x2_pin_count": 308
+    },
+    {
+      "filename": "project-Top Paste Mask Layer.gtp",
+      "layer_type": "F.Paste",
+      "units": "mm",
+      "aperture_count": 27,
+      "flash_count": 281,
+      "draw_count": 1344,
+      "region_count": 114,
+      "x2_attributes": {
+        "GenerationSoftware": "KiCad,Pcbnew,10.0.4",
+        "CreationDate": "2026-09-04T19:59:28+08:00",
+        "ProjectId": "project,70726f6a-6563-4742-9e6b-696361645f70,rev?",
+        "SameCoordinates": "Original",
+        "FileFunction": "Paste,Top",
+        "FilePolarity": "Positive"
+      },
+      "aperture_analysis": {
+        "min_feature_mm": 0.27
+      },
+      "x2_component_count": 84,
+      "x2_net_count": 0,
+      "x2_pin_count": 0
+    },
+    {
+      "filename": "project-Top Silkscreen Layer.gto",
+      "layer_type": "F.SilkS",
+      "units": "mm",
+      "aperture_count": 39,
+      "flash_count": 329,
+      "draw_count": 1088,
+      "region_count": 31,
+      "x2_attributes": {
+        "GenerationSoftware": "KiCad,Pcbnew,10.0.4",
+        "CreationDate": "2026-09-04T19:59:28+08:00",
+        "ProjectId": "project,70726f6a-6563-4742-9e6b-696361645f70,rev?",
+        "SameCoordinates": "Original",
+        "FileFunction": "Legend,Top",
+        "FilePolarity": "Positive"
+      },
+      "aperture_analysis": {
+        "min_feature_mm": 0.15
+      },
+      "x2_component_count": 112,
+      "x2_net_count": 0,
+      "x2_pin_count": 0
+    },
+    {
+      "filename": "project-Top Solder Mask Layer.gts",
+      "layer_type": "F.Mask",
+      "units": "mm",
+      "aperture_count": 31,
+      "flash_count": 329,
+      "draw_count": 0,
+      "region_count": 0,
+      "x2_attributes": {
+        "GenerationSoftware": "KiCad,Pcbnew,10.0.4",
+        "CreationDate": "2026-09-04T19:59:28+08:00",
+        "ProjectId": "project,70726f6a-6563-4742-9e6b-696361645f70,rev?",
+        "SameCoordinates": "Original",
+        "FileFunction": "Soldermask,Top",
+        "FilePolarity": "Negative"
+      },
+      "aperture_analysis": {
+        "min_feature_mm": 0.27
+      },
+      "x2_component_count": 112,
+      "x2_net_count": 0,
+      "x2_pin_count": 0
+    }
+  ],
+  "drills": [
+    {
+      "filename": "project-NPTH.drl",
+      "type": "NPTH",
+      "units": "mm",
+      "hole_count": 0,
+      "tools": {},
+      "layer_span": [
+        1,
+        2
+      ],
+      "x2_attributes": {
+        "CreationDate": "2026-09-04T19:59:30+08:00",
+        "GenerationSoftware": "Kicad,Pcbnew,10.0.4",
+        "FileFunction": "NonPlated,1,2,NPTH"
+      }
+    },
+    {
+      "filename": "project-PTH.drl",
+      "type": "PTH",
+      "units": "mm",
+      "hole_count": 219,
+      "tools": {
+        "T1": {
+          "diameter_mm": 0.457,
+          "hole_count": 65,
+          "aper_function": "Plated,PTH,ViaDrill"
+        },
+        "T2": {
+          "diameter_mm": 0.65,
+          "hole_count": 5,
+          "aper_function": "Plated,PTH,ComponentDrill"
+        },
+        "T3": {
+          "diameter_mm": 0.7,
+          "hole_count": 20,
+          "aper_function": "Plated,PTH,ComponentDrill"
+        },
+        "T4": {
+          "diameter_mm": 0.762,
+          "hole_count": 12,
+          "aper_function": "Plated,PTH,ViaDrill"
+        },
+        "T5": {
+          "diameter_mm": 0.85,
+          "hole_count": 10,
+          "aper_function": "Plated,PTH,ComponentDrill"
+        },
+        "T6": {
+          "diameter_mm": 0.914,
+          "hole_count": 12,
+          "aper_function": "Plated,PTH,ViaDrill"
+        },
+        "T7": {
+          "diameter_mm": 1.02,
+          "hole_count": 10,
+          "aper_function": "Plated,PTH,ComponentDrill"
+        },
+        "T8": {
+          "diameter_mm": 1.067,
+          "hole_count": 13,
+          "aper_function": "Plated,PTH,ViaDrill"
+        },
+        "T9": {
+          "diameter_mm": 1.219,
+          "hole_count": 72,
+          "aper_function": "Plated,PTH,ViaDrill"
+        }
+      },
+      "layer_span": [
+        1,
+        2
+      ],
+      "x2_attributes": {
+        "CreationDate": "2026-09-04T19:59:30+08:00",
+        "GenerationSoftware": "Kicad,Pcbnew,10.0.4",
+        "FileFunction": "Plated,1,2,PTH"
+      }
+    }
+  ],
+  "drill_tools": {
+    "0.457mm": {
+      "diameter_mm": 0.457,
+      "count": 65,
+      "type": "PTH"
+    },
+    "0.65mm": {
+      "diameter_mm": 0.65,
+      "count": 5,
+      "type": "PTH"
+    },
+    "0.7mm": {
+      "diameter_mm": 0.7,
+      "count": 20,
+      "type": "PTH"
+    },
+    "0.762mm": {
+      "diameter_mm": 0.762,
+      "count": 12,
+      "type": "PTH"
+    },
+    "0.85mm": {
+      "diameter_mm": 0.85,
+      "count": 10,
+      "type": "PTH"
+    },
+    "0.914mm": {
+      "diameter_mm": 0.914,
+      "count": 12,
+      "type": "PTH"
+    },
+    "1.02mm": {
+      "diameter_mm": 1.02,
+      "count": 10,
+      "type": "PTH"
+    },
+    "1.067mm": {
+      "diameter_mm": 1.067,
+      "count": 13,
+      "type": "PTH"
+    },
+    "1.219mm": {
+      "diameter_mm": 1.219,
+      "count": 72,
+      "type": "PTH"
+    }
+  },
+  "job_file": {
+    "generator": "Pcbnew 10.0.4",
+    "vendor": "KiCad",
+    "creation_date": "2026-09-04T19:59:28+08:00",
+    "board_width_mm": 116.586,
+    "board_height_mm": 112.776,
+    "layer_count": 2,
+    "board_thickness_mm": 1.6,
+    "finish": "None",
+    "project_name": "project",
+    "design_rules": [
+      {
+        "layers": "Outer",
+        "PadToPad": 0.1,
+        "PadToTrack": 0.1,
+        "TrackToTrack": 0.1,
+        "MinLineWidth": 0.381,
+        "TrackToRegion": 0.1015,
+        "RegionToRegion": 0.1015
+      }
+    ],
+    "expected_files": [
+      {
+        "path": "project-Top Layer.gtl",
+        "function": "Copper,L1,Top",
+        "polarity": "Positive"
+      },
+      {
+        "path": "project-Bottom Layer.gbl",
+        "function": "Copper,L2,Bot",
+        "polarity": "Positive"
+      },
+      {
+        "path": "project-Top Paste Mask Layer.gtp",
+        "function": "SolderPaste,Top",
+        "polarity": "Positive"
+      },
+      {
+        "path": "project-Bottom Paste Mask Layer.gbp",
+        "function": "SolderPaste,Bot",
+        "polarity": "Positive"
+      },
+      {
+        "path": "project-Top Silkscreen Layer.gto",
+        "function": "Legend,Top",
+        "polarity": "Positive"
+      },
+      {
+        "path": "project-Bottom Silkscreen Layer.gbo",
+        "function": "Legend,Bot",
+        "polarity": "Positive"
+      },
+      {
+        "path": "project-Top Solder Mask Layer.gts",
+        "function": "SolderMask,Top",
+        "polarity": "Negative"
+      },
+      {
+        "path": "project-Bottom Solder Mask Layer.gbs",
+        "function": "SolderMask,Bot",
+        "polarity": "Negative"
+      },
+      {
+        "path": "project-Multi-Layer.gm1",
+        "function": "Profile",
+        "polarity": "Positive"
+      }
+    ],
+    "stackup": [
+      {
+        "type": "Legend",
+        "name": "Top Silk Screen"
+      },
+      {
+        "type": "SolderPaste",
+        "name": "Top Solder Paste"
+      },
+      {
+        "type": "SolderMask",
+        "name": "Top Solder Mask",
+        "thickness_mm": 0.01
+      },
+      {
+        "type": "Copper",
+        "name": "Top Layer",
+        "thickness_mm": 0.035
+      },
+      {
+        "type": "Dielectric",
+        "name": "Top Layer/Bottom Layer",
+        "thickness_mm": 1.51,
+        "material": "FR4"
+      },
+      {
+        "type": "Copper",
+        "name": "Bottom Layer",
+        "thickness_mm": 0.035
+      },
+      {
+        "type": "SolderMask",
+        "name": "Bottom Solder Mask",
+        "thickness_mm": 0.01
+      },
+      {
+        "type": "SolderPaste",
+        "name": "Bottom Solder Paste"
+      },
+      {
+        "type": "Legend",
+        "name": "Bottom Silk Screen"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "detector": "analyze_gerbers",
+      "rule_id": "GR-004",
+      "category": "gerber_completeness",
+      "severity": "warning",
+      "confidence": "heuristic",
+      "evidence_source": "topology",
+      "summary": "B paste layer: 70 flashes vs 292 copper (24%)",
+      "description": "B-side paste layer has significantly fewer flashes (70) than copper layer (292). This may indicate missing solder paste apertures.",
+      "components": [],
+      "nets": [],
+      "pins": [],
+      "recommendation": "Check solder paste aperture generation \u2014 missing apertures cause assembly defects.",
+      "report_context": {
+        "section": "Gerber Completeness",
+        "impact": "Assembly solder joint quality",
+        "standard_ref": ""
+      },
+      "stages": [
+        "pre_fab"
+      ],
+      "finding_id": "gerber:GR-004:43c9dd99a708"
+    }
+  ],
+  "assessments": [],
+  "summary": {
+    "total_findings": 1,
+    "by_severity": {
+      "error": 0,
+      "warning": 1,
+      "info": 0
+    }
+  },
+  "trust_summary": {
+    "total_findings": 1,
+    "trust_level": "low",
+    "by_confidence": {
+      "deterministic": 0,
+      "heuristic": 1,
+      "datasheet_backed": 0
+    },
+    "by_evidence_source": {
+      "datasheet": 0,
+      "topology": 1,
+      "heuristic_rule": 0,
+      "symbol_footprint": 0,
+      "bom": 0,
+      "geometry": 0,
+      "api_lookup": 0
+    },
+    "provenance_coverage_pct": 0.0
+  },
+  "connectivity": [
+    {
+      "ref": "C1",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C1",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V5_IN"
+    },
+    {
+      "ref": "C10",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C10",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ANA_N"
+    },
+    {
+      "ref": "C11",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C11",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ANA_P"
+    },
+    {
+      "ref": "C12",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C12",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ANA_N"
+    },
+    {
+      "ref": "C13",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C13",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG"
+    },
+    {
+      "ref": "C14",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C14",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VCMD"
+    },
+    {
+      "ref": "C15",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C15",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ANA_P"
+    },
+    {
+      "ref": "C16",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C16",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ANA_N"
+    },
+    {
+      "ref": "C17",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C17",
+      "pin": "2",
+      "pin_name": "",
+      "net": "DAC_R_FILT"
+    },
+    {
+      "ref": "C18",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C18",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VREF_0V477"
+    },
+    {
+      "ref": "C19",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C19",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "C2",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C2",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "C20",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C20",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "C21",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C21",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "C22",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C22",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3A"
+    },
+    {
+      "ref": "C23",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C23",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3A"
+    },
+    {
+      "ref": "C24",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C24",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "C25",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C25",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3A"
+    },
+    {
+      "ref": "C26",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C26",
+      "pin": "2",
+      "pin_name": "",
+      "net": "NRST"
+    },
+    {
+      "ref": "C27",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C27",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PWR_P"
+    },
+    {
+      "ref": "C28",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C28",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG_TRIM"
+    },
+    {
+      "ref": "C29",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C29",
+      "pin": "2",
+      "pin_name": "",
+      "net": "IPORT"
+    },
+    {
+      "ref": "C3",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C3",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "C30",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C30",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ZSERVO_OUT"
+    },
+    {
+      "ref": "C31",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C31",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG"
+    },
+    {
+      "ref": "C32",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C32",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG"
+    },
+    {
+      "ref": "C33",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C33",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG"
+    },
+    {
+      "ref": "C34",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C34",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG"
+    },
+    {
+      "ref": "C35",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C35",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG"
+    },
+    {
+      "ref": "C36",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C36",
+      "pin": "2",
+      "pin_name": "",
+      "net": "U4A_LEAD_MID"
+    },
+    {
+      "ref": "C37",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C37",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VCMD"
+    },
+    {
+      "ref": "C38",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C38",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VCMD"
+    },
+    {
+      "ref": "C39",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C39",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VCMD"
+    },
+    {
+      "ref": "C4",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C4",
+      "pin": "2",
+      "pin_name": "",
+      "net": "SNUB_MID"
+    },
+    {
+      "ref": "C40",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C40",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VCMD"
+    },
+    {
+      "ref": "C41",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C41",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VCMD"
+    },
+    {
+      "ref": "C42",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C42",
+      "pin": "2",
+      "pin_name": "",
+      "net": "U4B_LEAD_MID"
+    },
+    {
+      "ref": "C5",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C5",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PGND"
+    },
+    {
+      "ref": "C6",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C6",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PWR_N"
+    },
+    {
+      "ref": "C7",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C7",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PWR_P"
+    },
+    {
+      "ref": "C8",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C8",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PGND"
+    },
+    {
+      "ref": "C9",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "C9",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ANA_P"
+    },
+    {
+      "ref": "D1",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "D1",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PWR_P"
+    },
+    {
+      "ref": "D2",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "D2",
+      "pin": "2",
+      "pin_name": "",
+      "net": "DRV"
+    },
+    {
+      "ref": "D3",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "D3",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PWR_P"
+    },
+    {
+      "ref": "D4",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "D4",
+      "pin": "2",
+      "pin_name": "",
+      "net": "SPK"
+    },
+    {
+      "ref": "FB1",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "FB1",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ANA_P_EXT"
+    },
+    {
+      "ref": "FB2",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "FB2",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ANA_N_EXT"
+    },
+    {
+      "ref": "FB3",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "FB3",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "FID1",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "FID2",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "FID3",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "FID4",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "FID5",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "FID6",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J1",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J1",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PWR_P"
+    },
+    {
+      "ref": "J1",
+      "pin": "3",
+      "pin_name": "",
+      "net": "PGND"
+    },
+    {
+      "ref": "J10",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J10",
+      "pin": "2",
+      "pin_name": "",
+      "net": "SPI_NSS"
+    },
+    {
+      "ref": "J10",
+      "pin": "3",
+      "pin_name": "",
+      "net": "SPI_SCK"
+    },
+    {
+      "ref": "J10",
+      "pin": "4",
+      "pin_name": "",
+      "net": "SPI_MISO"
+    },
+    {
+      "ref": "J10",
+      "pin": "5",
+      "pin_name": "",
+      "net": "SPI_MOSI"
+    },
+    {
+      "ref": "J11",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J11",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "J11",
+      "pin": "3",
+      "pin_name": "",
+      "net": "DGND"
+    },
+    {
+      "ref": "J11",
+      "pin": "4",
+      "pin_name": "",
+      "net": "I2C_SCL"
+    },
+    {
+      "ref": "J11",
+      "pin": "5",
+      "pin_name": "",
+      "net": "I2C_SDA"
+    },
+    {
+      "ref": "J12",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J12",
+      "pin": "2",
+      "pin_name": "",
+      "net": "GPIO_SPARE1"
+    },
+    {
+      "ref": "J12",
+      "pin": "3",
+      "pin_name": "",
+      "net": "GPIO_SPARE2"
+    },
+    {
+      "ref": "J12",
+      "pin": "4",
+      "pin_name": "",
+      "net": "GPIO_SPARE3"
+    },
+    {
+      "ref": "J12",
+      "pin": "5",
+      "pin_name": "",
+      "net": "GPIO_SPARE4"
+    },
+    {
+      "ref": "J13",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J13",
+      "pin": "2",
+      "pin_name": "",
+      "net": "GPIO_SPARE6"
+    },
+    {
+      "ref": "J13",
+      "pin": "3",
+      "pin_name": "",
+      "net": "GPIO_SPARE7"
+    },
+    {
+      "ref": "J13",
+      "pin": "4",
+      "pin_name": "",
+      "net": "GPIO_SPARE8"
+    },
+    {
+      "ref": "J13",
+      "pin": "5",
+      "pin_name": "",
+      "net": "ADC_TEMP"
+    },
+    {
+      "ref": "J14",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J14",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ZTRIM"
+    },
+    {
+      "ref": "J2",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J2",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ANA_P_EXT"
+    },
+    {
+      "ref": "J2",
+      "pin": "3",
+      "pin_name": "",
+      "net": "AGND"
+    },
+    {
+      "ref": "J3",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J3",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V5_IN"
+    },
+    {
+      "ref": "J4",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J4",
+      "pin": "2",
+      "pin_name": "",
+      "net": "SPK"
+    },
+    {
+      "ref": "J5",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J5",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VK_MCU"
+    },
+    {
+      "ref": "J5",
+      "pin": "3",
+      "pin_name": "",
+      "net": "VK"
+    },
+    {
+      "ref": "J6",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J6",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VK_EXT"
+    },
+    {
+      "ref": "J6",
+      "pin": "3",
+      "pin_name": "",
+      "net": "AGND"
+    },
+    {
+      "ref": "J7",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J7",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "J7",
+      "pin": "3",
+      "pin_name": "",
+      "net": "SWDIO"
+    },
+    {
+      "ref": "J7",
+      "pin": "4",
+      "pin_name": "",
+      "net": "SWCLK"
+    },
+    {
+      "ref": "J7",
+      "pin": "5",
+      "pin_name": "",
+      "net": "NRST"
+    },
+    {
+      "ref": "J8",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J8",
+      "pin": "2",
+      "pin_name": "",
+      "net": "UART_TX"
+    },
+    {
+      "ref": "J8",
+      "pin": "3",
+      "pin_name": "",
+      "net": "UART_RX"
+    },
+    {
+      "ref": "J9",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "J9",
+      "pin": "2",
+      "pin_name": "",
+      "net": "FAULT_IN"
+    },
+    {
+      "ref": "R1",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R1",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PWR_P"
+    },
+    {
+      "ref": "R10",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R10",
+      "pin": "2",
+      "pin_name": "",
+      "net": "OPA_ES"
+    },
+    {
+      "ref": "R11",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R11",
+      "pin": "2",
+      "pin_name": "",
+      "net": "MCU_OPA_EN"
+    },
+    {
+      "ref": "R12",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R12",
+      "pin": "2",
+      "pin_name": "",
+      "net": "DRV"
+    },
+    {
+      "ref": "R13",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R13",
+      "pin": "2",
+      "pin_name": "",
+      "net": "U4A_N"
+    },
+    {
+      "ref": "R14",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R14",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG"
+    },
+    {
+      "ref": "R15",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R15",
+      "pin": "2",
+      "pin_name": "",
+      "net": "U4B_N"
+    },
+    {
+      "ref": "R16",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R16",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VCMD"
+    },
+    {
+      "ref": "R17",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R17",
+      "pin": "2",
+      "pin_name": "",
+      "net": "DAC_BUF"
+    },
+    {
+      "ref": "R18",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R18",
+      "pin": "2",
+      "pin_name": "",
+      "net": "DAC_R_RAW"
+    },
+    {
+      "ref": "R19",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R19",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3A"
+    },
+    {
+      "ref": "R2",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R2",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PWR_N"
+    },
+    {
+      "ref": "R20",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R20",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VREF_0V477"
+    },
+    {
+      "ref": "R21",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R21",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VK_AMP_N"
+    },
+    {
+      "ref": "R22",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R22",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VK_MCU"
+    },
+    {
+      "ref": "R23",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R23",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "R24",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R24",
+      "pin": "2",
+      "pin_name": "",
+      "net": "NRST"
+    },
+    {
+      "ref": "R25",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R25",
+      "pin": "2",
+      "pin_name": "",
+      "net": "SPK"
+    },
+    {
+      "ref": "R26",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R26",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ADC_SPK"
+    },
+    {
+      "ref": "R27",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R27",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG"
+    },
+    {
+      "ref": "R28",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R28",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PWR_P"
+    },
+    {
+      "ref": "R29",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R29",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ADC_PWR_P"
+    },
+    {
+      "ref": "R3",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R3",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PGND"
+    },
+    {
+      "ref": "R30",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R30",
+      "pin": "2",
+      "pin_name": "",
+      "net": "PWR_N"
+    },
+    {
+      "ref": "R31",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R31",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ADC_PWR_N"
+    },
+    {
+      "ref": "R32",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R32",
+      "pin": "2",
+      "pin_name": "",
+      "net": "I2C_SDA"
+    },
+    {
+      "ref": "R33",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R33",
+      "pin": "2",
+      "pin_name": "",
+      "net": "I2C_SCL"
+    },
+    {
+      "ref": "R34",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R34",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG_TRIM"
+    },
+    {
+      "ref": "R35",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R35",
+      "pin": "2",
+      "pin_name": "",
+      "net": "DAC_AUX_RAW"
+    },
+    {
+      "ref": "R36",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R36",
+      "pin": "2",
+      "pin_name": "",
+      "net": "AD633_Z"
+    },
+    {
+      "ref": "R37",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R37",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ZTRIM"
+    },
+    {
+      "ref": "R38",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R38",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ZSERVO_OUT"
+    },
+    {
+      "ref": "R39",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R39",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG"
+    },
+    {
+      "ref": "R4",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R4",
+      "pin": "2",
+      "pin_name": "",
+      "net": "AGND"
+    },
+    {
+      "ref": "R40",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R40",
+      "pin": "2",
+      "pin_name": "",
+      "net": "IPORT"
+    },
+    {
+      "ref": "R41",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R41",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ZSERVO_OUT"
+    },
+    {
+      "ref": "R42",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R42",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ZSERVO_OUT"
+    },
+    {
+      "ref": "R43",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R43",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ZSERVO_OUT"
+    },
+    {
+      "ref": "R44",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R44",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG"
+    },
+    {
+      "ref": "R45",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R45",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VCMD"
+    },
+    {
+      "ref": "R46",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R46",
+      "pin": "2",
+      "pin_name": "",
+      "net": "OPA_OUT"
+    },
+    {
+      "ref": "R5",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R5",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VCMD"
+    },
+    {
+      "ref": "R6",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R6",
+      "pin": "2",
+      "pin_name": "",
+      "net": "SPK"
+    },
+    {
+      "ref": "R7",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R7",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ILIM_SET"
+    },
+    {
+      "ref": "R8",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R8",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ILIM_SET"
+    },
+    {
+      "ref": "R9",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "R9",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ILIM_SET"
+    },
+    {
+      "ref": "RSH2",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "RSH2",
+      "pin": "2",
+      "pin_name": "",
+      "net": "DRV"
+    },
+    {
+      "ref": "RSH2",
+      "pin": "3",
+      "pin_name": "",
+      "net": "SPK"
+    },
+    {
+      "ref": "RSH2",
+      "pin": "4",
+      "pin_name": "",
+      "net": "SENSE_DRV"
+    },
+    {
+      "ref": "TP1",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP10",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP11",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP12",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP13",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP14",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP15",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP16",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP17",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP18",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP19",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP2",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP20",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP21",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP3",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP4",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP5",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP6",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP7",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP8",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "TP9",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "U1",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "U1",
+      "pin": "2",
+      "pin_name": "",
+      "net": "OPA_IN_P"
+    },
+    {
+      "ref": "U1",
+      "pin": "3",
+      "pin_name": "",
+      "net": "OPA_IN_N"
+    },
+    {
+      "ref": "U1",
+      "pin": "4",
+      "pin_name": "",
+      "net": "ILIM_SET"
+    },
+    {
+      "ref": "U1",
+      "pin": "5",
+      "pin_name": "",
+      "net": "PWR_N"
+    },
+    {
+      "ref": "U1",
+      "pin": "6",
+      "pin_name": "",
+      "net": "PWR_P"
+    },
+    {
+      "ref": "U1",
+      "pin": "7",
+      "pin_name": "",
+      "net": "OPA_OUT"
+    },
+    {
+      "ref": "U1",
+      "pin": "8",
+      "pin_name": "",
+      "net": "OPA_ES"
+    },
+    {
+      "ref": "U10",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "U10",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ZSERVO_OUT"
+    },
+    {
+      "ref": "U10",
+      "pin": "3",
+      "pin_name": "",
+      "net": "SERVO_INT_N"
+    },
+    {
+      "ref": "U10",
+      "pin": "4",
+      "pin_name": "",
+      "net": "AGND"
+    },
+    {
+      "ref": "U10",
+      "pin": "5",
+      "pin_name": "",
+      "net": "ANA_P"
+    },
+    {
+      "ref": "U10",
+      "pin": "6",
+      "pin_name": "",
+      "net": "$1N56728"
+    },
+    {
+      "ref": "U10",
+      "pin": "7",
+      "pin_name": "",
+      "net": "AGND"
+    },
+    {
+      "ref": "U10",
+      "pin": "8",
+      "pin_name": "",
+      "net": "ANA_N"
+    },
+    {
+      "ref": "U2",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "U2",
+      "pin": "2",
+      "pin_name": "",
+      "net": "VK"
+    },
+    {
+      "ref": "U2",
+      "pin": "3",
+      "pin_name": "",
+      "net": "AGND"
+    },
+    {
+      "ref": "U2",
+      "pin": "4",
+      "pin_name": "",
+      "net": "ANA_N"
+    },
+    {
+      "ref": "U2",
+      "pin": "5",
+      "pin_name": "",
+      "net": "AD633_Z"
+    },
+    {
+      "ref": "U2",
+      "pin": "6",
+      "pin_name": "",
+      "net": "MUL_RAW"
+    },
+    {
+      "ref": "U2",
+      "pin": "7",
+      "pin_name": "",
+      "net": "ANA_P"
+    },
+    {
+      "ref": "U2",
+      "pin": "8",
+      "pin_name": "",
+      "net": "ISIG"
+    },
+    {
+      "ref": "U3",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "U3",
+      "pin": "2",
+      "pin_name": "",
+      "net": "AGND"
+    },
+    {
+      "ref": "U3",
+      "pin": "3",
+      "pin_name": "",
+      "net": "SENSE_DRV"
+    },
+    {
+      "ref": "U3",
+      "pin": "4",
+      "pin_name": "",
+      "net": "SENSE_SPK"
+    },
+    {
+      "ref": "U3",
+      "pin": "5",
+      "pin_name": "",
+      "net": "ANA_N"
+    },
+    {
+      "ref": "U3",
+      "pin": "6",
+      "pin_name": "",
+      "net": "AGND"
+    },
+    {
+      "ref": "U3",
+      "pin": "7",
+      "pin_name": "",
+      "net": "VSENSE_RAW"
+    },
+    {
+      "ref": "U3",
+      "pin": "8",
+      "pin_name": "",
+      "net": "ANA_P"
+    },
+    {
+      "ref": "U4",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "U4",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ISIG"
+    },
+    {
+      "ref": "U4",
+      "pin": "3",
+      "pin_name": "",
+      "net": "U4A_N"
+    },
+    {
+      "ref": "U4",
+      "pin": "4",
+      "pin_name": "",
+      "net": "VSENSE_RAW"
+    },
+    {
+      "ref": "U4",
+      "pin": "5",
+      "pin_name": "",
+      "net": "ANA_N"
+    },
+    {
+      "ref": "U4",
+      "pin": "6",
+      "pin_name": "",
+      "net": "MUL_RAW"
+    },
+    {
+      "ref": "U4",
+      "pin": "7",
+      "pin_name": "",
+      "net": "U4B_N"
+    },
+    {
+      "ref": "U4",
+      "pin": "8",
+      "pin_name": "",
+      "net": "VCMD"
+    },
+    {
+      "ref": "U5",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "U5",
+      "pin": "10",
+      "pin_name": "",
+      "net": "ADC_SPK"
+    },
+    {
+      "ref": "U5",
+      "pin": "11",
+      "pin_name": "",
+      "net": "ADC_PWR_P"
+    },
+    {
+      "ref": "U5",
+      "pin": "12",
+      "pin_name": "",
+      "net": "ADC_PWR_N"
+    },
+    {
+      "ref": "U5",
+      "pin": "13",
+      "pin_name": "",
+      "net": "DAC_R_RAW"
+    },
+    {
+      "ref": "U5",
+      "pin": "14",
+      "pin_name": "",
+      "net": "DAC_AUX_RAW"
+    },
+    {
+      "ref": "U5",
+      "pin": "15",
+      "pin_name": "",
+      "net": "MCU_OPA_EN"
+    },
+    {
+      "ref": "U5",
+      "pin": "16",
+      "pin_name": "",
+      "net": "GPIO_SPARE1"
+    },
+    {
+      "ref": "U5",
+      "pin": "17",
+      "pin_name": "",
+      "net": "ADC_TEMP"
+    },
+    {
+      "ref": "U5",
+      "pin": "18",
+      "pin_name": "",
+      "net": "FAULT_IN"
+    },
+    {
+      "ref": "U5",
+      "pin": "19",
+      "pin_name": "",
+      "net": "N/C"
+    },
+    {
+      "ref": "U5",
+      "pin": "2",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "U5",
+      "pin": "20",
+      "pin_name": "",
+      "net": "AGND"
+    },
+    {
+      "ref": "U5",
+      "pin": "21",
+      "pin_name": "",
+      "net": "V3V3A"
+    },
+    {
+      "ref": "U5",
+      "pin": "22",
+      "pin_name": "",
+      "net": "V3V3A"
+    },
+    {
+      "ref": "U5",
+      "pin": "23",
+      "pin_name": "",
+      "net": "GPIO_SPARE2"
+    },
+    {
+      "ref": "U5",
+      "pin": "24",
+      "pin_name": "",
+      "net": "DGND"
+    },
+    {
+      "ref": "U5",
+      "pin": "25",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "U5",
+      "pin": "26",
+      "pin_name": "",
+      "net": "GPIO_SPARE7"
+    },
+    {
+      "ref": "U5",
+      "pin": "27",
+      "pin_name": "",
+      "net": "GPIO_SPARE6"
+    },
+    {
+      "ref": "U5",
+      "pin": "28",
+      "pin_name": "",
+      "net": "GPIO_SPARE5"
+    },
+    {
+      "ref": "U5",
+      "pin": "29",
+      "pin_name": "",
+      "net": "GPIO_SPARE4"
+    },
+    {
+      "ref": "U5",
+      "pin": "3",
+      "pin_name": "",
+      "net": "N/C"
+    },
+    {
+      "ref": "U5",
+      "pin": "30",
+      "pin_name": "",
+      "net": "GPIO_SPARE3"
+    },
+    {
+      "ref": "U5",
+      "pin": "31",
+      "pin_name": "",
+      "net": "TIM_SYNC"
+    },
+    {
+      "ref": "U5",
+      "pin": "32",
+      "pin_name": "",
+      "net": "UART_TX"
+    },
+    {
+      "ref": "U5",
+      "pin": "33",
+      "pin_name": "",
+      "net": "UART_RX"
+    },
+    {
+      "ref": "U5",
+      "pin": "34",
+      "pin_name": "",
+      "net": "N/C"
+    },
+    {
+      "ref": "U5",
+      "pin": "35",
+      "pin_name": "",
+      "net": "N/C"
+    },
+    {
+      "ref": "U5",
+      "pin": "36",
+      "pin_name": "",
+      "net": "DGND"
+    },
+    {
+      "ref": "U5",
+      "pin": "37",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "U5",
+      "pin": "38",
+      "pin_name": "",
+      "net": "SWDIO"
+    },
+    {
+      "ref": "U5",
+      "pin": "39",
+      "pin_name": "",
+      "net": "SWCLK"
+    },
+    {
+      "ref": "U5",
+      "pin": "4",
+      "pin_name": "",
+      "net": "N/C"
+    },
+    {
+      "ref": "U5",
+      "pin": "40",
+      "pin_name": "",
+      "net": "SPI_NSS"
+    },
+    {
+      "ref": "U5",
+      "pin": "41",
+      "pin_name": "",
+      "net": "SPI_SCK"
+    },
+    {
+      "ref": "U5",
+      "pin": "42",
+      "pin_name": "",
+      "net": "SPI_MISO"
+    },
+    {
+      "ref": "U5",
+      "pin": "43",
+      "pin_name": "",
+      "net": "SPI_MOSI"
+    },
+    {
+      "ref": "U5",
+      "pin": "44",
+      "pin_name": "",
+      "net": "N/C"
+    },
+    {
+      "ref": "U5",
+      "pin": "45",
+      "pin_name": "",
+      "net": "I2C_SDA"
+    },
+    {
+      "ref": "U5",
+      "pin": "46",
+      "pin_name": "",
+      "net": "I2C_SCL"
+    },
+    {
+      "ref": "U5",
+      "pin": "47",
+      "pin_name": "",
+      "net": "GPIO_SPARE8"
+    },
+    {
+      "ref": "U5",
+      "pin": "48",
+      "pin_name": "",
+      "net": "DGND"
+    },
+    {
+      "ref": "U5",
+      "pin": "5",
+      "pin_name": "",
+      "net": "N/C"
+    },
+    {
+      "ref": "U5",
+      "pin": "6",
+      "pin_name": "",
+      "net": "N/C"
+    },
+    {
+      "ref": "U5",
+      "pin": "7",
+      "pin_name": "",
+      "net": "N/C"
+    },
+    {
+      "ref": "U5",
+      "pin": "8",
+      "pin_name": "",
+      "net": "NRST"
+    },
+    {
+      "ref": "U5",
+      "pin": "9",
+      "pin_name": "",
+      "net": "ADC_ISIG"
+    },
+    {
+      "ref": "U6",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "U6",
+      "pin": "2",
+      "pin_name": "",
+      "net": "DGND"
+    },
+    {
+      "ref": "U6",
+      "pin": "3",
+      "pin_name": "",
+      "net": "V3V3"
+    },
+    {
+      "ref": "U6",
+      "pin": "4",
+      "pin_name": "",
+      "net": "V5_IN"
+    },
+    {
+      "ref": "U7",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "U7",
+      "pin": "3",
+      "pin_name": "",
+      "net": "OPA_EN_LED_A"
+    },
+    {
+      "ref": "U7",
+      "pin": "4",
+      "pin_name": "",
+      "net": "DGND"
+    },
+    {
+      "ref": "U7",
+      "pin": "6",
+      "pin_name": "",
+      "net": "OPA_ES"
+    },
+    {
+      "ref": "U8",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "U8",
+      "pin": "2",
+      "pin_name": "",
+      "net": "DAC_BUF"
+    },
+    {
+      "ref": "U8",
+      "pin": "3",
+      "pin_name": "",
+      "net": "DAC_BUF_N"
+    },
+    {
+      "ref": "U8",
+      "pin": "4",
+      "pin_name": "",
+      "net": "DAC_R_FILT"
+    },
+    {
+      "ref": "U8",
+      "pin": "5",
+      "pin_name": "",
+      "net": "ANA_N"
+    },
+    {
+      "ref": "U8",
+      "pin": "6",
+      "pin_name": "",
+      "net": "DAC_BUF"
+    },
+    {
+      "ref": "U8",
+      "pin": "7",
+      "pin_name": "",
+      "net": "VK_AMP_N"
+    },
+    {
+      "ref": "U8",
+      "pin": "8",
+      "pin_name": "",
+      "net": "VK_MCU"
+    },
+    {
+      "ref": "U9",
+      "pin": "1",
+      "pin_name": "",
+      "net": ""
+    },
+    {
+      "ref": "U9",
+      "pin": "2",
+      "pin_name": "",
+      "net": "ZSERVO_OUT"
+    },
+    {
+      "ref": "U9",
+      "pin": "3",
+      "pin_name": "",
+      "net": "SERVO_INT_N"
+    },
+    {
+      "ref": "U9",
+      "pin": "4",
+      "pin_name": "",
+      "net": "AGND"
+    },
+    {
+      "ref": "U9",
+      "pin": "5",
+      "pin_name": "",
+      "net": "ANA_N"
+    },
+    {
+      "ref": "U9",
+      "pin": "6",
+      "pin_name": "",
+      "net": "AGND"
+    },
+    {
+      "ref": "U9",
+      "pin": "7",
+      "pin_name": "",
+      "net": "$1N56724"
+    },
+    {
+      "ref": "U9",
+      "pin": "8",
+      "pin_name": "",
+      "net": "$1N56724"
+    }
+  ],
+  "inputs": {
+    "source_files": [
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Bottom Layer.gbl",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Bottom Paste Mask Layer.gbp",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Bottom Silkscreen Layer.gbo",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Bottom Solder Mask Layer.gbs",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Multi-Layer.gm1",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-NPTH.drl",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-PTH.drl",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Top Layer.gtl",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Top Paste Mask Layer.gtp",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Top Silkscreen Layer.gto",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Top Solder Mask Layer.gts",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-job.gbrjob"
+    ],
+    "source_hashes": {
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Bottom Layer.gbl": "e85ee0c279be4d4041c9a06bf3ec86d23aa59ffc8225afbf37e06f427f358ab0",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Bottom Paste Mask Layer.gbp": "6d809e57a596ed7fb1ef50e68fe8db660aad658572d99bfde7e842013387b099",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Bottom Silkscreen Layer.gbo": "10d0ec77c75b55f3cdb3a3842ee9adb3e0f9b27674fd335b6321087a9ee808ef",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Bottom Solder Mask Layer.gbs": "3531a8fb7567423f992f7bd7ad2f9825da477292b6e470b624ae65922f1b9716",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Multi-Layer.gm1": "86c5d9fca1b675b275687b9d2138e1070cab6075227c31b688af86e125f5765c",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-NPTH.drl": "2216daae7878b9a37575af946456de9d5c8723a23ec25f8de4b588ab363e744b",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-PTH.drl": "f84c80455ecc63e36cef9faae99f3c9e7da7dd80e26a8de70948936150e2dfb3",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Top Layer.gtl": "157330d872777b517944a2bc5232f19599720000fa96f681e79f83426664b12e",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Top Paste Mask Layer.gtp": "b097c78d66aa9690d8bc60eb0be7a418cfcc78dbf85cefb7c4f07f9e72318e61",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Top Silkscreen Layer.gto": "acb3809ef34eb6e5ab6c07987e748b7db838356fcebbc59307ff20e3503ea79b",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-Top Solder Mask Layer.gts": "bb81d08a458a7b16d77659f7a29ddc745bc166a3591a596b3d370abb565c9d4b",
+      "\u7a33\u5b9a\u6027\u539f\u56e0\u5206\u6790CODEX/KICAD\u90e8\u5206/\u6b63\u5f26\u7535\u963bV8_KiCad10.0.4_\u7a33\u5b9a\u6027\u4fee\u6b63\u7248_2026-09-04/release/V8_2026-09-04/gerber/project-job.gbrjob": "41f77467194e3c94553142fbe6e2416a1784267538d04da2b6e601f9d0aa52fc"
+    },
+    "run_id": "20260904T115318Z-a54bf3",
+    "config_hash": null,
+    "upstream_artifacts": {}
+  },
+  "compat": {
+    "minimum_consumer_version": "1.4.0",
+    "deprecated_fields": [],
+    "experimental_fields": []
+  },
+  "audience_summary": {
+    "designer": {
+      "total_findings": 1,
+      "by_severity": {
+        "error": 0,
+        "warning": 1,
+        "info": 0
+      },
+      "by_category": {
+        "gerber_completeness": 1
+      },
+      "top_issues": [
+        {
+          "detector": "analyze_gerbers",
+          "rule_id": "GR-004",
+          "category": "gerber_completeness",
+          "severity": "warning",
+          "confidence": "heuristic",
+          "evidence_source": "topology",
+          "summary": "B paste layer: 70 flashes vs 292 copper (24%)",
+          "description": "B-side paste layer has significantly fewer flashes (70) than copper layer (292). This may indicate missing solder paste apertures.",
+          "components": [],
+          "nets": [],
+          "pins": [],
+          "recommendation": "Check solder paste aperture generation \u2014 missing apertures cause assembly defects.",
+          "report_context": {
+            "section": "Gerber Completeness",
+            "impact": "Assembly solder joint quality",
+            "standard_ref": ""
+          },
+          "stages": [
+            "pre_fab"
+          ],
+          "finding_id": "gerber:GR-004:43c9dd99a708"
+        }
+      ]
+    },
+    "reviewer": {
+      "total_findings": 1,
+      "by_category": {
+        "gerber_completeness": 1
+      },
+      "top_issues": [
+        {
+          "rule_id": "GR-004",
+          "severity": "warning",
+          "summary": "B paste layer: 70 flashes vs 292 copper (24%)",
+          "recommendation": "Check solder paste aperture generation \u2014 missing apertures cause assembly defects.",
+          "category": "gerber_completeness"
+        }
+      ]
+    },
+    "manager": {
+      "risk_level": "low",
+      "blocker_count": 0,
+      "warning_count": 1,
+      "stage_readiness": {
+        "schematic": "pass",
+        "layout": "pass",
+        "pre_fab": "needs_review",
+        "bring_up": "pass"
+      },
+      "one_liner": "1 warning across 1 category."
+    }
+  },
+  "capability_mode_ref": {
+    "source": "analysis/capability_mode.json",
+    "run_id": "20260904T115318Z-a54bf3"
+  }
+}

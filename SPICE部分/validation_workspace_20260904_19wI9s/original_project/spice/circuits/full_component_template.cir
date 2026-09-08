@@ -1,0 +1,181 @@
+.title Full component connected active acoustic impedance membrane - v3 metrics/softstart/injection
+
+.include __MODEL_INCLUDE__
+
+.options method=gear maxord=2
+.options reltol=3e-5 abstol=1e-10 vabstol=1e-7 chgtol=1e-14
+.options gmin=1e-12 rshunt=1e12
+.temp 27
+
+* ============================================================
+* Speaker / electro-acoustic parameters
+* ============================================================
+.param Re=__Re__
+.param Le=__Le__
+.param Bl=__Bl__
+.param Mms=__Mms__
+.param fs=__fs__
+.param Qms=__Qms__
+.param Sd=__Sd__
+.param XMAX=__XMAX__
+
+.param TWOPI=6.283185307179586
+.param W0={TWOPI*fs}
+.param Cms={1/(Mms*W0*W0)}
+.param Rms={W0*Mms/Qms}
+.param Kms={1/Cms}
+
+* ============================================================
+* Target resistance modulation and soft-start
+* Rt_des(t): desired total resistance profile.
+* Rx_des(t): desired external synthetic impedance, Rt_des-Re.
+* soft(t):   command/acoustic ramp to avoid t=0 artifacts.
+* VK path:   actual external command is inferred from filtered VK.
+* ============================================================
+.param R0=__R0__
+.param A1=__A1__
+.param fm1=__fm1__
+.param ph1=__ph1__
+.param A2=__A2__
+.param fm2=__fm2__
+.param ph2=__ph2__
+.param RMIN=__RMIN__
+.param RMAX=__RMAX__
+.param TSTART=__TSTART__
+.param TRAMP=__TRAMP__
+.func Rraw(t)   { R0 + A1*sin(TWOPI*fm1*t + ph1) + A2*sin(TWOPI*fm2*t + ph2) }
+.func Rt_des(t) { min(max(Rraw(t), RMIN), RMAX) }
+.func Rx_des(t) { Rt_des(t)-Re }
+.func soft(t)   { min(max((t-TSTART)/TRAMP,0),1) }
+
+* ============================================================
+* Acoustic and electrical excitation
+* ============================================================
+.param Pamp=__Pamp__
+.param fa=__fa__
+.param ItestAmp=__ItestAmp__
+.param ItestFreq=__ItestFreq__
+
+* ============================================================
+* Supplies
+* ============================================================
+VPLUS18 P18 0 18
+VMINUS18 N18 0 -18
+VPLUS15 P15 0 15
+VMINUS15 N15 0 -15
+VDD33   V3V3 0 3.3
+
+C_BULK_P18 P18 0 470u IC=0
+C_BULK_N18 N18 0 470u IC=0
+C_DEC_P18 P18 0 100n
+C_DEC_N18 N18 0 100n
+C_DEC_P15 P15 0 10u
+C_DEC_N15 N15 0 10u
+C_DEC_33  V3V3 0 10u
+
+* ============================================================
+* MCU/DAC command and analog scaling
+* Raw DAC emits desired profile. The analog command is soft-ramped:
+* VK_RAW = soft(t) * Rx_des/10. Actual RXNODE = 10*VK after RC.
+* ============================================================
+XU_DAC DAC_R V3V3 0 DAC_STM32G431_SURR PARAMS: R0={R0} A1={A1} FM1={fm1} PH1={ph1} A2={A2} FM2={fm2} PH2={ph2} RMIN={RMIN} RMAX={RMAX} BW=20k
+BVK_RAW VK_RAW 0 V = {soft(time)*(3.3*V(DAC_R)-0.62)}
+RVK VK_RAW VK 100
+CVK VK 0 4.7n
+
+* ============================================================
+* Current sense: DRV -- RSHUNT -- SPK
+* Port current into synthetic impedance ip = (V(SPK)-V(DRV))/RSH
+* ============================================================
+.param RSH=__RSH__
+.param IOUTLIM=__IOUT__
+RSHUNT DRV SPK {RSH}
+
+XU_INA SPK DRV VSENSE P15 N15 INA149_NG_SURR PARAMS: BW=500k CMRRDB=100
+
+R_U4A_G NFB_A 0 1k
+R_U4A_F ISIG NFB_A 49k
+C_U4A_F ISIG NFB_A 100p
+XU_OPA_ISENSE VSENSE NFB_A ISIG P15 N15 OPA1656_NG_SURR
+R_ISIG_LOAD ISIG 0 100k
+
+* AD633: MUL = ISIG*VK/10
+XU_MULT ISIG 0 VK 0 N15 0 MUL P15 AD633_NG_SURR
+R_MUL_LOAD MUL 0 100k
+
+* OPA1656 gain 20: VCMD = 20*MUL = Rx_cmd*ip
+R_U4B_G NFB_B 0 1k
+R_U4B_F VCMD NFB_B 19k
+C_U4B_F VCMD NFB_B 220p
+XU_OPA_POST MUL NFB_B VCMD P15 N15 OPA1656_NG_SURR
+R_VCMD_LOAD VCMD 0 100k
+
+* ============================================================
+* OPA548 power follower, sense after shunt: V(SPK) follows VCMD
+* ============================================================
+RCL ILIM 0 __RCL__
+XU_PWR VCMD SPK DRV P18 N18 ILIM OPA548_NG_SURR PARAMS: IOUT=__IOUT__ ROUT=0.08
+
+D_DRV_POS DRV P18 D5A_SCH
+D_DRV_NEG N18 DRV D5A_SCH
+D_SPK_POS SPK P18 D5A_SCH
+D_SPK_NEG N18 SPK D5A_SCH
+RSNUB DRV NSNUB __RSNUB__
+CSNUB NSNUB 0 __CSNUB__
+
+* ============================================================
+* Electrodynamic speaker model with acoustic pressure input
+* ============================================================
+LVC SPK NL {Le}
+RVC NL NR {Re}
+VCOIL NR NEMF 0
+BBEMF NEMF 0 V = {Bl*V(VEL)}
+
+CMASS VEL 0 {Mms} IC=0
+RDAMP VEL 0 {1/Rms}
+LCOMP VEL 0 {Cms} IC=0
+RMECHLEAK VEL 0 1e9
+
+* External acoustic pressure force, soft-ramped.
+BPRESS 0 VEL I = {soft(time)*Sd*Pamp*sin(TWOPI*fa*time)}
+
+* Electromagnetic reaction force.
+BMOTOR VEL 0 I = {-Bl*I(VCOIL)}
+
+* Displacement integrator: dx/dt = velocity.
+GVEL XNODE 0 VALUE = {V(VEL)}
+CX XNODE 0 1 IC=0
+RXLEAK XNODE 0 1e12
+
+* Electrical injection current for impedance validation.
+* Positive current flows from ground into SPK.
+B_EINJ 0 SPK I = {soft(time)*ItestAmp*sin(TWOPI*ItestFreq*time)}
+
+* ============================================================
+* Probes
+* ============================================================
+B_RDES    RDES    0 V = {Rt_des(time)}
+B_RXDES   RXDES   0 V = {Rx_des(time)}
+B_RX      RXNODE  0 V = {10*V(VK)}
+B_RTARGET RTARGET 0 V = {Re + V(RXNODE)}
+B_REMM    REMNODE 0 V = {Bl*Bl/max(V(RTARGET),1e-9)}
+B_QEFF    QNODE   0 V = {W0*Mms/(Rms + Bl*Bl/max(V(RTARGET),1e-9))}
+B_IPORT   IPORT   0 V = {(V(SPK)-V(DRV))/RSH}
+B_REFF    REFF    0 V = {Re + V(SPK)/(V(IPORT)+1e-15)}
+B_ERR     ERR     0 V = {V(REFF)-V(RTARGET)}
+B_SYNERR  SYNERR  0 V = {V(SPK) - V(RXNODE)*V(IPORT)}
+B_CMDERR  CMDERR  0 V = {V(VCMD) - V(RXNODE)*V(IPORT)}
+B_OPAI    OPAI    0 V = {(V(DRV)-V(SPK))/RSH}
+B_FOLLOWERR FOLLOWERR 0 V = {V(VCMD)-V(SPK)}
+B_ILIMRATIO ILIMRATIO 0 V = {abs((V(DRV)-V(SPK))/RSH)/IOUTLIM}
+B_VSAT    VSAT    0 V = {max(abs(V(DRV))-(18-2),0)}
+B_XMAXABS XMAXABS 0 V = {abs(V(XNODE))/XMAX}
+
+.control
+set wr_singlescale
+set wr_vecnames
+tran __tstep__ __tstop__
+wrdata __DATAFILE__ time v(rdes) v(rxdes) v(rtarget) v(rxnode) v(reff) v(remnode) v(qnode) v(vel) v(xnode) v(spk) v(drv) v(vcmd) v(vsense) v(isig) v(vk) v(mul) v(iport) v(err) v(synerr) v(cmderr) v(followerr) v(ilimratio) v(vsat) v(xmaxabs)
+.endc
+
+.end

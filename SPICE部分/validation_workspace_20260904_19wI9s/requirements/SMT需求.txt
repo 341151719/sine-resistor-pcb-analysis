@@ -1,0 +1,1432 @@
+
+# 先给结论
+
+要从现在这份**原理/节点/SPICE 方案**走到“下单后直接拿到 PCB + SMT 组装板”，还缺的不是一个单一文件，而是一个完整的 **PCBA 生产包**：
+
+1. **引脚级原理图**：现在是系统框图 + 行为 SPICE，还不是可布线的 KiCad 原理图。  
+2. **确定封装与可采购 BOM**：每个器件必须有 MPN、封装、替代料、供应渠道、是否让厂家贴装。  
+3. **PCB 布局约束**：负阻抗 + 功率运放 + 电流检测对布局非常敏感，不能只靠自动布线。  
+4. **制造输出文件**：Gerber、钻孔、BOM、CPL/Pick-and-Place、装配说明、DNP 清单等。  
+5. **固件与测试文件**：STM32 的程序、上电安全逻辑、工厂/实验室测试流程。  
+6. **热设计和机械件**：OPA548 / 功率器件、散热铜皮、热过孔、可能的散热片、喇叭端子、电源端子。  
+7. **下单前人工检查**：BOM/CPL 匹配、器件方向、Pin 1、热焊盘、DNP、厂家 3D 预览。
+
+JLCPCB 这类 PCBA 厂通常要求上传 **Gerber、BOM、CPL**；其中 CPL/PNP 文件要包含元件坐标、旋转角和贴装面，BOM 要包含位号、数量、制造商料号、封装等信息。KiCad 本身可以导出钻孔文件、Gerber/ODB++/IPC-2581、元件位置文件和 BOM；KiCad 的 position/placement 文件正是给贴片机编程用的。([jlcpcb.com](https://jlcpcb.com/blog/printed-circuit-board-assembly))
+
+---
+
+# 1. 你现在距离“可直接 SMT 到手”还差什么？
+
+下面按重要性排序。
+
+## 1.1 还缺一份真正的 KiCad 原理图
+
+目前的文档中已经有：
+
+- 系统数学模型；
+- 行为级 SPICE；
+- 推荐芯片；
+- 节点定义；
+- 功能框图。
+
+但还没有：
+
+- 每个 IC 的真实引脚连接；
+- 电源去耦电容；
+- OPA548 的限流脚、使能脚、状态脚连接；
+- AD633 的 X/Y/Z/W 引脚连接；
+- INA149/OPA1656 的供电和补偿；
+- STM32 的启动脚、SWD、时钟、复位、DAC、ADC、GPIO；
+- DAC 到 \(V_K\) 的缩放/偏置电路；
+- 保护电路；
+- 测试点；
+- DNP 选项；
+- 连接器；
+- 电源入口；
+- 机械安装孔。
+
+**也就是说，现在可以开始画 KiCad，但还不能直接交给 PCBA 厂。**
+
+---
+
+## 1.2 还缺“可贴装 BOM”
+
+原设计里列的器件是“设计推荐”，但不是完整的生产 BOM。生产 BOM 至少要包含：
+
+| 字段 | 说明 |
+|---|---|
+| RefDes | 位号，例如 U1、R23、C18 |
+| Quantity | 数量 |
+| Value | 阻值、电容值、IC 名称 |
+| Manufacturer | 制造商 |
+| MPN | 制造商料号 |
+| Package | SOIC-8、LQFP-48、TO-263-7 等 |
+| Footprint | KiCad 封装名 |
+| Supplier P/N | JLC/LCSC C 号、Digi-Key 号、Mouser 号等 |
+| Assembly | SMT / THT / 手焊 / DNP |
+| Alternatives | 替代料 |
+| Notes | 方向、耐压、功率、容差、温度等级等 |
+
+JLCPCB 文档强调 BOM 信息必须和实际器件规格一致，上传 BOM 后还需要逐项核对匹配结果；如果 BOM/CPL 的位号不一致、库存不足、封装不一致，系统会警告或要求手动确认。([jlcpcb.com](https://jlcpcb.com/help/article/advice-for-bom-and-cpl-files-preparation))
+
+---
+
+## 1.3 还缺 CPL / Pick-and-Place 数据
+
+SMT 厂需要知道每个元件：
+
+- 在板上的 X/Y 坐标；
+- 旋转角；
+- 在顶层还是底层；
+- 元件中心点；
+- 对应的位号。
+
+这就是 CPL，也叫 Pick-and-Place、Centroid、Position file。JLCPCB 需要 CPL；PCBWay 也要求 Gerber、BOM、丝印/装配参考和 centroid 文件，并说明 centroid 文件中应包含 X、Y 坐标、角度和位号。([jlcpcb.com](https://jlcpcb.com/blog/printed-circuit-board-assembly))
+
+---
+
+## 1.4 还缺 PCB 约束
+
+这个项目不是普通 MCU 小板。它有以下高风险节点：
+
+| 节点 | 风险 |
+|---|---|
+| `DRV` | OPA548 大电流输出，可能振荡，不能长线乱绕 |
+| `SPK` | 合成阻抗端口，直接影响闭环稳定性 |
+| `RSHUNT` 两端 | 电流检测 Kelvin 点，不能让功率电流经过检测线 |
+| `ISIG` | 电流检测放大信号，易受 OPA548 输出串扰 |
+| `VK` | 电阻命令，直接决定负阻抗大小，需要低噪声、无毛刺 |
+| `VCMD` | 功率运放目标电压，环路核心信号 |
+| `±18V` | 大电流电源，必须就近储能 |
+| `±15V` | 小信号模拟电源，需要干净 |
+| `3V3` | MCU 数字电源，不能把时钟噪声灌入 AD633/OPA1656 |
+
+所以 PCB 约束要提前写清楚，不能等自动布线后再修。
+
+---
+
+## 1.5 还缺真实器件 SPICE 或稳定性验证
+
+你现在有行为级 SPICE，它能验证数学关系：
+
+\[
+V_\mathrm{SPK} \approx R_x(t)i_p
+\]
+
+但 PCBA 前还需要做：
+
+1. OPA548 官方宏模型；
+2. 电流检测放大器带宽；
+3. AD633 带宽和输出限制；
+4. OPA1656 增益 50 和增益 20 下的相位裕度；
+5. `DRV` 到 `SPK` 之间的 RSHUNT 寄生电感；
+6. 喇叭线缆电感；
+7. 供电去耦 ESR/ESL；
+8. 最小目标阻抗 \(R_\mathrm{target}=1\,\Omega\) 时的稳定性；
+9. 过载、削顶、上电瞬态；
+10. 负阻抗状态下的自激风险。
+
+特别是当外接电路合成 \(-6.2\,\Omega\) 时，它是在主动给系统供能，**这不是普通音频功放负载**。
+
+---
+
+## 1.6 还缺固件
+
+STM32 不是“放上去就能工作”。至少需要：
+
+- DAC 正弦表；
+- 单正弦 / 双正弦模式；
+- \(R_\mathrm{target}\) 限幅；
+- 上电默认安全值；
+- OPA548 使能延时；
+- 过流关断；
+- 过压关断；
+- 看门狗；
+- UART/USB 参数设置；
+- 校准 \(R_e\)、RSHUNT 增益、DAC offset；
+- 故障锁存；
+- 调试命令。
+
+特别建议固件上电默认：
+
+\[
+R_\mathrm{target,min}=10\,\Omega
+\]
+
+确认稳定后再解锁到：
+
+\[
+5\,\Omega \rightarrow 3\,\Omega \rightarrow 1\,\Omega
+\]
+
+---
+
+## 1.7 还缺测试夹具和测试流程
+
+如果你想“到手就是能用”，工厂至少要能做：
+
+1. 目检 / AOI；
+2. 电源短路测试；
+3. 上电电流测试；
+4. 3.3 V / ±15 V / ±18 V 检查；
+5. MCU 烧录；
+6. OPA548 enable 测试；
+7. DAC 输出测试；
+8. `VK` 缩放测试；
+9. `ISIG` 电流检测测试；
+10. 合成阻抗固定值测试；
+11. 热检查；
+12. 故障保护测试。
+
+如果只是普通低成本 PCBA，下单后通常只能保证“按文件焊上去了”，不能保证你的负阻抗电路稳定可用。
+
+---
+
+# 2. 推荐的实际落地路线
+
+我建议你不要直接跳到“最终产品板”，而是做 **V0.1 工程验证 PCBA**。
+
+---
+
+## 路线 A：KiCad + Quilter + JLCPCB，推荐作为主路线
+
+### 流程
+
+```text
+需求冻结
+  ↓
+AI 辅助生成 KiCad 原理图草案
+  ↓
+人工/AI 反复 ERC 检查
+  ↓
+生成 KiCad PCB 初始板框、封装、网表
+  ↓
+预放置关键器件
+  ↓
+上传 Quilter 生成布局候选
+  ↓
+下载 Quilter 结果
+  ↓
+人工检查/修改关键模拟与功率区
+  ↓
+KiCad DRC
+  ↓
+导出 Gerber + Drill + BOM + CPL
+  ↓
+上传 JLCPCB
+  ↓
+检查器件匹配和 3D 贴装方向
+  ↓
+下单 PCBA
+```
+
+Quilter 官方文档说明，它需要你先提供**完整原理图**，并且需要一个包含板框、封装和网表的 linked board file；它主要处理 layout，而不是替你设计原理图。Quilter 也建议预放置对位置敏感的元件，预放置或预布线的内容会被视为 locked；上传时应提供原生工程文件，而不是压缩包或嵌套目录。([docs.quilter.ai](https://docs.quilter.ai/get-started/quickstart))
+
+### 适合你的原因
+
+优点：
+
+- KiCad 文件可控；
+- 方便下一步上传 Quilter；
+- 方便导出 JLCPCB/PCBWay 所需文件；
+- 方便把 SPICE、BOM、固件和测试脚本放在同一仓库；
+- AI 可以大量参与生成文件和检查；
+- 后续可以开源或版本管理。
+
+风险：
+
+- Quilter 不知道你的负阻抗环路物理含义，所以关键功率/模拟区域仍要人工锁定；
+- 自动布局不能替代稳定性验证；
+- JLCPCB 对特殊料、功率器件、手装机械件可能需要额外处理。
+
+### 推荐程度
+
+**最高。**  
+这是最适合“AI 辅助 + Quilter + 低成本 PCBA”的路线。
+
+---
+
+## 路线 B：EasyEDA Pro + JLCPCB，最快但可控性较低
+
+如果你的首要目标是“尽快拿到一块 PCBA”，可以考虑 EasyEDA Pro + JLCPCB 生态。JLCPCB 文档中也提到，如果设计文件来自 EasyEDA，系统可以自动生成 JLCPCB 装配支持文件。([jlcpcb.com](https://jlcpcb.com/blog/printed-circuit-board-assembly))
+
+### 优点
+
+- 和 JLCPCB/LCSC 集成更紧；
+- BOM/CPL 更容易被 JLC 识别；
+- 适合低成本快速打样；
+- 适合大量使用 JLC 库内基础料。
+
+### 缺点
+
+- 对复杂模拟/功率布局的可控性不如 KiCad + 版本管理舒服；
+- 你后续说要上传 Quilter 的 KiCad 文件，EasyEDA 路线会偏离这个目标；
+- 特殊电路的审核还是要人工做。
+
+### 推荐程度
+
+如果你只追求速度，可以用；  
+但如果目标是后续可控迭代、上传 Quilter、管理版本，还是建议 KiCad。
+
+---
+
+## 路线 C：KiCad + PCBWay / Turnkey EMS，适合特殊料和人工支持
+
+PCBWay 对 PCBA 也要求 Gerber、BOM、丝印/装配参考和 centroid 文件；相对低成本全自动平台，它更适合你把某些料交给厂家人工采购、或要求额外装配说明。([pcbway.com](https://www.pcbway.com/helpcenter/pcb_assembly_ordering/What_files_are_requested_for_assembly_production_.html))
+
+### 优点
+
+- 对特殊元件、THT、机械件、散热片可能更愿意人工沟通；
+- 对“我有一批 Digi-Key/Mouser 料，想让你们装”的情况更方便；
+- 适合非标准工艺。
+
+### 缺点
+
+- 价格可能更高；
+- 交期可能更长；
+- 沟通成本更高。
+
+### 推荐程度
+
+如果你坚持要让厂家处理 OPA548、散热片、端子、可能的手工工序，PCBWay/其他 turnkey EMS 比纯低成本 SMT 平台更稳。
+
+---
+
+## 路线 D：两板方案，最稳但不是最低成本
+
+把系统拆成：
+
+```text
+小信号控制板：
+  STM32
+  DAC
+  AD633
+  INA149
+  OPA1656
+  保护逻辑
+
+功率板：
+  OPA548
+  RSHUNT
+  大电容
+  保护二极管
+  snubber
+  喇叭端子
+  散热结构
+```
+
+### 优点
+
+- 小信号板可以便宜 SMT；
+- 功率板可以单独调散热和稳定性；
+- 以后可把功率级换成 Class-D 或 MOSFET H 桥；
+- 出问题不至于整板报废。
+
+### 缺点
+
+- 连接器和线束更多；
+- 初版复杂度略高；
+- 不如单板“漂亮”。
+
+### 推荐程度
+
+如果你要认真做多轮实验，我其实更推荐这个。  
+如果你只是想先验证一个通道，单板 V0.1 也可以。
+
+---
+
+# 3. 哪些步骤可以靠 AI 实现？
+
+下面给一个比较实际的表。
+
+| 阶段 | AI 可完成度 | 可用工具 | 说明 |
+|---|---:|---|---|
+| 需求整理 | 很高 | ChatGPT / 文档工具 | 把需求写成 PRD、接口表、限制条件、验收标准 |
+| 数学建模 | 很高 | ChatGPT + Python + ngspice | 推导电声模型、生成 SPICE、扫参数 |
+| 原理图草案 | 中高 | ChatGPT + KiCad S-expression / SKiDL / Python | 可以生成初始原理图，但必须人工 ERC 和 datasheet 对照 |
+| 元器件筛选 | 中等 | ChatGPT + JLC/LCSC/Digi-Key/Mouser | AI 可列候选和排除逻辑，但库存/价格必须下单前实时核对 |
+| BOM 生成 | 高 | KiCad BOM exporter / Python / kicad-jlcpcb-tools | 可自动生成 CSV，人工确认料号和替代料 |
+| PCB 约束 | 高 | ChatGPT + KiCad Board Setup | AI 可生成 net class、布局规则、关键器件锁定说明 |
+| PCB 初始布局 | 中等 | Quilter / KiCad / Freerouting | AI/自动工具可给候选，但功率与模拟关键区要人工锁定和复核 |
+| PCB 自动导出 | 高 | KiCad CLI / kicad-jlcpcb-tools | 可自动导出 Gerber、Drill、BOM、CPL |
+| DRC/ERC 日志分析 | 高 | KiCad + ChatGPT | 把错误日志给 AI，可帮助定位问题 |
+| 固件骨架 | 很高 | ChatGPT + STM32CubeMX/CubeIDE | 可生成 DAC 正弦、UART 命令、保护逻辑 |
+| 生产下单 | 低到中 | JLC/PCBWay 网页、API | 可以辅助填表，但最终器件匹配、方向、价格、地址必须人工确认 |
+| 贴装方向检查 | 低 | 厂家 3D 预览 + 人工 | Pin 1、二极管、电解电容、IC 方向必须人工看 |
+| 热稳定性确认 | 低 | 实测 + 热像仪 + SPICE | AI 可计算，但不能替代实测 |
+| 声学效果验证 | 低 | 麦克风、阻抗测试、激振测试 | AI 可设计实验，不能替代测试 |
+
+KiCad 社区工具方面，`kicad-jlcpcb-tools` 可以从 KiCad 生成 JLCPCB 所需的 Gerber、Excellon 钻孔、BOM 和 CPL，并且可以查询 JLCPCB parts database、把 LCSC 料号分配到 footprint；它还可以生成可上传的生产文件目录。([github.com](https://github.com/Bouni/kicad-jlcpcb-tools))
+
+---
+
+# 4. 针对你这个电路，PCBA 前必须做的设计决策
+
+## 4.1 是否真的要“全 SMT”？
+
+这件事要先定。
+
+你的原方案里 U1 推荐 OPA548T / OPA548F。  
+如果你要 SMT，应该选 **OPA548F/500 或 OPA548FKTWT 这类 DDPAK / TO-263 表贴封装**，而不是 TO-220 的 OPA548T。TI 官方页面显示 OPA548F/500 是 active 器件，封装为 TO-263 KTW 7 引脚，OPA548 支持 ±4 V 到 ±30 V 双电源、3 A 连续电流、5 A 峰值电流、可调限流、热关断和 enable/status；同一页面也说明 OPA548 有 7-lead DDPAK surface-mount 版本。([ti.com](https://www.ti.com/product/OPA548/part-details/OPA548F/500?source=ooq))
+
+但注意：TI 官方页面在我查询时显示 OPA548F/500 和 OPA548FKTWT 在 TI 直购库存为 out of stock；Digi-Key 页面则显示 OPA548F/500 有库存。因此生产 BOM 不能只写“OPA548”，必须在下单前确认供应路径：JLC 库内、LCSC、Digi-Key/Mouser 代采、或自备料。([ti.com](https://www.ti.com/product/OPA548/part-details/OPA548F/500?source=ooq))
+
+---
+
+## 4.2 是否允许厂家不贴部分器件，回来手工装？
+
+我建议 V0.1 采用：
+
+```text
+SMT 厂贴：
+  STM32
+  AD633
+  INA149
+  OPA1656
+  小电阻电容
+  电源 LDO / buck
+  小信号保护
+  RSHUNT 如果是 SMT 型号
+  OPA548F 如果选 DDPAK
+
+回来手工装：
+  大功率接线端子
+  散热片
+  可能的保险丝
+  喇叭连接线
+  调试跳线
+```
+
+如果你要求厂家连散热片、端子、螺丝都装好，那就不只是 SMT，而是 **SMT + THT + 机械装配 + 功能测试**，成本和沟通复杂度会上升。
+
+---
+
+## 4.3 OPA548 热设计要提前决定
+
+你的负阻抗最低到：
+
+\[
+R_x=-6.2\,\Omega
+\]
+
+当电流为 \(1\,\mathrm{A}\) 时，外接合成阻抗对应功率：
+
+\[
+P_x=R_x i^2=-6.2\,\mathrm{W}
+\]
+
+这表示有源电路可能在某些瞬间向电声系统供能。实际 OPA548 上的热耗还与电源电压、输出电压、电流方向、喇叭反电动势有关。
+
+所以 PCB 必须预留：
+
+- OPA548 大铜皮；
+- TO-263 tab 散热焊盘；
+- 底层大面积铜皮；
+- 多个热过孔；
+- 散热片安装空间；
+- 温度测试点；
+- 限流电阻跳线；
+- 过温关断逻辑。
+
+如果只是两层板、小铜皮、没有散热设计，PCBA 到手后很可能只能低功率测试。
+
+---
+
+## 4.4 你要决定 V0.1 是“MCU 正式控制”还是“外部函数发生器控制”
+
+有两种做法。
+
+### 方案 1：V0.1 就上 STM32
+
+优点：
+
+- 到手即可输出单正弦 / 双正弦；
+- 后续产品化方向正确；
+- 可以做保护、校准、通信。
+
+缺点：
+
+- 要写固件；
+- 要准备烧录口；
+- 要调 DAC；
+- 上电安全逻辑要可靠。
+
+STM32G431CBT6 在 JLCPCB 库中有对应 JLCPCB Part # C529355，封装为 LQFP-48，并标为 SMT Assembly、Economic and Standard PCBA 可用；这说明它适合放进 JLCPCB PCBA 路线，但仍需最终下单时核对库存和匹配结果。([jlcpcb.com](https://jlcpcb.com/partdetail/STM32G431CBT6/C529355))
+
+### 方案 2：V0.1 暂时不放 MCU，用外部 `VK_EXT` 输入
+
+优点：
+
+- 第一版硬件更简单；
+- 可以用函数发生器直接给 \(V_K\)；
+- 更容易定位模拟环路问题；
+- 省掉固件变量。
+
+缺点：
+
+- 不是最终形态；
+- 不能独立运行；
+- 后续还要加 MCU。
+
+### 我的建议
+
+做一个兼容设计：
+
+```text
+VK 来源可选：
+  1. STM32 DAC
+  2. 外部 BNC / header 输入
+  3. 固定电压电位器
+```
+
+用跳线选择：
+
+```text
+J_VK_SEL:
+  1-2: MCU_DAC → VK
+  2-3: EXT_VK → VK
+```
+
+这样第一版调试会安全很多。
+
+---
+
+# 5. 当前 BOM 的 SMT 化建议
+
+下面是针对你前一版 BOM 的修改建议。
+
+| 功能 | 原建议 | SMT/生产化建议 | 说明 |
+|---|---|---|---|
+| 功率运放 | OPA548T / OPA548F | **OPA548F/500 或 OPA548FKTWT** | SMT 选 DDPAK/TO-263；TO-220 更适合手工装散热片 |
+| 模拟乘法器 | AD633ARZ | **AD633ARZ-R7** 优先 | R7 是卷带/贴片友好版本；AD633 较贵，需确认库存 |
+| 电流检测前端 | INA149AID | **INA149AIDR** 优先 | D 后缀 SOIC，DR 通常为卷带版本，适合 SMT |
+| 双运放 | OPA1656ID | **OPA1656IDR** 优先 | SOIC-8，卷带更适合机器贴装 |
+| MCU | STM32G431CBT6 | 保留 | LQFP-48，适合 SMT |
+| 电流检测电阻 | 0.1 Ω 5 W 低感 | **SMT 2512/3920/4527/6432 四端或低感电阻** | 原先的轴向 LVR 不适合全 SMT |
+| 输出钳位二极管 | ≥5 A Schottky | SMC / SMB / DPAK / PowerDI | 选 JLC 可贴装封装 |
+| Snubber 电阻 | 4.7 Ω 2 W | 2512 / 3920 厚膜或绕线低感 | 要留多个 DNP 阻值 |
+| Snubber 电容 | 47 nF 100 V film | 如果全 SMT，用 C0G/film SMD；否则手焊薄膜 | 薄膜电容更稳，但可能不适合低成本 SMT |
+| 电源大电容 | 470 µF / 35 V | 铝电解 SMD 或 THT 手焊 | 大电解方向必须人工/3D 复核 |
+| 喇叭端子 | 5.08 mm terminal | 推荐 THT 手焊或厂家 THT | 机械强度比 SMT 好 |
+| 电源端子 | 5.08 mm terminal | 推荐 THT 手焊或厂家 THT | 大电流和插拔力不建议纯 SMT |
+
+AD633ARZ 在 LCSC 有对应料号 C431243，页面显示为 SOIC-8 analog multiplier，但库存数量较少；Digi-Key 页面显示 AD633ARZ-R7 也有库存。这个器件会显著影响成本和供应链，因此建议在 V0.1 中同时预留“AD633 方案”和“数字乘法方案”的升级空间。([lcsc.com](https://www.lcsc.com/product-detail/C431243.html?utm_source=openai))
+
+---
+
+# 6. 我建议的 V0.1 硬件架构
+
+为了尽快拿到可调试 PCBA，我建议 V0.1 不要追求极致小型化。
+
+## 6.1 板子规格建议
+
+```text
+层数：4 层
+尺寸：约 100 mm × 80 mm
+铜厚：外层 1 oz 起步；如果热/电流压力大，考虑 2 oz
+板厚：1.6 mm
+表面处理：ENIG 优先，HASL 也可但贴装平整度略差
+贴装面：优先单面 SMT
+电源：外部 ±18 V 输入，板上生成 ±15 V 和 +3.3 V
+```
+
+## 6.2 推荐 4 层 stackup
+
+```text
+L1 Top:
+  元件、短模拟走线、功率局部走线、OPA548
+
+L2 Inner 1:
+  完整 GND plane
+
+L3 Inner 2:
+  +18V / -18V / +15V / -15V / +3V3 电源区域
+
+L4 Bottom:
+  辅助信号、散热铜皮、低速数字、测试点
+```
+
+关键原则：
+
+- 不要让 `DRV` 大电流回流穿过小信号地；
+- RSHUNT 必须 Kelvin 采样；
+- `ISIG`、`VK`、`VCMD` 远离 `DRV`；
+- OPA548、RSHUNT、SPK connector 尽量靠近；
+- AD633/INA149/OPA1656 组成一个紧凑模拟岛；
+- MCU 放远一点，但 DAC 到 `VK` 的路径要干净；
+- `±18V` 大电容靠近 OPA548；
+- `±15V` 去耦靠近 AD633/OPA1656/INA149；
+- `3V3` 和 MCU 时钟远离 AD633 输入。
+
+---
+
+## 6.3 必须预放置并锁定的器件
+
+如果用 Quilter，建议手动预放置并锁定以下器件：
+
+| 器件 | 位置建议 |
+|---|---|
+| U1 OPA548F | 靠板边，方便散热，大铜皮 |
+| RSHUNT | 紧贴 U1 输出和 SPK 端 |
+| J_SPK | 靠板边，靠近 RSHUNT |
+| Snubber | 靠近 OPA548 输出 |
+| 大电容 | 靠近 OPA548 电源脚 |
+| INA149 | 靠近 RSHUNT Kelvin 点，但远离大电流 |
+| AD633 | 靠近 INA149/OPA1656 |
+| OPA1656 | 靠近 AD633 |
+| STM32 | 远离功率区 |
+| SWD/UART | 板边 |
+| 测试点 | 方便示波器夹 |
+
+Quilter 支持通过预放置元件来锁定其位置和旋转，这对本项目很关键：关键模拟/功率布局应该由你先定义，再让 Quilter 处理其余较低风险的走线。([docs.quilter.ai](https://docs.quilter.ai/design-parameters/pre-placed-components?utm_source=openai))
+
+---
+
+# 7. 需要加入的调试/保护设计
+
+这是我强烈建议在 V0.1 加进去的内容。
+
+## 7.1 上电默认安全状态
+
+必须做到：
+
+```text
+上电时：
+  OPA548 disabled
+  VK 被硬件拉到安全值
+  VCMD 被钳位
+  MCU 初始化完成
+  DAC 输出安全值
+  保护比较器正常
+  然后才允许 OPA548 enable
+```
+
+推荐默认：
+
+\[
+R_\mathrm{target}=100\,\Omega
+\]
+
+或至少：
+
+\[
+R_\mathrm{target}\ge 20\,\Omega
+\]
+
+不要上电直接允许：
+
+\[
+R_\mathrm{target}=1\,\Omega
+\]
+
+---
+
+## 7.2 硬件过流关断
+
+不要只靠 MCU ADC。  
+应加入硬件比较器或快速运放比较：
+
+```text
+|ISIG| > 阈值
+  → latch fault
+  → 拉低 OPA548 E/S
+  → MCU 读 fault
+```
+
+例如：
+
+\[
+v_I=5i_p
+\]
+
+若希望初始硬件限流约 \(1.5\,\mathrm{A}\)：
+
+\[
+|v_I|=7.5\,\mathrm{V}
+\]
+
+可以设置比较器阈值 \(\pm7.0\sim\pm7.5\,\mathrm{V}\)。
+
+---
+
+## 7.3 `VK` 外部输入和固定值测试
+
+增加：
+
+```text
+J_VK_EXT:
+  GND
+  VK_EXT
+  +REF 或保护限幅
+
+J_VK_SEL:
+  MCU_DAC
+  EXT_VK
+  POT_FIXED
+```
+
+这样可以不用固件先验证模拟合成阻抗。
+
+---
+
+## 7.4 固定阻值测试模式
+
+建议加 DNP/跳线，让外部合成阻抗电路可以断开，改接真实电阻或模拟端口。
+
+例如：
+
+```text
+J_MODE:
+  NORMAL_SYNTH
+  PASSIVE_RESISTOR
+  PORT_OPEN
+```
+
+这样你能做基准比较：
+
+| 模式 | 目的 |
+|---|---|
+| 开路 | 测喇叭自然响应 |
+| 真实 100 Ω | 对比高阻尼弱 |
+| 真实 7.2 Ω / 短路 | 对比线圈短路效果 |
+| 有源 \(R_\mathrm{target}=20\,\Omega\) | 验证合成阻抗 |
+| 有源 \(R_\mathrm{target}=5\,\Omega\) | 初步负阻抗 |
+| 有源 \(R_\mathrm{target}=1\,\Omega\) | 最终目标 |
+
+---
+
+## 7.5 每个关键节点都要有测试点
+
+至少放：
+
+```text
+TP_SPK
+TP_DRV
+TP_RSHUNT_P
+TP_RSHUNT_N
+TP_ISIG
+TP_VK
+TP_MUL
+TP_VCMD
+TP_DAC
+TP_3V3
+TP_P15
+TP_N15
+TP_P18
+TP_N18
+TP_FAULT
+TP_ENABLE
+TP_GND_ANALOG
+TP_GND_POWER
+```
+
+示波器调负阻抗系统时，没有测试点会非常痛苦。
+
+---
+
+# 8. 制造文件包应该长什么样？
+
+建议项目结构如下：
+
+```text
+active_acoustic_impedance/
+├─ README.md
+├─ requirements/
+│  ├─ requirements_v0_1.md
+│  ├─ safety_limits.md
+│  └─ acceptance_tests.md
+├─ sim/
+│  ├─ acoustic_impedance_ideal.cir
+│  ├─ acoustic_impedance_behavioral.cir
+│  ├─ opa548_loop_test.cir
+│  └─ results/
+├─ hw/
+│  └─ kicad/
+│     ├─ active_acoustic_impedance.kicad_pro
+│     ├─ active_acoustic_impedance.kicad_sch
+│     ├─ active_acoustic_impedance.kicad_pcb
+│     ├─ sym-lib-table
+│     ├─ fp-lib-table
+│     ├─ symbols/
+│     └─ footprints/
+├─ fw/
+│  ├─ stm32g431/
+│  │  ├─ Core/
+│  │  ├─ Drivers/
+│  │  ├─ active_impedance.ioc
+│  │  └─ README.md
+├─ mfg/
+│  ├─ jlcpcb/
+│  │  ├─ GERBER-active_acoustic_impedance_v0_1.zip
+│  │  ├─ BOM-active_acoustic_impedance_v0_1.csv
+│  │  ├─ CPL-active_acoustic_impedance_v0_1.csv
+│  │  ├─ assembly_notes.pdf
+│  │  ├─ fab_notes.pdf
+│  │  └─ readme_for_fab.txt
+│  ├─ pcbway/
+│  │  ├─ gerber.zip
+│  │  ├─ bom.xlsx
+│  │  ├─ centroid.csv
+│  │  └─ assembly_drawing.pdf
+├─ docs/
+│  ├─ schematic_pdf/
+│  ├─ board_3d_step/
+│  ├─ bringup_guide.md
+│  ├─ calibration_guide.md
+│  └─ risk_register.md
+└─ scripts/
+   ├─ export_kicad_outputs.sh
+   ├─ bom_check.py
+   ├─ cpl_check.py
+   ├─ compare_bom_cpl.py
+   └─ generate_sine_lut.py
+```
+
+---
+
+# 9. JLCPCB / PCBWay 下单时分别需要什么？
+
+## 9.1 JLCPCB 路线
+
+通常需要：
+
+```text
+1. Gerber zip
+2. BOM csv/xlsx
+3. CPL csv
+4. 可能的 assembly drawing
+5. 可能的特殊说明
+6. 如果要烧录 MCU，需要 firmware 文件和烧录说明
+```
+
+JLCPCB 的 PCBA 流程中，Gerber 定义 PCB 层，BOM 列出元件、料号、封装和数量，CPL 提供 SMT 设备需要的坐标、旋转角和贴装面；上传后还要在网页中确认器件匹配。([jlcpcb.com](https://jlcpcb.com/blog/printed-circuit-board-assembly))
+
+如果某些器件库存不足，JLCPCB 文档给出的解决方式包括选择有库存替代料、使用 Pre-order、Global Sourcing 或 Consigned Parts 服务，等器件进入库存后再下 PCBA 单。([jlcpcb.com](https://jlcpcb.com/help/article/common-bom-and-cpl-matching-issues-and-explanations))
+
+---
+
+## 9.2 PCBWay 路线
+
+通常需要：
+
+```text
+1. Gerber
+2. BOM
+3. Silkscreen / assembly reference
+4. Centroid / Pick-and-Place file
+5. 特殊装配说明
+```
+
+PCBWay 文档明确说明 centroid / Pick-and-Place 文件对 SMD 装配是必须的，其中应包含 X/Y 坐标、角度和位号。([pcbway.com](https://www.pcbway.com/helpcenter/pcb_assembly_ordering/What_files_are_requested_for_assembly_production_.html))
+
+---
+
+# 10. 建议的 PCBA 版本划分
+
+不要一口气做最终版。建议这样分。
+
+---
+
+## V0.0：桌面验证，不下 PCBA 或只做裸板
+
+目标：
+
+- 验证数学关系；
+- 用面包板/洞洞板/评估板验证 `VK`、AD633、OPA548 环路；
+- 不追求美观。
+
+适合：
+
+- 快速证明 \(V=R_x i\) 关系；
+- 测负阻抗边界；
+- 找补偿参数。
+
+---
+
+## V0.1：单通道工程验证 PCBA，推荐第一块下单版本
+
+目标：
+
+- 单通道；
+- 外部 ±18 V；
+- 有 MCU，但支持外部 `VK`；
+- 有完整测试点；
+- 有硬件过流保护；
+- OPA548 限流默认 1.5 A；
+- 固件默认不允许 \(R_\mathrm{target}<10\,\Omega\)；
+- 允许手工装端子/散热片；
+- 允许 DNP 若干器件。
+
+这是我最推荐你下一步做的版本。
+
+---
+
+## V0.2：功能完整版本
+
+目标：
+
+- MCU 完整控制；
+- 单/双正弦；
+- 可调频率 \(10\sim1000\,\mathrm{Hz}\)；
+- 可调幅度；
+- UART/USB 配置；
+- 存储参数；
+- 在线估计 \(R_e\)；
+- 更完善保护。
+
+---
+
+## V1.0：准产品版本
+
+目标：
+
+- 多通道或单通道稳定版；
+- 散热结构定型；
+- 电源方案定型；
+- 声学结构定型；
+- 线束/连接器定型；
+- 固件升级接口；
+- 生产测试夹具；
+- 校准流程；
+- 装配说明。
+
+---
+
+# 11. 针对 Quilter 的推荐做法
+
+Quilter 很适合参与，但不要让它“自由发挥”整个板。
+
+## 11.1 应该让 Quilter 做的
+
+- 数字区普通走线；
+- MCU 周边；
+- UART/SWD；
+- LED；
+- 低速控制线；
+- 普通电源分配；
+- 非关键电阻电容摆放；
+- 生成多个 layout candidate；
+- 做初步物理规则检查。
+
+Quilter 文档说明其目标是自动 PCB layout、physics checks、生成和优化 fabrication-ready circuit boards；但它仍基于你提供的 schematic、board file、footprints、constraints 来工作。([docs.quilter.ai](https://docs.quilter.ai/))
+
+---
+
+## 11.2 不建议完全交给 Quilter 的
+
+以下建议你人工预放置、必要时预布线并锁定：
+
+```text
+OPA548 输出环路
+RSHUNT Kelvin 检测
+DRV/SPK 大电流走线
+Snubber
+OPA548 电源去耦
+INA149 输入
+AD633 输入输出
+VCMD 到 OPA548 输入
+模拟地回流
+```
+
+原因是 Quilter 只知道网表，不一定知道：
+
+\[
+V_\mathrm{SPK}=R_x(t)i_p
+\]
+
+这个环路对寄生电感、寄生电容、回流路径、检测点位置非常敏感。
+
+---
+
+## 11.3 上传 Quilter 前的 KiCad 文件应该包含
+
+```text
+active_acoustic_impedance.kicad_pro
+active_acoustic_impedance.kicad_sch
+active_acoustic_impedance.kicad_pcb
+sym-lib-table
+fp-lib-table
+project-local symbols
+project-local footprints
+```
+
+板文件中至少要有：
+
+```text
+板框 Edge.Cuts
+所有 footprints
+完整 netlist
+关键器件预放置
+主要 keepout
+安装孔
+板边接口位置
+基本 design rules
+```
+
+Quilter 文档说明每个 layout job 都需要 starter board file；上传原生设计文件，不要上传 zip 或嵌套目录。([docs.quilter.ai](https://docs.quilter.ai/using-quilter/upload-your-design-files?utm_source=openai))
+
+---
+
+# 12. 推荐的板级约束草案
+
+可以先用下面这个作为 KiCad Board Setup 的初始约束。
+
+## 12.1 Net class
+
+| Net class | 典型网络 | 线宽建议 | 间距建议 | 备注 |
+|---|---|---:|---:|---|
+| `HI_CURRENT` | `DRV`, `SPK`, RSHUNT 功率路径 | ≥2.5 mm | ≥0.5 mm | 尽量短，铜皮优先 |
+| `PWR_18V` | `+18V`, `-18V` | ≥1.5 mm | ≥0.4 mm | 大电流电源 |
+| `PWR_15V` | `+15V`, `-15V` | ≥0.5 mm | ≥0.25 mm | 小信号模拟电源 |
+| `PWR_3V3` | `+3V3` | ≥0.4 mm | ≥0.2 mm | 数字电源 |
+| `KELVIN` | `RSHUNT+`, `RSHUNT-` | 0.2–0.25 mm | ≥0.2 mm | 必须从电阻焊盘内侧单独引出 |
+| `ANALOG` | `ISIG`, `VK`, `MUL`, `VCMD` | 0.2–0.3 mm | ≥0.2 mm | 远离 DRV/SPK |
+| `DIGITAL` | SWD/UART/GPIO | 0.15–0.25 mm | ≥0.15 mm | 低速即可 |
+
+---
+
+## 12.2 Placement rule
+
+```text
+U1 OPA548:
+  靠板边
+  附近禁止 MCU 晶振/数字线
+  tab 下方大铜皮
+  底层对应散热铜皮
+  热过孔阵列
+
+RSHUNT:
+  U1 和 J_SPK 中间
+  功率焊盘粗铜
+  Kelvin 焊盘单独细线
+
+U3 INA149:
+  靠近 RSHUNT Kelvin
+  不靠近 DRV 铜皮
+  输入加 RC / 保护电阻预留
+
+U2 AD633 + U4 OPA1656:
+  靠近 U3
+  模拟地干净
+  远离 MCU
+
+U6 STM32:
+  离功率区远
+  SWD 靠板边
+  DAC 到 VK 经过 RC 和 op-amp 缩放
+```
+
+---
+
+# 13. 生产前的检查清单
+
+## 13.1 原理图检查
+
+- [ ] 所有 IC 电源脚都有 100 nF 近端去耦；
+- [ ] AD633 供电为 ±15 V；
+- [ ] OPA1656 供电不超额定；
+- [ ] INA149 输入共模范围满足；
+- [ ] STM32 BOOT0 有默认下拉；
+- [ ] NRST 有上拉/测试点；
+- [ ] SWD 接口完整；
+- [ ] OPA548 E/S 上电默认 disabled；
+- [ ] OPA548 ILIM 默认安全；
+- [ ] `VK` 上电默认安全；
+- [ ] `VCMD` 有限幅；
+- [ ] `ISIG` 有过流比较；
+- [ ] 所有外部接口有 ESD/保护；
+- [ ] 端子耐流足够；
+- [ ] DNP 器件在 BOM 中标清楚。
+
+---
+
+## 13.2 PCB 检查
+
+- [ ] RSHUNT Kelvin 采样没有走功率电流；
+- [ ] `DRV` 和 `SPK` 走线短粗；
+- [ ] OPA548 输出到 snubber 很短；
+- [ ] OPA548 电源电容很近；
+- [ ] AD633 远离功率铜皮；
+- [ ] `VK` 远离 `DRV`；
+- [ ] 模拟地和功率地回流路径合理；
+- [ ] OPA548 散热铜皮足够；
+- [ ] 热过孔没有被阻焊完全阻断；
+- [ ] 连接器方向正确；
+- [ ] 电解电容极性正确；
+- [ ] IC Pin 1 正确；
+- [ ] 丝印不压焊盘；
+- [ ] 测试点可探测；
+- [ ] 安装孔有 keepout；
+- [ ] 板边端子不影响外壳。
+
+---
+
+## 13.3 PCBA 文件检查
+
+- [ ] Gerber 在 KiCad Gerber Viewer 中打开正常；
+- [ ] 钻孔文件对齐；
+- [ ] 外形尺寸正确；
+- [ ] BOM 和 CPL 位号完全匹配；
+- [ ] DNP 不在贴装 BOM/CPL 中；
+- [ ] JLC/LCSC C 号正确；
+- [ ] 封装和器件实际封装一致；
+- [ ] CPL 旋转角在厂家 3D 预览中正确；
+- [ ] 所有 IC Pin 1 正确；
+- [ ] 二极管方向正确；
+- [ ] 电解电容方向正确；
+- [ ] OPA548 tab 焊盘正确；
+- [ ] 需要手焊的件在 assembly notes 中说明。
+
+---
+
+# 14. AI 可以帮你生成哪些具体文件？
+
+如果你下一步让我继续做，我可以直接帮你生成以下内容。
+
+## 14.1 KiCad 前置文件
+
+可以生成：
+
+```text
+requirements_v0_1.md
+netlist_plan.md
+schematic_sheet_plan.md
+bom_seed.csv
+component_selection.md
+layout_constraints.md
+quilter_constraints.md
+```
+
+也可以尝试生成：
+
+```text
+active_acoustic_impedance.kicad_sch
+active_acoustic_impedance.kicad_pcb
+```
+
+但 KiCad 原生文件生成后必须在 KiCad 中打开检查，因为符号库、封装库、版本差异可能导致报错。
+
+---
+
+## 14.2 BOM / CPL 辅助脚本
+
+可以生成：
+
+```text
+bom_check.py
+cpl_check.py
+compare_bom_cpl.py
+jlc_bom_template.csv
+pcbway_bom_template.xlsx
+```
+
+功能包括：
+
+- 检查 BOM 和 CPL 位号是否一致；
+- 检查 DNP 是否误入 CPL；
+- 检查重复位号；
+- 检查空 MPN；
+- 检查关键器件是否缺 supplier P/N；
+- 生成 JLC/PCBWay 格式文件。
+
+---
+
+## 14.3 固件
+
+可以生成 STM32G431 的固件骨架：
+
+```c
+Rtarget = Rbias
+        + A1 * sinf(2.0f * PI * f1 * t + phi1)
+        + A2 * sinf(2.0f * PI * f2 * t + phi2);
+
+Rtarget = clamp(Rtarget, Rmin, Rmax);
+
+Vdac = 3.0f * (Rtarget - 1.0f) / 99.0f;
+dac_code = roundf(4095.0f * Vdac / 3.3f);
+```
+
+并加入：
+
+- UART 命令；
+- 参数设置；
+- 看门狗；
+- OPA enable；
+- fault latch；
+- 安全启动；
+- DAC DMA sine table；
+- ADC 监控；
+- 校准命令。
+
+---
+
+## 14.4 SPICE / 仿真
+
+可以继续生成：
+
+```text
+opa548_loop_stability.cir
+sweep_Rtarget.cir
+monte_carlo_offset_gain.cir
+speaker_cable_parasitic.cir
+thermal_estimate.py
+```
+
+---
+
+## 14.5 生产说明文档
+
+可以生成：
+
+```text
+fab_notes.pdf 内容草案
+assembly_notes.pdf 内容草案
+bringup_guide.md
+calibration_guide.md
+factory_test_procedure.md
+risk_register.md
+```
+
+---
+
+# 15. 我建议的 V0.1 默认决策
+
+如果你没有特别偏好，我建议按下面默认值推进。
+
+```text
+通道数：1 channel
+板子：4 层，100 mm × 80 mm
+制造：JLCPCB 或 PCBWay 均可
+设计工具：KiCad
+布局辅助：Quilter
+贴装：顶层 SMT 为主
+功率级：OPA548F/500 DDPAK SMT，预留 TO-220/外接功率模块替代方案
+电源：外部 ±18 V
+板上电源：±15 V, +3.3 V
+控制：STM32G431CBT6
+VK 来源：MCU DAC / 外部输入 / 固定电位器三选一
+RSHUNT：0.1 Ω SMT 低感，优先四端
+保护：硬件过流 + OPA548 E/S disable
+初始固件限制：Rtarget_min = 10 Ω
+后续解锁：10 Ω → 7.2 Ω → 5 Ω → 3 Ω → 1 Ω
+装配：SMT 厂贴小信号和主要 SMD，端子/散热片可手工
+```
+
+---
+
+# 16. 重要风险提醒
+
+## 16.1 这不是普通“被动反射体”PCB
+
+从声学角度你可以说它“不主动播放音频，只被外界声压激发”；  
+但从电路角度，它是**有源负阻抗边界条件**。  
+只要目标阻抗小于线圈铜阻 \(7.2\,\Omega\)，外部电路就在合成负电阻。
+
+所以它需要：
+
+- 电源；
+- 限流；
+- 热保护；
+- 稳定性验证；
+- 故障关断。
+
+---
+
+## 16.2 不建议第一块就追求 \(1\,\Omega\)
+
+虽然最终目标是：
+
+\[
+1\,\Omega \le R_\mathrm{target}\le 100\,\Omega
+\]
+
+但第一块 PCBA 建议固件锁定：
+
+\[
+10\,\Omega \le R_\mathrm{target}\le 100\,\Omega
+\]
+
+确认后逐步放开。
+
+---
+
+## 16.3 不建议第一版加入负电感
+
+第一版只做：
+
+\[
+v_x=R_x(t)i
+\]
+
+不要做：
+
+\[
+v_x=R_x(t)i-L_e\frac{di}{dt}
+\]
+
+负电感会引入微分噪声和额外相位风险，PCB 未验证前不建议。
+
+---
+
+## 16.4 不建议所有连接器都 SMT
+
+喇叭端子、电源端子、散热片螺丝这类机械应力大的部分，建议：
+
+- THT 手焊；
+- 或让 PCBA 厂做 THT/后焊；
+- 或使用带螺丝固定的板边连接器。
+
+纯 SMT 端子在反复插拔和大电流下风险更高。
+
+---
+
+# 17. 最推荐的下一步
+
+我建议下一步不要直接生成最终 KiCad，而是先生成一个 **V0.1 PCBA 设计冻结包**，包括：
+
+1. **V0.1 原理图分页结构**；
+2. **确定每个器件的 SMT 料号和封装**；
+3. **BOM seed CSV**；
+4. **KiCad net class / layout constraints**；
+5. **Quilter 预放置策略**；
+6. **安全启动逻辑**；
+7. **固件接口定义**；
+8. **测试点列表**；
+9. **DNP/跳线策略**；
+10. **PCBA 下单文件清单**。
+
+然后再生成 KiCad 文件。
+
+---
+
+# 18. 我需要你确认的 8 个问题
+
+为了下一步能真的做成“可下单 PCBA”，你最好先确认这些：
+
+1. **你优先选哪个厂家？**  
+   JLCPCB、PCBWay、还是其他？
+
+2. **是否必须全 SMT？**  
+   还是允许端子、散热片、少量器件回来手焊？
+
+3. **OPA548 你希望用哪种方式？**  
+   - OPA548F DDPAK SMT；  
+   - OPA548T TO-220 手工装散热片；  
+   - 先用外部功率运放模块。
+
+4. **V0.1 是否必须带 STM32？**  
+   还是先用外部函数发生器输入 `VK`？
+
+5. **板子尺寸有无限制？**  
+   我建议先 100 mm × 80 mm，不要太小。
+
+6. **外部供电是否确定为 ±18 V？**  
+   如果不是，要重新核算热和输出范围。
+
+7. **第一版最大电流限制希望是多少？**  
+   推荐 1.5 A，后续再放到 2 A。
+
+8. **你是否接受第一版固件锁定 \(R_\mathrm{target,min}=10\,\Omega\)，调试后再解锁到 \(1\,\Omega\)？**
+
+---
+
+# 19. 简短执行方案
+
+如果你要我给出最实际的路线，我会这样做：
+
+```text
+Step 1:
+  冻结 V0.1：单通道，4 层，外部 ±18V，带 STM32，但支持外部 VK。
+
+Step 2:
+  生成详细原理图连接表和 BOM seed。
+
+Step 3:
+  确认关键器件 SMT 料号：
+    OPA548F/500 或 OPA548FKTWT
+    AD633ARZ-R7
+    INA149AIDR
+    OPA1656IDR
+    STM32G431CBT6
+    SMT RSHUNT
+    Schottky clamps
+    LDO/DC-DC
+
+Step 4:
+  生成 KiCad 原理图和初始 PCB：
+    板框
+    封装
+    关键器件预放置
+    net classes
+    keepouts
+
+Step 5:
+  上传 Quilter：
+    不上传 zip
+    上传 KiCad 工程文件
+    锁定功率/模拟关键区
+
+Step 6:
+  下载 Quilter layout candidate。
+
+Step 7:
+  人工修改：
+    OPA548 环路
+    RSHUNT Kelvin
+    AD633/INA149/OPA1656 模拟区
+    散热
+    去耦
+
+Step 8:
+  KiCad ERC/DRC。
+
+Step 9:
+  导出：
+    Gerber
+    Drill
+    BOM
+    CPL
+    assembly notes
+    fab notes
+
+Step 10:
+  上传 JLCPCB 或 PCBWay，
+  人工核对 3D 方向和 BOM 匹配，
+  再下单。
+```
+
+---
+
+# 20. 最后一句话
+
+**AI 可以把 60%–80% 的文档、脚本、BOM 草案、SPICE、固件骨架、KiCad 初稿和制造包自动化；Quilter 可以帮你生成 PCB layout 候选；KiCad/JLC 工具可以自动导出生产文件。**
+
+但这个项目的关键风险是：
+
+```text
+负阻抗稳定性
+功率级热设计
+RSHUNT Kelvin 布局
+OPA548 环路补偿
+器件方向和供应链
+上电安全
+过流关断
+```
+
+这些不能完全交给 AI 或自动布线。  
+最现实的做法是：**AI 生成 + Quilter 辅助 + 人工锁定关键功率/模拟区域 + 小批量 PCBA + 严格 bring-up。**
+
+---
+Learn more:
+1. [Printed Circuit Board Assembly (PCBA): A Step-by-Step Guide](https://jlcpcb.com/blog/printed-circuit-board-assembly)
+2. [Recommendations for BOM / CPL File Preparation](https://jlcpcb.com/help/article/advice-for-bom-and-cpl-files-preparation)
+3. [Quickstart | Quilter](https://docs.quilter.ai/get-started/quickstart)
+4. [PCB Assembly Ordering - What files are requested for assembly production](https://www.pcbway.com/helpcenter/pcb_assembly_ordering/What_files_are_requested_for_assembly_production_.html)
+5. [GitHub - Bouni/kicad-jlcpcb-tools: Plugin to generate BOM + CPL files for JLCPCB, assigning LCSC part numbers directly from the plugin, query the JLCPCB parts database, lookup datasheets and much more. · GitHub](https://github.com/Bouni/kicad-jlcpcb-tools)
+6. [OPA548 | Buy TI Parts | TI.com](https://www.ti.com/product/OPA548/part-details/OPA548F/500?source=ooq)
+7. [STM32G431CBT6 | STMicroelectronics | Microcontrollers (MCU/MPU/SOC) | JLCPCB](https://jlcpcb.com/partdetail/STM32G431CBT6/C529355)
+8. [AD633ARZ | ADI | Price | In Stock | LCSC Electronics](https://www.lcsc.com/product-detail/C431243.html?utm_source=openai)
+9. [Pre-placed components | Quilter](https://docs.quilter.ai/design-parameters/pre-placed-components?utm_source=openai)
+10. [Common BOM / CPL Matching Issues and Explanations](https://jlcpcb.com/help/article/common-bom-and-cpl-matching-issues-and-explanations)
+11. [Welcome to Quilter | Quilter](https://docs.quilter.ai/)
+12. [Upload your design files | Quilter](https://docs.quilter.ai/using-quilter/upload-your-design-files?utm_source=openai)

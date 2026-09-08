@@ -1,0 +1,8 @@
+{
+  "root": ".",
+  "status": "not_auditable",
+  "source_file_count": 0,
+  "risk_hits": [],
+  "allowed_multiply_hits": [],
+  "conclusion": "No MCU firmware source files are present in the supplied project. Runtime firmware behavior cannot be signed off."
+}

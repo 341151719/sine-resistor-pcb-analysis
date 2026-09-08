@@ -1,0 +1,15 @@
+{
+  "C27": {
+    "Value": "10nF",
+    "Description": "OPA548 local V+ to V- bypass, 10nF 50V X7R/C0G"
+  },
+  "R10": {
+    "Value": "6.8kR",
+    "Description": "OPA548 E/S pull-down; 6.8k ensures disable margin at 70uA max E/S current"
+  },
+  "R12": {
+    "Value": "4.7R 2W",
+    "Footprint": "easyedapro:AAI_R_2512_Production_4R7_2W",
+    "Description": "4.7 ohm 2W 2512 snubber resistor; production-recovered footprint"
+  }
+}

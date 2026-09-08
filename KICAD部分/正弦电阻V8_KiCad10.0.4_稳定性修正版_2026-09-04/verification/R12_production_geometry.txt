@@ -1,0 +1,9 @@
+Source: .codex_stability_audit_tmp/gerbers/FlyingProbeTesting.json
+Fabrication archive date: 2026-07-14
+Coordinate transform: x_mm = 370 + 0.0254*x_native; y_mm = -370 - 0.0254*y_native
+
+R12 component center: native (-8490, -18100), KiCad (154.354000, 89.740000) mm, 180 deg
+R12 pin 1: DRV, native (-8369.28, -18100), KiCad (157.420288, 89.740000) mm
+R12 pin 2: SNUB_MID, native (-8610.72, -18100), KiCad (151.287712, 89.740000) mm
+Pad size: native (50.493, 136.063), metric (1.282522, 3.456000) mm
+Pad center span: 6.132576 mm

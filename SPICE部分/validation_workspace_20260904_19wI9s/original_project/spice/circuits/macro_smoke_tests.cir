@@ -1,0 +1,32 @@
+.title Macro smoke tests for ngspice-compatible surrogate models
+.include ../models/ngspice_compatible_macros.lib
+.options reltol=1e-5 abstol=1e-10 vabstol=1e-7
+V15P P15 0 15
+V15N N15 0 -15
+V18P P18 0 18
+V18N N18 0 -18
+V3V3 V3V3 0 3.3
+VSTEP VIN 0 PULSE(0 0.1 1u 1u 1u 100u 200u)
+* OPA1656 follower
+XOA VIN NOA OUTOA P15 N15 OPA1656_NG_SURR
+ROAFB OUTOA NOA 1m
+RLOADOA OUTOA 0 10k
+* INA149 differential
+VP1 INAP 0 1
+VN1 INAN 0 0.9
+XINA INAP INAN OUTINA P15 N15 INA149_NG_SURR
+RLOADINA OUTINA 0 10k
+* AD633: 2V * 3V / 10 = 0.6V
+VX1 X1 0 2
+VY1 Y1 0 3
+XAD X1 0 Y1 0 N15 0 WAD P15 AD633_NG_SURR
+RLOADAD WAD 0 10k
+* OPA548 follower
+XPWR VIN NPWR OUTPWR P18 N18 ILIM OPA548_NG_SURR
+RFBP OUTPWR NPWR 1m
+RLOADP OUTPWR 0 8
+.control
+tran 1u 2m
+print v(outoa) v(outina) v(wad) v(outpwr)
+.endc
+.end

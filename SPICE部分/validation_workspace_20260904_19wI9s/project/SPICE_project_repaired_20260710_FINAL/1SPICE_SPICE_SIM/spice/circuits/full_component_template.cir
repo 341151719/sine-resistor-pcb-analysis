@@ -1,0 +1,251 @@
+.title Full component connected active acoustic impedance membrane - v3 metrics/softstart/injection
+
+.include __MODEL_INCLUDE__
+
+.options method=gear maxord=2
+.options reltol=3e-5 abstol=1e-10 vabstol=1e-7 chgtol=1e-14
+.options gmin=1e-12 rshunt=1e12
+.temp 27
+
+* ============================================================
+* Speaker / electro-acoustic parameters
+* ============================================================
+.param Re=__Re__
+.param Le=__Le__
+.param Bl=__Bl__
+.param Mms=__Mms__
+.param fs=__fs__
+.param Qms=__Qms__
+.param Sd=__Sd__
+.param XMAX=__XMAX__
+
+.param TWOPI=6.283185307179586
+.param W0={TWOPI*fs}
+.param Cms={1/(Mms*W0*W0)}
+.param Rms={W0*Mms/Qms}
+.param Kms={1/Cms}
+
+* ============================================================
+* Target resistance modulation and soft-start
+* Rt_des(t): desired total resistance profile.
+* Rx_des(t): desired external synthetic impedance, Rt_des-Re.
+* soft(t):   command/acoustic ramp to avoid t=0 artifacts.
+* VK path:   actual external command is inferred from filtered VK.
+* ============================================================
+.param R0=__R0__
+.param A1=__A1__
+.param fm1=__fm1__
+.param ph1=__ph1__
+.param A2=__A2__
+.param fm2=__fm2__
+.param ph2=__ph2__
+.param RMIN=__RMIN__
+.param RMAX=__RMAX__
+.param TSTART=__TSTART__
+.param TRAMP=__TRAMP__
+.func Rraw(t)   { R0 + A1*sin(TWOPI*fm1*t + ph1) + A2*sin(TWOPI*fm2*t + ph2) }
+.func Rt_des(t) { min(max(Rraw(t), RMIN), RMAX) }
+.func Rx_des(t) { Rt_des(t)-Re }
+.func soft(t)   { min(max((t-TSTART)/TRAMP,0),1) }
+
+* ============================================================
+* Acoustic and electrical excitation
+* ============================================================
+.param Pamp=__Pamp__
+.param fa=__fa__
+.param ItestAmp=__ItestAmp__
+.param ItestFreq=__ItestFreq__
+
+* ============================================================
+* Offset trim and slow DC servo
+* ============================================================
+.param VOS_I_TRIM=__VOS_I_TRIM__
+.param DC_SERVO_ENABLE=__DC_SERVO_ENABLE__
+.param DC_SERVO_FC=__DC_SERVO_FC__
+.param DC_SERVO_K=__DC_SERVO_K__
+.param DC_SERVO_LIMIT=__DC_SERVO_LIMIT__
+.param DC_SERVO_C=__DC_SERVO_C__
+.param FIX_SCHED_ENABLE=__FIX_SCHED_ENABLE__
+.param FIX_SCHED_FULL=__FIX_SCHED_FULL__
+.param FIX_SCHED_OFF=__FIX_SCHED_OFF__
+.param C_U4A_F=__C_U4A_F__
+.param C_U4B_F=__C_U4B_F__
+.param R_U4A_LEAD=__R_U4A_LEAD__
+.param C_U4A_LEAD=__C_U4A_LEAD__
+.param R_U4B_LEAD=__R_U4B_LEAD__
+.param C_U4B_LEAD=__C_U4B_LEAD__
+.param RISO_OUT=__RISO_OUT__
+.param RZOBEL=__RZOBEL__
+.param CZOBEL=__CZOBEL__
+.param REFF_EPS=__REFF_EPS__
+.param DC_SERVO_R={1/(TWOPI*max(DC_SERVO_FC,1e-9)*DC_SERVO_C)}
+.func FIXW(r) {FIX_SCHED_ENABLE*min(max((FIX_SCHED_OFF-r)/max(FIX_SCHED_OFF-FIX_SCHED_FULL,1e-9),0),1) + (1-FIX_SCHED_ENABLE)}
+
+* ============================================================
+* Supplies
+* ============================================================
+VPLUS18 P18 0 18
+VMINUS18 N18 0 -18
+VPLUS15 P15 0 15
+VMINUS15 N15 0 -15
+VDD33   V3V3 0 3.3
+
+C_BULK_P18 P18 0 470u IC=0
+C_BULK_N18 N18 0 470u IC=0
+C_DEC_P18 P18 0 100n
+C_DEC_N18 N18 0 100n
+C_DEC_P15 P15 0 10u
+C_DEC_N15 N15 0 10u
+C_DEC_33  V3V3 0 10u
+
+* ============================================================
+* MCU/DAC command and analog scaling
+* CONTROL CONTRACT:
+* - MCU/DAC generates only the bounded target trajectory Rx_des(t).
+* - MCU firmware must not close a fast loop using instantaneous V(SPK)/Iport.
+* - Real-time synthesis is performed by the analog multiply path Rx_cmd*Iport.
+* Raw DAC emits desired profile. The analog command is soft-ramped:
+* VK_RAW = soft(t) * Rx_des/10. Actual RXNODE = 10*VK after RC.
+* ============================================================
+XU_DAC DAC_R V3V3 0 DAC_STM32G431_SURR PARAMS: R0={R0} A1={A1} FM1={fm1} PH1={ph1} A2={A2} FM2={fm2} PH2={ph2} RMIN={RMIN} RMAX={RMAX} BW=20k
+BVK_RAW VK_RAW 0 V = {soft(time)*(3.3*V(DAC_R)-0.62)}
+RVK VK_RAW VK 100
+CVK VK 0 4.7n
+
+* ============================================================
+* Current sense: DRV -- RSHUNT -- SPK
+* Port current into synthetic impedance ip = (V(SPK)-V(DRV))/RSH
+* ============================================================
+.param RSH=__RSH__
+.param RSH_SCALE=__RSH_SCALE__
+.param IOUTLIM=__IOUT__
+.param RDRV_PAR=__RDRV_PAR__
+.param LDRV_PAR=__LDRV_PAR__
+.param RSPK_PAR=__RSPK_PAR__
+.param LSPK_PAR=__LSPK_PAR__
+.param RSPEAKER_SERIES=__RSPEAKER_SERIES__
+.param RSPK_SHORT=__RSPK_SHORT__
+
+R_DRV_PAR DRV_SRC DRV_R {RDRV_PAR}
+L_DRV_PAR DRV_R DRV {LDRV_PAR}
+RSHUNT DRV SPK {RSH*RSH_SCALE}
+R_SPK_PAR SPK SPK_R {RSPK_PAR}
+L_SPK_PAR SPK_R SPK_LOAD_PORT {LSPK_PAR}
+R_SPEAKER_SERIES SPK_LOAD_PORT SPK_LOAD {RSPEAKER_SERIES}
+R_SPK_SHORT SPK 0 {RSPK_SHORT}
+
+XU_INA SPK DRV VSENSE P15 N15 INA149_NG_SURR PARAMS: BW=500k CMRRDB=100
+
+* Current-sense offset trim. VOS_I_TRIM is input-referred and is subtracted
+* before the OPA1656 x50 sense amplifier. It models a DAC/auto-zero trim path.
+B_VSENSE_TRIM VSENSE_TRIM 0 V = {V(VSENSE)-VOS_I_TRIM*FIXW(V(RTARGET))}
+R_VSENSE_TRIM VSENSE_TRIM 0 100Meg
+
+R_U4A_G NFB_A 0 1k
+R_U4A_F ISIG NFB_A 49k
+C_U4A_F ISIG NFB_A {C_U4A_F}
+* Optional lead-lag phase-advance branch, default DNP/off by very large R.
+R_U4A_LEAD ISIG N_U4A_LEAD {R_U4A_LEAD}
+C_U4A_LEAD N_U4A_LEAD NFB_A {C_U4A_LEAD}
+XU_OPA_ISENSE VSENSE_TRIM NFB_A ISIG P15 N15 OPA1656_NG_SURR
+R_ISIG_LOAD ISIG 0 100k
+
+* Slow DC servo. It low-pass filters the measured port current and injects a
+* bounded correction into the AD633 Z node. With DC_SERVO_ENABLE=0 this node is 0 V.
+R_IPDC IPORT IPDC {DC_SERVO_R}
+C_IPDC IPDC 0 {DC_SERVO_C} IC=0
+B_ZSERVO ZSERVO 0 V = {limit(DC_SERVO_ENABLE*DC_SERVO_K*FIXW(V(RTARGET))*V(IPDC), -DC_SERVO_LIMIT, DC_SERVO_LIMIT)}
+R_ZSERVO ZSERVO 0 100Meg
+
+* AD633: MUL = ISIG*VK/10 + ZSERVO
+XU_MULT ISIG 0 VK 0 N15 ZSERVO MUL P15 AD633_NG_SURR
+R_MUL_LOAD MUL 0 100k
+
+* OPA1656 gain 20: VCMD = 20*MUL = Rx_cmd*ip
+R_U4B_G NFB_B 0 1k
+R_U4B_F VCMD NFB_B 19k
+C_U4B_F VCMD NFB_B {C_U4B_F}
+* Optional lead-lag phase-advance branch, default DNP/off by very large R.
+R_U4B_LEAD VCMD N_U4B_LEAD {R_U4B_LEAD}
+C_U4B_LEAD N_U4B_LEAD NFB_B {C_U4B_LEAD}
+XU_OPA_POST MUL NFB_B VCMD P15 N15 OPA1656_NG_SURR
+R_VCMD_LOAD VCMD 0 100k
+
+* ============================================================
+* OPA548 power follower, sense after shunt: V(SPK) follows VCMD
+* ============================================================
+RCL ILIM N18 __RCL__
+XU_PWR VCMD SPK PA_OUT P18 N18 ILIM OPA548_NG_SURR PARAMS: IOUT=__IOUT__ ROUT=0.08
+* Optional output isolation resistor, default near-short. PCB should provide 0R/0.05R/0.1R choices.
+RISO_OUT PA_OUT DRV_SRC {RISO_OUT}
+* Optional Zobel after Riso, default off by large RZOBEL.
+RZOBEL DRV_SRC NZOBEL {RZOBEL}
+CZOBEL NZOBEL 0 {CZOBEL}
+
+D_DRV_POS PA_OUT P18 D5A_SCH
+D_DRV_NEG N18 PA_OUT D5A_SCH
+D_SPK_POS SPK P18 D5A_SCH
+D_SPK_NEG N18 SPK D5A_SCH
+RSNUB PA_OUT NSNUB __RSNUB__
+CSNUB NSNUB 0 __CSNUB__
+
+* ============================================================
+* Electrodynamic speaker model with acoustic pressure input
+* ============================================================
+LVC SPK_LOAD NL {Le}
+RVC NL NR {Re}
+VCOIL NR NEMF 0
+BBEMF NEMF 0 V = {Bl*V(VEL)}
+
+CMASS VEL 0 {Mms} IC=0
+RDAMP VEL 0 {1/Rms}
+LCOMP VEL 0 {Cms} IC=0
+RMECHLEAK VEL 0 1e9
+
+* External acoustic pressure force, soft-ramped.
+BPRESS 0 VEL I = {soft(time)*Sd*Pamp*sin(TWOPI*fa*time)}
+
+* Electromagnetic reaction force.
+BMOTOR VEL 0 I = {-Bl*I(VCOIL)}
+
+* Displacement integrator: dx/dt = velocity.
+GVEL XNODE 0 VALUE = {V(VEL)}
+CX XNODE 0 1 IC=0
+RXLEAK XNODE 0 1e12
+
+* Electrical injection current for impedance validation.
+* Positive current flows from ground into SPK.
+B_EINJ 0 SPK I = {soft(time)*ItestAmp*sin(TWOPI*ItestFreq*time)}
+
+* ============================================================
+* Probes
+* ============================================================
+* B_REFF/B_ERR are diagnostic-only observability nodes. They are downstream of
+* the control path and must never be connected back into VK, MUL, VCMD or DRV.
+* Primary acceptance is calculated offline from complex carrier phasors with a
+* DC intercept; instantaneous V/I is not an acceptance or control variable.
+B_RDES    RDES    0 V = {Rt_des(time)}
+B_RXDES   RXDES   0 V = {Rx_des(time)}
+B_RX      RXNODE  0 V = {10*V(VK)}
+B_RTARGET RTARGET 0 V = {Re + V(RXNODE)}
+B_REMM    REMNODE 0 V = {Bl*Bl/max(V(RTARGET),1e-9)}
+B_QEFF    QNODE   0 V = {W0*Mms/(Rms + Bl*Bl/max(V(RTARGET),1e-9))}
+B_IPORT   IPORT   0 V = {(V(SPK)-V(DRV))/RSH}
+B_REFF    REFF    0 V = {Re + V(SPK)*V(IPORT)/(V(IPORT)*V(IPORT)+REFF_EPS)}
+B_ERR     ERR     0 V = {V(REFF)-V(RTARGET)}
+B_SYNERR  SYNERR  0 V = {V(SPK) - V(RXNODE)*V(IPORT)}
+B_CMDERR  CMDERR  0 V = {V(VCMD) - V(RXNODE)*V(IPORT)}
+B_OPAI    OPAI    0 V = {(V(DRV)-V(SPK))/RSH}
+B_FOLLOWERR FOLLOWERR 0 V = {V(VCMD)-V(SPK)}
+B_ILIMRATIO ILIMRATIO 0 V = {abs((V(DRV)-V(SPK))/RSH)/IOUTLIM}
+B_VSAT    VSAT    0 V = {max(abs(V(DRV))-(18-2),0)}
+B_XMAXABS XMAXABS 0 V = {abs(V(XNODE))/XMAX}
+
+.control
+set wr_singlescale
+set wr_vecnames
+tran __tstep__ __tstop__
+wrdata __DATAFILE__ time v(rdes) v(rxdes) v(rtarget) v(rxnode) v(reff) v(remnode) v(qnode) v(vel) v(xnode) v(spk) v(drv) v(vcmd) v(vsense) v(vsense_trim) v(isig) v(vk) v(mul) v(zservo) v(ipdc) v(iport) v(err) v(synerr) v(cmderr) v(followerr) v(ilimratio) v(vsat) v(xmaxabs)
+.endc
+
+.end

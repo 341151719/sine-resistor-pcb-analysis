@@ -1,0 +1,19 @@
+{
+  "fixed_real_rel_tol": 0.05,
+  "fixed_real_abs_tol_ohm": 0.1,
+  "fixed_imag_rel_tol": 0.05,
+  "fixed_imag_abs_tol_ohm": 0.1,
+  "dynamic_p95_real_rel_tol": 0.1,
+  "dynamic_p95_imag_rel_tol": 0.1,
+  "min_dynamic_carrier_ratio": 10.0,
+  "dc_iport_abs_limit_a": 0.02,
+  "ilim_ratio_limit": 0.8,
+  "xmax_ratio_limit": 0.8,
+  "vsat_limit_v": 0.1,
+  "min_phasor_current_a": 2e-05,
+  "min_fixed_cycles": 8,
+  "max_fixed_cycles": 40,
+  "dynamic_window_cycles": 1.0,
+  "dynamic_step_cycles": 0.5,
+  "min_dynamic_windows": 12
+}

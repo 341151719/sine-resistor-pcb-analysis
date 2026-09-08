@@ -1,0 +1,45 @@
+{
+  "kicad_version": "10.0.4",
+  "source_schematic_components": 142,
+  "kicad_schematic_components": 142,
+  "schematic_reference_set_equal": true,
+  "source_pcb_components": 141,
+  "kicad_pcb_components": 141,
+  "pcb_reference_set_equal": true,
+  "source_pcb_nets": 76,
+  "kicad_pcb_nets": 76,
+  "pcb_net_name_set_equal": true,
+  "bom": {
+    "SMT": 73,
+    "DNP": 44,
+    "POST": 2,
+    "controlled_total": 119,
+    "audit_errors": 0
+  },
+  "board_nonprocurement_objects": 22,
+  "drawing_only_objects": 1,
+  "pad_net_assignments_restored": 21,
+  "symbol_library_items": 41,
+  "footprint_library_items": 20,
+  "erc_final_total": 436,
+  "erc_types": {
+    "pin_not_driven": 16,
+    "pin_to_pin": 288,
+    "unconnected_wire_endpoint": 105,
+    "endpoint_off_grid": 27
+  },
+  "drc_final_total": 163,
+  "drc_unconnected": 0,
+  "drc_types": {
+    "annular_width": 72,
+    "hole_clearance": 23,
+    "clearance": 1,
+    "courtyards_overlap": 15,
+    "copper_edge_clearance": 7,
+    "via_dangling": 1,
+    "track_dangling": 1,
+    "silk_over_copper": 40,
+    "silk_overlap": 3
+  },
+  "3d_models": "Source EPRO contains no STEP/WRL/OBJ payload; unresolved model references retained."
+}

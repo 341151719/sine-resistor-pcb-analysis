@@ -1,0 +1,249 @@
+* ============================================================================
+* PCB_AWARE_U4B_OFF_reduced.cir
+* U4B / OPA548 local board-aware model, OPA548 commanded OFF, J4 OPEN
+*
+* Purpose:
+*   Reproduce the REAL PCB non-ideal environment around TP7 -> U4B -> TP8,
+*   without pretending copper traces are ideal wires.
+*
+* Board facts used (from parsed KiCad routing):
+*   U4 pin8 -> C15 100nF : 15.505 mm
+*   U4 pin4 -> C16 100nF : 27.706 mm
+*   U4 pin4 -> C10 100nF : 29.897 mm
+*   U4 pin4 -> C12 1uF   : 32.025 mm
+*   U2 W -> U4 pin5      :  8.525 mm
+*   U4 pin7 -> R16       :  6.942 mm
+*   U4 pin6 -> R16       :  7.449 mm
+*   U4 pin6 -> R15       :  9.389 mm
+*   U4 pin7 -> R5        : 58.763 mm
+*   VCMD routed copper total  ~=115.2 mm
+*   U4B_N routed copper total ~= 76.9 mm
+*
+* Central PCB trace approximation used in reduced model:
+*   Ltrace ~= 0.6 nH/mm
+*   Ctrace ~= 0.1 pF/mm to local reference plane
+*   R values use the KiCad-derived central estimates from the extraction pass.
+*
+* Important modeling choice:
+*   OPA548 OFF is NOT represented by the TI vendor macro, because its shutdown
+*   transient behavior did not match the datasheet/bench OFF state.  Instead,
+*   OFF is a datasheet-constrained surrogate:
+*     differential input 10Mohm || 6pF
+*     common-mode input   1Gohm  || 4pF per input
+*     high-Z output + weak DC definition
+*     input rail clamps retained as sensitivity elements
+*   OPA548 ON analysis should use the separate vendor-macro model.
+* ============================================================================
+
+.include "models/OPA1656.LIB"
+.include "models/AD633.cir"
+
+.options method=gear reltol=2e-4 abstol=1e-11 vntol=1e-8 gmin=1e-12 rshunt=1e12
+
+* ----------------------- user sweep parameters ------------------------------
+.param J1=5
+.param J2=10
+.param HFAMP=0
+.param HFREQ=105k
+* DNP = effectively zero. Set to 22p/47p/100p/220p for local R16 compensation.
+.param CFB=1a
+* AGND <-> PGND interconnect (R3 + copper/via effective parasitic)
+.param RGND=5m
+.param LGND=2n
+* external J1 lead / board power inductance
+.param LJ1=0.2u
+* SS56B central junction-capacitance estimate; sweep if desired.
+.param CDIODE=320p
+
+* ---------------------------- AGND / PGND -----------------------------------
+VAG AGND 0 0
+RG3 AGND G3M {RGND}
+LG3 G3M PGND {LGND}
+
+* ---------------------------- ANA + rail ------------------------------------
+* J2 -> bead -> U4 area.  This is no longer an ideal rail at U4.
+VJ2P J2P AGND {J2}
+RFBP J2P FBP 0.25
+LFBP FBP APBEAD 240n
+RAPS APBEAD APSM 3.5586m
+LAPS APSM APU4 2.9988n
+CAPSA APBEAD AGND 0.2499p
+CAPSB APU4 AGND 0.2499p
+
+* U4 -> actual remote C15 (15.505 mm)
+RC15T APU4 C15TM 28.715m
+LC15T C15TM C15N 9.303n
+CC15TA APU4 AGND 0.77525p
+CC15TB C15N AGND 0.77525p
+C15 C15N AGND 100n
+
+* representative +rail 1uF bulk/local network
+RC11T APU4 C11TM 49.5m
+LC11T C11TM C11N 19.8n
+CC11TA APU4 AGND 1.65p
+CC11TB C11N AGND 1.65p
+C11 C11N AGND 1u
+
+* ---------------------------- ANA - rail ------------------------------------
+VJ2N J2N AGND {-J2}
+RFBN J2N FBN 0.25
+LFBN FBN ANBEAD 240n
+RANS ANBEAD ANSM 49.93m
+LANS ANSM ANU4 20.106n
+CANSA ANBEAD AGND 1.6755p
+CANSB ANU4 AGND 1.6755p
+
+* U4 pin4 -> C16, 27.706mm
+RC16T ANU4 C16TM 43.775m
+LC16T C16TM C16N 16.6236n
+CC16TA ANU4 AGND 1.3853p
+CC16TB C16N AGND 1.3853p
+C16 C16N AGND 100n
+
+* U4 pin4 -> C10, 29.897mm
+RC10T ANU4 C10TM 46.639m
+LC10T C10TM C10N 17.9382n
+CC10TA ANU4 AGND 1.49485p
+CC10TB C10N AGND 1.49485p
+C10 C10N AGND 100n
+
+* U4 pin4 -> C12 1uF, 32.025mm
+RC12T ANU4 C12TM 49.318m
+LC12T C12TM C12N 19.215n
+CC12TA ANU4 AGND 1.60125p
+CC12TB C12N AGND 1.60125p
+C12 C12N AGND 1u
+
+* -------------------------- U4A shared package ------------------------------
+* Keep the other OPA1656 channel alive and sharing the same nonideal rails.
+VUA U4AP AGND 0
+R13 U4AN AGND 1k
+R14 U4AO U4AN 49.9k
+XU4A U4AP U4AN APU4 ANU4 U4AO OPA1656
+RU4AL U4AO AGND 100k
+
+* --------------------------- AD633 / TP7 ------------------------------------
+* Use the vendor AD633 macro instead of a 0-ohm ideal TP7 source.
+* Z pin carries a 1mV startup kick plus optional HFAMP sine.
+VZK ADZ ZHF PULSE(0 1m 10u 20n 20n 2u 10m)
+VHF ZHF AGND SIN(0 {HFAMP} {HFREQ})
+* AD633 order: X1 X2 Y1 Y2 VS- Z W VS+
+XU2 AGND AGND AGND AGND ANU4 ADZ MUL0 APU4 AD633
+
+* MUL_RAW: U2 W -> U4 pin5, actual route ~8.525mm
+RMULT MUL0 MULTM 13.299m
+LMULT MULTM U4P 5.115n
+CMULTA MUL0 AGND 0.42625p
+CMULTB U4P AGND 0.42625p
+
+* ------------------------ U4B / feedback network ----------------------------
+* Break loop with 0V source for AC loop-gain measurement; DC/tran sees a short.
+XU4B U4P U4N APU4 ANU4 U4INT OPA1656
+VTEST FB_BREAK U4INT DC 0 AC 1
+RBRK FB_BREAK U4O 1m
+
+* U4 pin7 -> R16, 6.942mm
+ROR16 U4O OR16M 5.380m
+LOR16 OR16M R16O 4.1652n
+COR16A U4O AGND 0.3471p
+COR16B R16O AGND 0.3471p
+
+* U4 pin6 -> R16, 7.449mm
+RNR16 U4N NR16M 5.780m
+LNR16 NR16M R16N 4.4694n
+CNR16A U4N AGND 0.37245p
+CNR16B R16N AGND 0.37245p
+
+* U4 pin6 -> R15, 9.389mm
+RNR15 U4N NR15M 6.723m
+LNR15 NR15M R15N 5.6334n
+CNR15A U4N AGND 0.46945p
+CNR15B R15N AGND 0.46945p
+
+R16 R16O R16N 39k
+R15 R15N AGND 1k
+CFB_LOCAL R16O R16N {CFB}
+
+* Empty compensation branches still leave copper/pads. Reduced aggregate of
+* remaining VCMD/U4B_N routed stubs plus ~0.05pF per facing DNP pad pair.
+CSTUBV U4O AGND 5.25p
+CSTUBN U4N AGND 6.31p
+CDNP14 U4O U4N 0.05p
+CDNP37 U4O U4N 0.05p
+CDNP38 U4O U4N 0.05p
+CDNP39 U4O U4N 0.05p
+CDNP40 U4O U4N 0.05p
+CDNP41 U4O U4N 0.05p
+
+* TP8 test probe (10x class)
+RTP8 U4O AGND 10Meg
+CTP8 U4O AGND 10p
+
+* ------------------------ VCMD route -> OPA548 ------------------------------
+* U4 pin7 -> R5 is long on this PCB (~58.763mm)
+RVR5 U4O VR5M 59.938m
+LVR5 VR5M R5V 35.2578n
+CVR5A U4O AGND 2.93815p
+CVR5B R5V AGND 2.93815p
+R5 R5V INP 100
+
+* ------------------------------ J1 rails ------------------------------------
+VPPS PP_SRC PGND {J1}
+LPP PP_SRC PWR_P {LJ1}
+RPP PWR_P PWR_PM 0.05
+CPP PWR_PM PGND 470u
+
+VPNS PN_SRC PGND {-J1}
+LPN PN_SRC PWR_N {LJ1}
+RPN PWR_N PWR_NM 0.05
+CPN PWR_NM PGND 470u
+
+* ------------------- OPA548 OFF datasheet surrogate -------------------------
+* Differential input impedance 10Mohm || 6pF.
+RDIFF INP INN 10Meg
+CDIFF INP INN 6p
+* Common mode input impedance approx 1G || 4pF per input.
+RCMP INP PGND 1Gig
+CCMP INP PGND 4p
+RCMN INN PGND 1Gig
+CCMN INN PGND 4p
+
+* Sensitivity clamps only; thresholds are NOT claimed as exact silicon model.
+.model DIN D(Is=1n N=1.3 Rs=2 Cjo=5p)
+DIPU INP PWR_P DIN
+DIPL PWR_N INP DIN
+DINU INN PWR_P DIN
+DINL PWR_N INN DIN
+
+* Disabled output is high-Z. Weak bias only defines DC operating point.
+VOB OB PGND -0.4
+ROFF OUT OB 200k
+COFF OUT PGND 20p
+
+* ----------------------- real OPA548 board feedback -------------------------
+* J4 is OPEN.  Keep board feedback and snubber exactly in circuit.
+R46 OUT DRV 10m
+RSH2 DRV SPK 0.1
+R6 SPK INN 10m
+R12 DRV SN 4.7
+C4 SN PGND 47n
+
+* SS56B clamp approximation with large Schottky junction capacitance.
+.model DSS D(Is=5u N=1.05 Rs=0.02 Cjo={CDIODE} M=0.45 Vj=0.35 Bv=60 Ibv=1m)
+D1 DRV PWR_P DSS
+D2 PWR_N DRV DSS
+
+* ----------------------------- analyses -------------------------------------
+.control
+set noaskquit
+* U4B loop gain with all PCB-aware OFF loading present.
+ac dec 180 10 50Meg
+let lg=-v(U4INT)/v(FB_BREAK)
+wrdata results/reduced_loop.dat frequency lg
+
+* Startup transient. HFAMP defaults to zero; set e.g. 1m for a 105kHz probe.
+tran 0.1u 3m 0 0.1u
+wrdata results/reduced_tran.dat time v(MUL0) v(U4P) v(U4N) v(U4O) v(INP) v(INN) v(OUT) v(DRV) v(SPK) v(APU4) v(ANU4) i(VPPS) i(VPNS)
+quit
+.endc
+.end

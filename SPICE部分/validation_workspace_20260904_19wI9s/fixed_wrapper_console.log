@@ -1,0 +1,27 @@
+=== fixed split: r1 ===
+RUN signoff_fixed_r1_carrier1k [full]
+Done: /mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/split_fixed_r1 | simulation_failures=0 | acceptance_failures=1
+=== fixed split: r5 ===
+RUN signoff_fixed_r5_carrier1k [full]
+Done: /mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/split_fixed_r5 | simulation_failures=0 | acceptance_failures=0
+=== fixed split: r7p2 ===
+RUN signoff_fixed_r7p2_carrier1k [full]
+Done: /mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/split_fixed_r7p2 | simulation_failures=0 | acceptance_failures=0
+=== fixed split: r20 ===
+RUN signoff_fixed_r20_carrier1k [full]
+Done: /mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/split_fixed_r20 | simulation_failures=0 | acceptance_failures=0
+=== fixed split: r100 ===
+RUN signoff_fixed_r100_carrier1k [full]
+Done: /mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/split_fixed_r100 | simulation_failures=0 | acceptance_failures=1
+{
+  "cases": 5,
+  "simulation_failures": 0,
+  "acceptance_failures": 2,
+  "simulation_status_counts": {
+    "completed": 5
+  },
+  "acceptance_status_counts": {
+    "pass": 3,
+    "fail": 2
+  }
+}

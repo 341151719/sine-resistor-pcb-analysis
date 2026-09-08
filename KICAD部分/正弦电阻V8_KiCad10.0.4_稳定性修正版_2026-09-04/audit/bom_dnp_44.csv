@@ -1,0 +1,45 @@
+﻿Refs,Value,Footprint,Qty,DNP,Assembly Status,LCSC Part #,BOM Value
+C13,1p/2.2p/4.7p EXP,easyedapro:C0805,1,DNP,DNP,,DNP；实验备料1pF/2.2pF/4.7pF C0G 0805
+C14,1p/2.2p/4.7p EXP,easyedapro:C0805,1,DNP,DNP,,DNP；实验备料1pF/2.2pF/4.7pF C0G 0805
+C29,1uF,easyedapro:C0805,1,DNP,DNP,,1uF
+C30,1uF,easyedapro:C0805,1,DNP,DNP,,1uF
+C31,4.7p,easyedapro:C0805,1,DNP,DNP,,4.7p
+C32,10p,easyedapro:C0805,1,DNP,DNP,,10p
+C33,22p,easyedapro:C0805,1,DNP,DNP,,22p
+C34,47p,easyedapro:C0805,1,DNP,DNP,,47p
+C35,100p,easyedapro:C0805,1,DNP,DNP,,100p
+C36,10p-100p,easyedapro:C0805,1,DNP,DNP,,10p-100p
+C37,4.7p,easyedapro:C0805,1,DNP,DNP,,4.7p
+C38,10p,easyedapro:C0805,1,DNP,DNP,,10p
+C39,22p,easyedapro:C0805,1,DNP,DNP,,22p
+C40,47p,easyedapro:C0805,1,DNP,DNP,,47p
+C41,100p,easyedapro:C0805,1,DNP,DNP,,100p
+C42,10p-100p,easyedapro:C0805,1,DNP,DNP,,10p-100p
+D3,SS56 +clamp SPK DNP,easyedapro:SMB_L4.3-W3.6-LS5.4-RD,1,DNP,DNP,,SS56 +clamp SPK DNP
+D4,SS56 -clamp SPK DNP,easyedapro:SMB_L4.3-W3.6-LS5.4-RD,1,DNP,DNP,,SS56 -clamp SPK DNP
+J10,EXP_SPI_TIM_DNP,easyedapro:AAI_C11_35_LOCAL_Footprints_AAI_PinHeader_1x05_P2_54mm_Vertical,1,DNP,DNP,,EXP_SPI_TIM_DNP
+J11,EXP_I2C_DAC_DNP,easyedapro:AAI_C11_35_LOCAL_Footprints_AAI_PinHeader_1x05_P2_54mm_Vertical,1,DNP,DNP,,EXP_I2C_DAC_DNP
+R1,0R,easyedapro:R0805,1,DNP,DNP,,0R
+R2,0R,easyedapro:R0805,1,DNP,DNP,,0R
+R8,33.2kR 1%,easyedapro:R0805,1,DNP,DNP,,33.2kΩ 1%
+R9,22.1kR 1%,easyedapro:R0805,1,DNP,DNP,,22.1kΩ 1%
+R25,6.49kR 0.1%,easyedapro:R0805,1,DNP,DNP,,6.49kΩ 0.1%
+R26,10k,easyedapro:R0805,1,DNP,DNP,,10k
+R27,100k,easyedapro:R0805,1,DNP,DNP,,100k
+R28,100kR ±1%,easyedapro:R0805,1,DNP,DNP,,100kΩ ±1%
+R29,10kR ±1%,easyedapro:R0805,1,DNP,DNP,,10kΩ ±1%
+R30,100k,easyedapro:R0805,1,DNP,DNP,,100k
+R31,10k,easyedapro:R0805,1,DNP,DNP,,10k
+R32,360kR ±1%,easyedapro:R0805,1,DNP,DNP,,360kΩ ±1%
+R33,360kR ±1%,easyedapro:R0805,1,DNP,DNP,,360kΩ ±1%
+R37,1MR,easyedapro:R0805,1,DNP,DNP,,1MΩ
+R38,1MR,easyedapro:R0805,1,DNP,DNP,,1MΩ
+R39,10kR,easyedapro:R0805,1,DNP,DNP,,10kΩ
+R40,1MR,easyedapro:R0805,1,DNP,DNP,,1MΩ
+R41,10MR,easyedapro:R0805,1,DNP,DNP,,10MΩ
+R42,0R,easyedapro:R0805,1,DNP,DNP,,0Ω
+R43,0R,easyedapro:R0805,1,DNP,DNP,,0Ω
+R44,1k-10k,easyedapro:R0805,1,DNP,DNP,,1k–10k
+R45,1k-10k,easyedapro:R0805,1,DNP,DNP,,1k–10k
+U9,OPA1656IDR,easyedapro:SOIC-8_L4.9-W3.9-P1.27-LS6.0-BL,1,DNP,DNP,,OPA1656IDR
+U10,TMUX7219DGKRQ1,easyedapro:VSSOP-8_L3.0-W3.0-P0.65-LS4.9-BL,1,DNP,DNP,,TMUX7219DGKRQ1

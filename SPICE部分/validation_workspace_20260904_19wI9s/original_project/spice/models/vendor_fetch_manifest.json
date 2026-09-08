@@ -1,0 +1,43 @@
+{
+  "note": "Official vendor models may require license acceptance or simulator-specific cleanup. This project includes ngspice-compatible surrogate models for default runs.",
+  "models": [
+    {
+      "part": "OPA548",
+      "vendor": "Texas Instruments",
+      "official_page": "https://www.ti.com/product/OPA548",
+      "model_candidates": [
+        "https://www.ti.com/lit/zip/sbom088",
+        "https://www.ti.com/lit/zip/sbom191"
+      ],
+      "status": "Official PSpice/TINA models are listed by TI; local download recommended."
+    },
+    {
+      "part": "AD633",
+      "vendor": "Analog Devices",
+      "official_page": "https://www.analog.com/en/products/ad633.html",
+      "model_candidates": [
+        "https://www.analog.com/media/en/simulation-models/spice-models/ad633.cir",
+        "https://www.analog.com/media/en/simulation-models/spice-models/ad633j.cir"
+      ],
+      "status": "Official SPICE Macro Models listed; download redirects through ADI license agreement."
+    },
+    {
+      "part": "INA149",
+      "vendor": "Texas Instruments",
+      "official_page": "https://www.ti.com/product/INA149",
+      "model_candidates": [
+        "https://www.ti.com/product/INA149#design-tools-simulation"
+      ],
+      "status": "Check TI product page / PSpice for TI library. Surrogate included for ngspice."
+    },
+    {
+      "part": "OPA1656",
+      "vendor": "Texas Instruments",
+      "official_page": "https://www.ti.com/product/OPA1656",
+      "model_candidates": [
+        "https://www.ti.com/product/OPA1656#design-tools-simulation"
+      ],
+      "status": "TI page lists simulation resources / PSpice for TI access. Surrogate included for ngspice."
+    }
+  ]
+}

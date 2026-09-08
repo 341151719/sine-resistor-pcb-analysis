@@ -1,0 +1,20 @@
+{
+  "C27": {
+    "Manufacturer": "KEMET",
+    "Manufacturer Part": "C0805C103J5GACTU",
+    "LCSC Part #": "C2167597",
+    "BOM Value": "10nF ±5% 50V C0G 0805"
+  },
+  "R10": {
+    "Manufacturer": "UNI-ROYAL",
+    "Manufacturer Part": "0805W8F6801T5E",
+    "LCSC Part #": "C17772",
+    "BOM Value": "6.8kΩ ±1% 125mW 0805"
+  },
+  "R12": {
+    "Manufacturer": "EVER OHMS",
+    "Manufacturer Part": "CRH2512F4R70E04S",
+    "LCSC Part #": "C2897629",
+    "BOM Value": "4.7Ω ±1% 2W 2512"
+  }
+}

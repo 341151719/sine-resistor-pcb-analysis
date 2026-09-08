@@ -1,0 +1,1688 @@
+
+
+下面给出一个**可落地的一通道原型方案**：把这只 8 Ω 动圈单元当作“被外界声压驱动的电声膜/反射体”，在其端子上接一个**有源合成阻抗 / 广义负阻抗变换器**，使声学侧通过 \(B\ell\) 耦合看到的电学阻尼随时间按正弦变化。
+
+> **先说关键结论**：  
+> 如果“被动性”指**完全不接外部电源、只用 R/L/C/开关/无源网络**，那么你要求的 \(R_\mathrm{dc}\) 从 \(7.2\,\Omega\) 降到 \(1\,\Omega\) 是**物理上做不到的**：短路端子时，动生电流回路的最小串联电阻就是线圈铜阻 \(R_e=7.2\,\Omega\)。  
+> 要得到等效 \(1\,\Omega\)，外接电路必须合成
+>
+> \[
+> R_x(t)=R_\mathrm{target}(t)-R_e=1-7.2=-6.2\,\Omega
+> \]
+>
+> 也就是**负电阻**。因此本方案的正确表述应是：声学上它不接“音频驱动信号”，仍由外界声压激发；但电学端接入一个**有源、供电的合成阻抗电路**，用来实时改变反射/吸收特性。
+
+---
+
+## 1. 设计目标重写
+
+你的目标可以写成：
+
+\[
+R_\mathrm{target}(t)
+=
+R_0
++
+A_1\sin(2\pi f_1 t+\phi_1)
++
+A_2\sin(2\pi f_2 t+\phi_2)
+\]
+
+并限制：
+
+\[
+1\,\Omega \le R_\mathrm{target}(t)\le 100\,\Omega
+\]
+
+其中：
+
+\[
+10\,\text{Hz}\le f_1,f_2 \le 1000\,\text{Hz}
+\]
+
+由于线圈铜阻为：
+
+\[
+R_e=7.2\,\Omega
+\]
+
+所以外接有源合成阻抗应为：
+
+\[
+R_x(t)=R_\mathrm{target}(t)-R_e
+\]
+
+因此：
+
+\[
+R_x(t)\in[-6.2\,\Omega,\;92.8\,\Omega]
+\]
+
+这意味着外接电路必须同时能合成：
+
+- 正电阻：\(0\sim92.8\,\Omega\)
+- 零电阻：当 \(R_\mathrm{target}=7.2\,\Omega\) 时，\(R_x=0\)
+- 负电阻：最低到 \(-6.2\,\Omega\)
+
+**所以不建议用传统“电流源式” \(i=v/R_x(t)\) 方案**，因为当 \(R_x(t)\to0\) 时会奇异。这里选择更稳妥的**电压型合成阻抗**：
+
+\[
+v_\mathrm{port}=R_x(t)\,i_\mathrm{port}
+\]
+
+当 \(R_x=0\) 时，它自然退化为“有源短路”；当 \(R_x<0\) 时，它就是负阻抗。
+
+---
+
+## 2. 用你的 T/S 参数建立电声节点模型
+
+你给出的核心参数：
+
+| 参数 | 数值 |
+|---|---:|
+| 线圈直流电阻 \(R_e\) | \(7.2\,\Omega\) |
+| 线圈电感 \(L_e\) | \(0.2\,\mathrm{mH}\) |
+| 力因数 \(B\ell\) | \(4.6\,\mathrm{T\,m}\) |
+| 振动质量 \(M_\mathrm{ms}\) | \(5.7\,\mathrm{g}=0.0057\,\mathrm{kg}\) |
+| 谐振频率 \(f_s\) | \(90\,\mathrm{Hz}\) |
+| 机械 Q \(Q_\mathrm{ms}\) | \(2.29\) |
+| 活塞面积 \(S_d\) | \(50\,\mathrm{cm^2}=0.005\,\mathrm{m^2}\) |
+| 最大线性位移 | \(\pm4\,\mathrm{mm}\) |
+
+角谐振频率：
+
+\[
+\omega_s=2\pi f_s=565.49\,\mathrm{rad/s}
+\]
+
+机械顺性：
+
+\[
+C_\mathrm{ms}
+=
+\frac{1}{M_\mathrm{ms}\omega_s^2}
+=
+5.486\times10^{-4}\,\mathrm{m/N}
+\]
+
+机械刚度：
+
+\[
+K_\mathrm{ms}
+=
+\frac{1}{C_\mathrm{ms}}
+\approx
+1823\,\mathrm{N/m}
+\]
+
+机械损耗：
+
+\[
+R_\mathrm{ms}
+=
+\frac{\omega_s M_\mathrm{ms}}{Q_\mathrm{ms}}
+=
+1.408\,\mathrm{N\,s/m}
+\]
+
+电声耦合方程采用常见动圈模型：
+
+\[
+v_e
+=
+R_e i_e
++
+L_e\frac{di_e}{dt}
++
+B\ell\,u
+\]
+
+\[
+M_\mathrm{ms}\frac{du}{dt}
++
+R_\mathrm{ms}u
++
+\frac{1}{C_\mathrm{ms}}\int u\,dt
++
+B\ell\,i_e
+=
+S_d p_\mathrm{ext}(t)
+\]
+
+其中：
+
+- \(u\)：膜片速度，单位 \(\mathrm{m/s}\)
+- \(p_\mathrm{ext}\)：外界声压
+- \(S_d p_\mathrm{ext}\)：作用在膜片上的等效力
+- \(B\ell u\)：反电动势
+- \(B\ell i_e\)：电流产生的反作用力
+
+忽略线圈电感时，由电端形成的等效机械阻尼为：
+
+\[
+R_\mathrm{em}(t)
+=
+\frac{(B\ell)^2}{R_\mathrm{target}(t)}
+\]
+
+因此：
+
+| \(R_\mathrm{target}\) | \(R_\mathrm{em}=(B\ell)^2/R_\mathrm{target}\) |
+|---:|---:|
+| \(1\,\Omega\) | \(21.16\,\mathrm{N\,s/m}\) |
+| \(7.2\,\Omega\) | \(2.94\,\mathrm{N\,s/m}\) |
+| \(50.5\,\Omega\) | \(0.419\,\mathrm{N\,s/m}\) |
+| \(100\,\Omega\) | \(0.212\,\mathrm{N\,s/m}\) |
+
+也就是说，当你把等效电阻从 \(100\,\Omega\) 拉到 \(1\,\Omega\) 时，电磁阻尼大约增加：
+
+\[
+\frac{21.16}{0.212}\approx100
+\]
+
+这会显著改变膜片的声学边界条件。
+
+更准确地，考虑线圈电感：
+
+\[
+Z_\mathrm{em}(\omega,t)
+=
+\frac{(B\ell)^2}
+{R_\mathrm{target}(t)+j\omega L_e}
+\]
+
+在 \(f_s=90\,\mathrm{Hz}\) 附近：
+
+\[
+\omega L_e
+=
+2\pi\cdot90\cdot0.2\,\mathrm{mH}
+\approx0.113\,\Omega
+\]
+
+可以忽略。但在 \(4\,\mathrm{kHz}\)：
+
+\[
+\omega L_e
+\approx5.03\,\Omega
+\]
+
+所以如果你希望在几 kHz 以上仍然严格保持 \(1\sim100\,\Omega\) 的等效电阻，后续版本应加入**负电感合成**：
+
+\[
+v_x(t)=R_x(t)i-L_e\frac{di}{dt}
+\]
+
+但第一版不建议加负电感，因为微分环节会放大噪声并明显增加稳定性风险。
+
+---
+
+## 3. 节点描述法：系统级 MNA 方程
+
+定义节点和变量：
+
+| 名称 | 含义 |
+|---|---|
+| \(0\) | 电路地 / 喇叭负端 |
+| \(a\) | 喇叭正端 / 合成阻抗端口 |
+| \(i_z\) | 进入合成阻抗端口的电流 |
+| \(i_e\) | 通过线圈的电流 |
+| \(u\) | 膜片速度 |
+| \(x\) | 膜片位移 |
+| \(p(t)\) | 外部声压 |
+
+外接合成阻抗关系：
+
+\[
+v_a=R_x(t)i_z
+\]
+
+线圈与反电动势：
+
+\[
+v_a
+=
+R_e i_e
++
+L_e\frac{di_e}{dt}
++
+B\ell\,u
+\]
+
+端口 KCL：
+
+\[
+i_z+i_e=0
+\]
+
+机械方程：
+
+\[
+M_\mathrm{ms}\frac{du}{dt}
++
+R_\mathrm{ms}u
++
+K_\mathrm{ms}x
++
+B\ell\,i_e
+=
+S_d p(t)
+\]
+
+位移关系：
+
+\[
+\frac{dx}{dt}=u
+\]
+
+目标电阻：
+
+\[
+R_\mathrm{target}(t)
+=
+\operatorname{clip}
+\left[
+R_0
++
+A_1\sin(2\pi f_1t+\phi_1)
++
+A_2\sin(2\pi f_2t+\phi_2),
+1,
+100
+\right]
+\]
+
+外接阻抗：
+
+\[
+R_x(t)=R_\mathrm{target}(t)-7.2
+\]
+
+如果只用一个正弦覆盖 \(1\sim100\,\Omega\)，可取：
+
+\[
+R_\mathrm{target}(t)
+=
+50.5+49.5\sin(2\pi f_m t)
+\]
+
+如果用两个正弦叠加，建议满足：
+
+\[
+A_1+A_2 \le 49.5\,\Omega
+\]
+
+否则会发生裁剪，导致额外边带和非正弦调制。
+
+---
+
+## 4. 选择的电路拓扑
+
+### 4.1 总体结构
+
+采用**电压型合成阻抗**：
+
+```text
+外界声压
+   ↓
+动圈膜片机械运动
+   ↓
+反电动势 Bℓu
+   ↓
+喇叭端子 SPK+
+   ↓
+有源合成阻抗电路：v = R_x(t) · i
+```
+
+实际电路由五个部分组成：
+
+1. **功率运放级**：负责在喇叭端子上施加所需电压。
+2. **电流检测电阻 \(R_s\)**：检测进入合成阻抗的端口电流。
+3. **电流检测放大器**：把小电压 \(v_s=R_s i\) 放大。
+4. **四象限模拟乘法器**：实现 \(i \times R_x(t)\)。
+5. **MCU/DAC 正弦发生器**：生成 \(R_\mathrm{target}(t)\)，支持单正弦或双正弦叠加。
+
+---
+
+## 5. 实现级节点定义
+
+实际电路节点：
+
+| 节点 | 说明 |
+|---|---|
+| `GND` | 喇叭负端、模拟地 |
+| `SPK` | 喇叭正端，即合成阻抗端口 |
+| `DRV` | 功率运放输出端 |
+| `VSENSE+` | 电流检测电阻靠 `SPK` 一侧 |
+| `VSENSE-` | 电流检测电阻靠 `DRV` 一侧 |
+| `ISIG` | 电流检测放大后的信号 |
+| `VK` | 电阻命令电压，代表 \(R_x/10\) |
+| `MUL` | AD633 乘法器输出 |
+| `VCMD` | 功率运放目标输出电压 |
+| `DAC_R` | MCU DAC 输出，代表 \(R_\mathrm{target}\) |
+
+电流检测电阻：
+
+\[
+R_s=0.1\,\Omega
+\]
+
+端口电流定义为从 `SPK` 进入电路：
+
+\[
+i_p=\frac{V_\mathrm{SPK}-V_\mathrm{DRV}}{R_s}
+\]
+
+检测电压：
+
+\[
+v_s=V_\mathrm{SPK}-V_\mathrm{DRV}=R_s i_p
+\]
+
+电流检测放大倍数取 50：
+
+\[
+v_I=50v_s=50R_s i_p=5i_p
+\]
+
+命令电压定义：
+
+\[
+V_K=\frac{R_x(t)}{10}
+\]
+
+AD633 输出关系为：
+
+\[
+V_\mathrm{MUL}
+=
+\frac{v_I V_K}{10}
+\]
+
+后级放大 20 倍：
+
+\[
+V_\mathrm{CMD}
+=
+20V_\mathrm{MUL}
+=
+20\frac{(5i_p)(R_x/10)}{10}
+=
+R_x i_p
+\]
+
+功率运放闭环强制：
+
+\[
+V_\mathrm{SPK}\approx V_\mathrm{CMD}
+\]
+
+因此：
+
+\[
+V_\mathrm{SPK}\approx R_x(t)i_p
+\]
+
+这正是目标合成阻抗。
+
+---
+
+## 6. 为什么选这种“电压型”方案，而不是普通 NIC？
+
+传统负阻抗变换器常写成某种固定比例：
+
+\[
+R_\mathrm{in}=-kR
+\]
+
+但你的目标有三个麻烦：
+
+1. \(R_x(t)\) 要从 \(-6.2\,\Omega\) 到 \(92.8\,\Omega\) 连续变化。
+2. 中间要穿过 \(0\,\Omega\)。
+3. 变化速度最高 \(1000\,\mathrm{Hz}\)，且端口信号本身可能在音频范围。
+
+如果用电流源式：
+
+\[
+i=\frac{v}{R_x(t)}
+\]
+
+当 \(R_x\to0\) 时会要求无限大电流，实际必然崩溃或削顶。  
+所以本方案改成：
+
+\[
+v=R_x(t)i
+\]
+
+这样：
+
+- \(R_x>0\)：合成正电阻
+- \(R_x=0\)：合成短路
+- \(R_x<0\)：合成负电阻
+
+更加适合穿越零点。
+
+---
+
+## 7. 关键元器件选择
+
+### 7.1 功率运放：OPA548
+
+推荐第一版使用：
+
+```text
+U1 = OPA548T 或 OPA548F
+```
+
+理由：
+
+- 可单电源或双电源工作，双电源最高到 \(\pm30\,\mathrm{V}\)。
+- 连续输出电流能力约 \(3\,\mathrm{A}\)，峰值约 \(5\,\mathrm{A}\)。
+- 有可调电流限制、热关断、输出使能/状态引脚。
+- 官方资料给出 \(1\,\mathrm{MHz}\) 增益带宽、\(10\,\mathrm{V/\mu s}\) 典型压摆率，并给出输出电流限制公式。([ti.com](https://www.ti.com/lit/ds/symlink/opa548.pdf?ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252Fja-jp%252FOPA548%253Fbm-verify%253DAAQAAAAL_____4UdogYiOiNu1VXZxh7NLdqf2IbMhC_uxCd7KrS1Xj98-vQQhC_z9hXULZArEOCyiVroLoLtQIBL1FsqPxi1cqTJiPZsG_zM1uptsmmwqa3xH35z7d98lI4MvLJzfcmileQ4KDPmG2tMqBk_a1DHbfMZs1NCxxwOzzNwMiihusybELouZk2yeyz-0LjmKVKkD4RK8-3zgxNpVBYe1eNwRdtisUaTOqgT3xFdjdQ_2CTkVA9ersAPc3aLz5-4VyfKTIA&ts=1778795946419))
+- 对感性负载，资料建议使用输出 RC snubber，并建议用 5 A 或更高连续电流能力的肖特基钳位二极管保护输出。([ti.com](https://www.ti.com/lit/ds/symlink/opa548.pdf?ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252Fja-jp%252FOPA548%253Fbm-verify%253DAAQAAAAL_____4UdogYiOiNu1VXZxh7NLdqf2IbMhC_uxCd7KrS1Xj98-vQQhC_z9hXULZArEOCyiVroLoLtQIBL1FsqPxi1cqTJiPZsG_zM1uptsmmwqa3xH35z7d98lI4MvLJzfcmileQ4KDPmG2tMqBk_a1DHbfMZs1NCxxwOzzNwMiihusybELouZk2yeyz-0LjmKVKkD4RK8-3zgxNpVBYe1eNwRdtisUaTOqgT3xFdjdQ_2CTkVA9ersAPc3aLz5-4VyfKTIA&ts=1778795946419))
+
+第一版建议供电：
+
+\[
+\pm18\,\mathrm{V}
+\]
+
+不要一开始就上 \(\pm30\,\mathrm{V}\)。  
+原因是负阻抗调试时，线性功率级的热耗散可能很大。
+
+电流限制建议：
+
+- 初始安全版：\(I_\mathrm{lim}\approx1.5\,\mathrm{A}\)
+- 强化测试版：\(I_\mathrm{lim}\approx2.0\,\mathrm{A}\)
+
+OPA548 电流限制公式：
+
+\[
+I_\mathrm{lim}
+=
+\frac{15000\cdot4.75}{13750+R_\mathrm{CL}}
+\]
+
+所以：
+
+\[
+R_\mathrm{CL}(1.5\,\mathrm{A})
+=
+33.75\,\mathrm{k\Omega}
+\]
+
+取标准值：
+
+\[
+R_\mathrm{CL}=33.2\,\mathrm{k\Omega}
+\]
+
+约得到：
+
+\[
+I_\mathrm{lim}\approx1.52\,\mathrm{A}
+\]
+
+若要 \(2.0\,\mathrm{A}\)：
+
+\[
+R_\mathrm{CL}\approx21.9\,\mathrm{k\Omega}
+\]
+
+取：
+
+\[
+R_\mathrm{CL}=22.1\,\mathrm{k\Omega}
+\]
+
+约得到：
+
+\[
+I_\mathrm{lim}\approx1.99\,\mathrm{A}
+\]
+
+建议 PCB 上做跳线选择：
+
+```text
+J_ILIM:
+  1-2: 33.2 kΩ → 1.5 A
+  2-3: 22.1 kΩ → 2.0 A
+```
+
+---
+
+### 7.2 为什么不选 LM3886 / TDA7294 作为第一版？
+
+LM3886、TDA7294 都是音频功放 IC，便宜、功率大，但不适合第一版合成负阻抗实验：
+
+- 它们主要面向音频功率放大，不是精密功率运放。
+- 很多典型应用要求较高闭环增益，LM3886 数据资料中的设计讨论也以常规音频功放增益范围为基础。([ti.com](https://www.ti.com/lit/ds/symlink/lm3886.pdf?ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252Fde-de%252FLM3886&ts=1778917978836))
+- 合成阻抗需要低频/DC 精确关系：
+
+\[
+v=R(t)i
+\]
+
+而不是单纯放大音频输入。
+- 负阻抗负载下更容易出现相位裕度问题。
+- 第一版调试需要电流限制、禁用、热状态等保护接口，OPA548 更合适。
+
+如果后续证明算法和声学效果成立，再考虑用：
+
+- OPA549：更高电流，代价更高。OPA548 官方页面也把 OPA549列为更高电流替代器件。([ti.com](https://www.ti.com/product/OPA548))
+- 离散 MOSFET AB 级
+- Class-D 电流/电压合成桥
+
+---
+
+### 7.3 模拟乘法器：AD633
+
+推荐：
+
+```text
+U2 = AD633ARZ
+```
+
+理由：
+
+- 四象限模拟乘法器，正负信号都能处理。
+- 典型关系：
+
+\[
+W=\frac{XY}{10}+Z
+\]
+
+- 1 MHz 带宽、20 V/µs 压摆率，足够覆盖 \(10\sim1000\,\mathrm{Hz}\) 的阻值调制以及音频范围内的电流信号。
+- 可用 \(\pm8\sim\pm18\,\mathrm{V}\) 供电，适合本设计的 \(\pm15\,\mathrm{V}\) 模拟电源。
+- 不需要外部复杂校准，8 引脚封装，便于 KiCad/PCB。([analog.com](https://www.analog.com/en/products/ad633.html))
+
+AD633 的成本比 LM13700、J-FET 可变电阻、数字电位器高，但第一版应该优先保证可预测性。
+
+---
+
+### 7.4 电流检测差分放大：INA149 + OPA1656
+
+电流检测位置在 OPA548 输出与喇叭端子之间：
+
+```text
+DRV ── RSHUNT ── SPK
+```
+
+由于 `DRV` 和 `SPK` 都可能相对地正负摆动，所以不推荐普通单电源电流检测芯片。
+
+推荐前端：
+
+```text
+U3 = INA149AID
+```
+
+理由：
+
+- 精密单位增益差分放大器。
+- 可在很高共模电压下测量小差分信号。
+- 官方资料给出 \(\pm275\,\mathrm{V}\) 共模范围、500 kHz 带宽、\(\pm2\sim\pm18\,\mathrm{V}\) 供电范围。([ti.com](https://www.ti.com/product/INA149))
+
+后续放大：
+
+```text
+U4 = OPA1656ID
+```
+
+理由：
+
+- 双运放，SOIC-8，布局方便。
+- 53 MHz 增益带宽、24 V/µs 压摆率。
+- 可 \(\pm2.25\sim\pm18\,\mathrm{V}\) 供电。
+- 低噪声、低失真，适合音频/控制环路。([ti.com](https://www.ti.com/lit/ds/symlink/opa1656.pdf?ts=1745487201461))
+
+电流检测增益：
+
+\[
+R_s=0.1\,\Omega
+\]
+
+\[
+v_s=R_s i_p=0.1i_p
+\]
+
+INA149 输出单位增益：
+
+\[
+v_s
+\]
+
+OPA1656 放大 50 倍：
+
+\[
+v_I=50v_s=5i_p
+\]
+
+推荐阻值：
+
+```text
+U4A non-inverting gain = 50
+
+Rg = 1.00 kΩ, 0.1%
+Rf = 49.0 kΩ, 0.1%
+Cf = 68 pF ~ 150 pF, C0G, 调相位裕度
+```
+
+---
+
+### 7.5 电流检测电阻
+
+推荐：
+
+```text
+RSHUNT = 0.1 Ω, ≥5 W, 1%, 低电感电流检测电阻
+```
+
+候选：
+
+```text
+Vishay LVR05R1000FE70
+0.1 Ω, 5 W, 1%, axial current sense / metal strip
+```
+
+Vishay LVR05 系列覆盖低阻值范围并有 5 W 等级，适合做第一版容易焊接、容易 Kelvin 取样的原型。([vishay.com](https://www.vishay.com/docs/30206/lvr.pdf))
+
+如果希望全贴片，可用：
+
+```text
+Vishay WSR5R1000FEA
+0.1 Ω, 5 W, SMD current sense
+```
+
+但第一版建议通孔或大封装，便于散热和手工调试。
+
+功耗检查：
+
+\[
+P=I^2R
+\]
+
+若 \(I=2\,\mathrm{A}\)：
+
+\[
+P=2^2\cdot0.1=0.4\,\mathrm{W}
+\]
+
+5 W 余量充足。
+
+---
+
+### 7.6 MCU / DAC：STM32G431CBT6
+
+推荐：
+
+```text
+U6 = STM32G431CBT6
+```
+
+理由：
+
+- 内置 12-bit DAC，可直接产生 \(R_\mathrm{target}(t)\) 命令。
+- 有较多定时器，适合用 DMA 或定时中断输出正弦表。
+- 内置 ADC、比较器、运放资源，可用于后续电流、电压、温度监控。
+- ST 官方参数页列出该系列有 4 个 12-bit DAC、多个定时器、3 个集成运放和 4 个比较器。([st.com](https://www.st.com/en/microcontrollers-microprocessors/stm32g431cb.html))
+
+DAC 映射建议：
+
+让 MCU 输出：
+
+\[
+V_\mathrm{DAC}
+=
+3.000
+\frac{R_\mathrm{target}-1}{99}
+\]
+
+其中 \(V_\mathrm{DAC}\in[0,3.0]\,\mathrm{V}\)。
+
+模拟缩放得到：
+
+\[
+V_K
+=
+3.3V_\mathrm{DAC}-0.62
+\]
+
+检查：
+
+当 \(R_\mathrm{target}=1\,\Omega\)：
+
+\[
+V_\mathrm{DAC}=0
+\]
+
+\[
+V_K=-0.62\,\mathrm{V}
+\]
+
+对应：
+
+\[
+R_x=10V_K=-6.2\,\Omega
+\]
+
+当 \(R_\mathrm{target}=100\,\Omega\)：
+
+\[
+V_\mathrm{DAC}=3.0\,\mathrm{V}
+\]
+
+\[
+V_K=9.28\,\mathrm{V}
+\]
+
+对应：
+
+\[
+R_x=92.8\,\Omega
+\]
+
+当 \(R_\mathrm{target}=7.2\,\Omega\)：
+
+\[
+V_K=0
+\]
+
+对应外接阻抗为 \(0\,\Omega\)，即端口短路。
+
+---
+
+## 8. 推荐模拟电路数值
+
+### 8.1 电源
+
+建议第一版：
+
+```text
+外部输入：
++18 V, GND, -18 V
+
+板上模拟小信号：
++15 V, -15 V
+
+数字：
++3.3 V
+```
+
+电源架构：
+
+```text
++18 V ── LDO / DC-DC ── +15 V
+-18 V ── LDO / DC-DC ── -15 V
++15 V 或 +18 V ── buck/LDO ── +3.3 V
+```
+
+如果实验室原型，最简单是：
+
+```text
+±18 V 双路实验电源
++3.3 V 小模块或板上 LDO
+```
+
+不要第一版就集成复杂隔离电源或大功率 DC/DC。
+
+---
+
+### 8.2 AD633 乘法部分
+
+输入：
+
+\[
+X=v_I=5i_p
+\]
+
+\[
+Y=V_K=\frac{R_x}{10}
+\]
+
+AD633 输出：
+
+\[
+V_\mathrm{MUL}
+=
+\frac{XY}{10}
+=
+\frac{(5i_p)(R_x/10)}{10}
+=
+\frac{R_xi_p}{20}
+\]
+
+后级 OPA1656 放大 20 倍：
+
+\[
+V_\mathrm{CMD}=R_xi_p
+\]
+
+后级推荐：
+
+```text
+U4B non-inverting gain = 20
+
+Rg = 1.00 kΩ, 0.1%
+Rf = 19.0 kΩ, 0.1%
+Cf = 150 pF ~ 330 pF, C0G, 用于限制高频环路增益
+```
+
+---
+
+### 8.3 功率级
+
+```text
+U1 OPA548
+非反相输入：VCMD
+反相输入：从 SPK 端反馈
+输出：DRV
+DRV ─ RSHUNT ─ SPK
+```
+
+这样 OPA548 会驱动 `DRV`，使 `SPK` 跟随 `VCMD`。
+
+保护：
+
+```text
+D+ : SPK/DRV → +18 V 肖特基钳位
+D- : -18 V → SPK/DRV 肖特基钳位
+建议 ≥5 A, ≥60 V
+```
+
+snubber：
+
+```text
+DRV ─ 4.7 Ω / 2 W ─ 47 nF / 100 V film ─ GND
+```
+
+可调范围：
+
+```text
+Rsnub = 3.3 Ω ~ 10 Ω
+Csnub = 10 nF ~ 100 nF
+```
+
+OPA548 数据资料也明确建议在驱动感性或复杂负载时考虑 RC snubber，并建议输出到电源轨的肖特基钳位。([ti.com](https://www.ti.com/lit/ds/symlink/opa548.pdf?ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252Fja-jp%252FOPA548%253Fbm-verify%253DAAQAAAAL_____4UdogYiOiNu1VXZxh7NLdqf2IbMhC_uxCd7KrS1Xj98-vQQhC_z9hXULZArEOCyiVroLoLtQIBL1FsqPxi1cqTJiPZsG_zM1uptsmmwqa3xH35z7d98lI4MvLJzfcmileQ4KDPmG2tMqBk_a1DHbfMZs1NCxxwOzzNwMiihusybELouZk2yeyz-0LjmKVKkD4RK8-3zgxNpVBYe1eNwRdtisUaTOqgT3xFdjdQ_2CTkVA9ersAPc3aLz5-4VyfKTIA&ts=1778795946419))
+
+---
+
+## 9. 排除的元器件 / 方案
+
+| 被排除方案 | 排除原因 |
+|---|---|
+| 纯无源 R/L/C 网络 | 不能把等效电阻降到 \(R_e=7.2\,\Omega\) 以下。 |
+| 继电器/模拟开关电阻阵列 | 只能合成正电阻或短路，不能合成 \(-6.2\,\Omega\)。并且 10–1000 Hz 连续正弦变化不适合机械继电器。 |
+| 数字电位器直接接端口 | 端口电流、电压、功率不够；不能处理负阻抗；音频电流下失真和损坏风险高。 |
+| 数字电位器放在 NIC 反馈里 | 可行但跨越 \(R_x=0\) 很麻烦，更新有毛刺，控制复杂。 |
+| JFET/MOSFET 线性可变电阻 | 双向小信号尚可，功率和线性都不够；无法直接生成负阻抗。 |
+| 光耦电阻 / Vactrol | 太慢，不适合最高 \(1000\,\mathrm{Hz}\) 阻值调制。 |
+| LM13700 OTA | 成本低，但线性范围、温漂、校准难度不如 AD633；第一版不建议。 |
+| Class-D H 桥 | 效率高，但控制、EMI、采样延迟、稳定性都更复杂；建议第二版再做。 |
+| LM3886 / TDA7294 | 作为音频功放很好，但不是为 DC 精确合成阻抗设计；负阻抗环路调试风险高。 |
+
+---
+
+## 10. SPICE：理想合成阻抗 + 电声膜模型
+
+下面是一个 **ngspice / KiCad-ngspice 风格**的行为模型。  
+它用于验证：
+
+\[
+R_\mathrm{eff}(t)=R_e+R_x(t)=R_\mathrm{target}(t)
+\]
+
+并观察膜片速度变化。
+
+> 注意：这是系统行为模型，不是 OPA548 晶体管级模型。实际 PCB 前应再引入 OPA548 官方宏模型进行相位裕度验证。OPA548 官方页面说明有 SPICE macromodel 可用于分析。([ti.com](https://www.ti.com/product/OPA548))
+
+```spice
+* ------------------------------------------------------------
+* Active acoustic impedance loudspeaker shunt
+* Ideal synthetic impedance version
+* Compatible target: ngspice / KiCad-ngspice style
+* ------------------------------------------------------------
+
+.title Electrodynamic passive membrane with modulated synthetic impedance
+
+* ---------- Parameters from user ----------
+.param Re   = 7.2
+.param Le   = 0.2m
+.param Bl   = 4.6
+.param Mms  = 5.7m
+.param fs   = 90
+.param Qms  = 2.29
+.param Sd   = 5m
+.param TWOPI = 6.283185307179586
+
+* Derived mechanical values
+.param W0   = {TWOPI*fs}
+.param Cms  = {1/(Mms*W0*W0)}
+.param Rms  = {W0*Mms/Qms}
+.param Kms  = {1/Cms}
+
+* ---------- Modulation settings ----------
+* One sine spanning 1 to 100 ohm:
+.param R0   = 50.5
+.param A1   = 49.5
+.param fm1  = 100
+.param ph1  = 0
+
+* Optional second sine; keep A1 + A2 <= 49.5 to avoid clipping
+.param A2   = 0
+.param fm2  = 317
+.param ph2  = 0
+
+.param RMIN = 1
+.param RMAX = 100
+
+.func Rraw(t) { R0 + A1*sin(TWOPI*fm1*t + ph1) + A2*sin(TWOPI*fm2*t + ph2) }
+.func Rt(t)   { min(max(Rraw(t), RMIN), RMAX) }
+.func Rx(t)   { Rt(t) - Re }
+
+* ---------- Acoustic excitation ----------
+* 1 Pa at 120 Hz, just for test.
+* 1 Pa ~= 94 dB SPL.
+.param Pamp = 1
+.param fa   = 120
+
+* ---------- Ideal external synthetic impedance ----------
+* Port node is SPK relative to ground.
+* V(SPK) = Rx(time) * I(VZ)
+* VZ is a 0 V current-sense source.
+VZ SPK NZ 0
+BZ NZ 0 V = { Rx(time)*I(VZ) }
+
+* ---------- Voice coil electrical model ----------
+* SPK -> Le -> Re -> current sense -> motional EMF -> ground
+LVC SPK NL {Le}
+RVC NL NR {Re}
+VCOIL NR NEMF 0
+BBEMF NEMF 0 V = { Bl*V(VEL) }
+
+* ---------- Mechanical mobility analogy ----------
+* Node VEL voltage = cone velocity u, in m/s.
+* Current = mechanical force, in N.
+*
+* Mass:
+CMASS VEL 0 {Mms}
+
+* Mechanical damping:
+* I = V/R = Rms*u, so resistor value is 1/Rms.
+RDAMP VEL 0 {1/Rms}
+
+* Compliance:
+* Inductor current = displacement/Cms.
+LCOMP VEL 0 {Cms}
+
+* Small leakage for convergence
+RLEAK VEL 0 1e9
+
+* External acoustic force F = Sd * p
+* Inject force current into VEL node.
+BPRESS 0 VEL I = { Sd*Pamp*sin(TWOPI*fa*time) }
+
+* Electromagnetic reaction force.
+* Sign chosen so shorted coil gives damping for positive velocity.
+BMOTOR VEL 0 I = { -Bl*I(VCOIL) }
+
+* ---------- Probes ----------
+BRT    RTNODE   0 V = { Rt(time) }
+BRX    RXNODE   0 V = { Rx(time) }
+BREM   REMNODE  0 V = { Bl*Bl/Rt(time) }
+BQEFF  QNODE    0 V = { W0*Mms/(Rms + Bl*Bl/Rt(time)) }
+
+* Effective total electrical resistance, numerically:
+* Re + V(SPK)/I(VZ)
+* Add tiny current in denominator for numerical safety.
+BREFF  REFFNODE 0 V = { Re + V(SPK)/(I(VZ)+1e-15) }
+
+* ---------- Analysis ----------
+.tran 0 20m 0 2u
+
+* Basic output.
+.print tran V(RTNODE) V(RXNODE) V(REFFNODE) V(REMNODE) V(QNODE) V(VEL)
+
+.end
+```
+
+---
+
+## 11. SPICE 预期结果 / 验收表
+
+若设置：
+
+\[
+R_\mathrm{target}(t)=50.5+49.5\sin(2\pi\cdot100t)
+\]
+
+则周期为：
+
+\[
+T_m=10\,\mathrm{ms}
+\]
+
+关键时刻应得到：
+
+| 时间 | \(\sin(2\pi f_mt)\) | \(R_\mathrm{target}\) | \(R_x=R_\mathrm{target}-7.2\) | 说明 |
+|---:|---:|---:|---:|---|
+| \(0\,\mathrm{ms}\) | 0 | \(50.5\,\Omega\) | \(43.3\,\Omega\) | 中间值 |
+| \(2.5\,\mathrm{ms}\) | +1 | \(100\,\Omega\) | \(92.8\,\Omega\) | 最大阻值 |
+| \(5\,\mathrm{ms}\) | 0 | \(50.5\,\Omega\) | \(43.3\,\Omega\) | 中间值 |
+| \(7.5\,\mathrm{ms}\) | -1 | \(1\,\Omega\) | \(-6.2\,\Omega\) | 最小等效阻值，外部为负阻 |
+| \(10\,\mathrm{ms}\) | 0 | \(50.5\,\Omega\) | \(43.3\,\Omega\) | 回到中间值 |
+
+对应电磁机械阻尼：
+
+| \(R_\mathrm{target}\) | \(R_\mathrm{em}\) | 近似总 Q |
+|---:|---:|---:|
+| \(1\,\Omega\) | \(21.16\,\mathrm{N\,s/m}\) | \(0.143\) |
+| \(7.2\,\Omega\) | \(2.94\,\mathrm{N\,s/m}\) | \(0.742\) |
+| \(50.5\,\Omega\) | \(0.419\,\mathrm{N\,s/m}\) | \(1.765\) |
+| \(100\,\Omega\) | \(0.212\,\mathrm{N\,s/m}\) | \(1.991\) |
+
+其中：
+
+\[
+Q_\mathrm{eff}
+\approx
+\frac{\omega_s M_\mathrm{ms}}
+{R_\mathrm{ms}+(B\ell)^2/R_\mathrm{target}}
+\]
+
+这个表是很好的第一阶段验收标准：  
+SPICE 中 `V(RTNODE)` 和 `V(REFFNODE)` 应基本重合。
+
+---
+
+## 12. 实现级 SPICE：对应实际模拟乘法电路
+
+下面这个片段把前面的理想阻抗 `BZ` 换成“电流检测 + 乘法器 + 功率运放”的行为等效。  
+可把上一份 netlist 中的这一段：
+
+```spice
+VZ SPK NZ 0
+BZ NZ 0 V = { Rx(time)*I(VZ) }
+```
+
+替换为以下电路。
+
+```spice
+* ------------------------------------------------------------
+* Implementation-level behavioral synthetic impedance
+* DRV -- RSH -- SPK
+* Current defined as entering from SPK into the circuit.
+* ------------------------------------------------------------
+
+.param RSH = 0.1
+
+* Power op-amp output to port through current shunt
+RSHUNT DRV SPK {RSH}
+
+* Current sense signal:
+* Vs = V(SPK)-V(DRV) = RSH * ip
+* Gain 50 => ISIG = 50*Vs = 5*ip
+EISIG ISIG 0 VALUE = { 50*V(SPK,DRV) }
+
+* Resistance command:
+* VK = Rx/10
+BVK VK 0 V = { Rx(time)/10 }
+
+* AD633 ideal multiplication:
+* MUL = ISIG * VK / 10
+BMUL MUL 0 V = { V(ISIG)*V(VK)/10 }
+
+* Post gain = 20:
+* VCMD = 20*MUL = Rx*ip
+EPOST VCMD 0 VALUE = { 20*V(MUL) }
+
+* Simplified OPA548 closed-loop follower with saturation.
+* It drives DRV so that SPK follows VCMD.
+* For final simulation replace this with OPA548 macromodel.
+BOPA DRV 0 V = { min(max(1e5*(V(VCMD)-V(SPK)), -16), 16) }
+
+* Optional snubber, approximate
+RSNUB DRV NSNUB 4.7
+CSNUB NSNUB 0 47n
+```
+
+这个行为模型的核心验证是：
+
+\[
+V_\mathrm{SPK}\approx V_\mathrm{CMD}=R_x(t)i_p
+\]
+
+其中：
+
+\[
+i_p=\frac{V_\mathrm{SPK}-V_\mathrm{DRV}}{R_s}
+\]
+
+---
+
+## 13. 原理图节点清单，供下一步 KiCad 使用
+
+建议 KiCad 分页：
+
+### Sheet 1：Power
+
+```text
+J1:
+  +18V
+  GND
+  -18V
+
+U_P15:
+  +18V → +15V
+
+U_N15:
+  -18V → -15V
+
+U_3V3:
+  +15V 或 +18V → +3V3
+```
+
+每个运放电源脚附近：
+
+```text
+100 nF X7R
+10 µF ceramic/electrolytic
+```
+
+OPA548 附近：
+
+```text
+470 µF / 35 V from +18V to GND
+470 µF / 35 V from -18V to GND
+100 nF close to each rail
+```
+
+---
+
+### Sheet 2：Synthetic Impedance Power Stage
+
+```text
+U1 OPA548
+  +IN  ← VCMD
+  -IN  ← SPK feedback
+  OUT  → DRV
+  ILIM ← RCL select
+  E/S  ← MCU_ENABLE / FAULT_SHUTDOWN
+
+RSHUNT:
+  DRV → SPK
+  Kelvin+ = SPK side
+  Kelvin- = DRV side
+
+J_SPK:
+  SPK
+  GND
+```
+
+保护：
+
+```text
+D_CLAMP_POS:
+  DRV/SPK → +18V
+
+D_CLAMP_NEG:
+  -18V → DRV/SPK
+
+SNUBBER:
+  DRV → 4.7Ω → 47nF → GND
+```
+
+---
+
+### Sheet 3：Current Sense and Multiplier
+
+```text
+U3 INA149:
+  +IN = SPK_KELVIN
+  -IN = DRV_KELVIN
+  OUT = VSENSE
+
+U4A OPA1656:
+  VSENSE → gain 50 → ISIG
+
+U2 AD633:
+  X = ISIG
+  Y = VK
+  Z = 0
+  W = MUL
+
+U4B OPA1656:
+  MUL → gain 20 → VCMD
+```
+
+---
+
+### Sheet 4：MCU / DAC / Control
+
+```text
+U6 STM32G431CBT6
+
+DAC1_OUT → RC low-pass → scale/offset op amp → VK
+
+ADC channels:
+  ISIG_MON
+  SPK_MON
+  DRV_MON
+  TEMP_MON optional
+
+GPIO:
+  OPA548_ENABLE
+  FAULT_LED
+  UART/SWD
+```
+
+---
+
+## 14. MCU 输出逻辑
+
+### 14.1 单正弦模式
+
+```c
+Rtarget = 50.5f + 49.5f * sinf(2*pi*fm*t);
+```
+
+### 14.2 双正弦模式
+
+```c
+Rtarget =
+    Rbias
+  + A1 * sinf(2*pi*f1*t + phi1)
+  + A2 * sinf(2*pi*f2*t + phi2);
+```
+
+约束：
+
+```c
+Rtarget = clamp(Rtarget, 1.0f, 100.0f);
+```
+
+建议：
+
+```c
+A1 + A2 <= 49.5
+```
+
+避免裁剪。
+
+DAC 映射：
+
+```c
+Vdac = 3.000f * (Rtarget - 1.0f) / 99.0f;
+dac_code = roundf(4095.0f * Vdac / 3.3f);
+```
+
+模拟级得到：
+
+```text
+VK = 3.3 * Vdac - 0.62
+```
+
+也就是：
+
+```text
+10 * VK = Rtarget - 7.2 = Rx
+```
+
+---
+
+## 15. 稳定性与安全边界
+
+这是负阻抗系统，必须严肃对待稳定性。
+
+### 15.1 总等效电阻必须保持正值
+
+虽然外接电路可以是负电阻：
+
+\[
+R_x<0
+\]
+
+但总目标：
+
+\[
+R_\mathrm{target}=R_e+R_x
+\]
+
+必须满足：
+
+\[
+R_\mathrm{target}>0
+\]
+
+建议第一版调试时先限制：
+
+\[
+R_\mathrm{target}\ge5\,\Omega
+\]
+
+确认稳定后再降到：
+
+\[
+3\,\Omega
+\]
+
+最后再尝试：
+
+\[
+1\,\Omega
+\]
+
+### 15.2 线圈铜阻会随温度变化
+
+线圈热了以后 \(R_e\) 会升高。  
+如果你仍然按固定 \(7.2\,\Omega\) 去抵消，实际 \(R_\mathrm{target}\) 会偏离。
+
+建议 MCU 内部使用：
+
+\[
+R_x(t)=R_\mathrm{target}(t)-R_{e,\mathrm{est}}(t)
+\]
+
+第一版可手动校准：
+
+```text
+上电低电流测量 Rdc
+写入 Re_cal
+```
+
+第二版可以做在线估计。
+
+### 15.3 OPA548 热耗散
+
+当 \(R_x=-6.2\,\Omega\) 且端口电流较大时，有源电路可能向电端供能。  
+例如 \(i=1\,\mathrm{A}\) 时：
+
+\[
+P_x=R_xi^2=-6.2\,\mathrm{W}
+\]
+
+负号表示外接电路在供能。  
+因此它不是“无源热耗散器”，必须靠 OPA548 和电源处理能量流。
+
+### 15.4 必须有硬件关断
+
+建议：
+
+```text
+|ISIG| 超限 → 比较器 → OPA548 E/S 关断
+|SPK| 超限 → 比较器 → OPA548 E/S 关断
+MCU watchdog fault → OPA548 E/S 关断
+温度过高 → OPA548 E/S 关断
+```
+
+---
+
+## 16. 第一版 BOM 建议
+
+| 位号 | 器件 | 建议型号 | 说明 |
+|---|---|---|---|
+| U1 | 功率运放 | OPA548T / OPA548F | 合成阻抗功率级 |
+| U2 | 四象限乘法器 | AD633ARZ | 实现 \(i\times R_x(t)\) |
+| U3 | 高共模差分放大器 | INA149AID | 电流检测前端 |
+| U4, U5 | 双运放 | OPA1656ID | 电流检测增益、后级增益、DAC 缩放 |
+| U6 | MCU | STM32G431CBT6 | 正弦/双正弦命令、保护 |
+| RSHUNT | 电流检测 | 0.1 Ω, 5 W, 1% | Kelvin 布线 |
+| D1/D2 | 输出钳位 | ≥5 A, ≥60 V Schottky | 保护 OPA548 |
+| RCL | 限流电阻 | 33.2 kΩ / 22.1 kΩ | 1.5 A / 2.0 A |
+| RSNUB | Snubber | 4.7 Ω, 2 W | 可调 |
+| CSNUB | Snubber | 47 nF, 100 V film | 可调 |
+| Cbulk | 电源储能 | 470 µF / 35 V ×2 | 靠近 OPA548 |
+| Cdec | 去耦 | 100 nF + 10 µF | 每个 IC 电源脚附近 |
+| J_SPK | 喇叭接口 | 5.08 mm terminal | SPK/GND |
+| J_PWR | 电源接口 | 5.08 mm terminal | +18/GND/-18 |
+| J_SWD | 调试 | 2.54 mm SWD | STM32 下载 |
+| J_UART | 控制 | 3-pin UART | 参数设置 |
+
+---
+
+## 17. PCB / KiCad / Quilter 准备建议
+
+你提到下一步要生成可上传 Quilter 的 KiCad 文件。Quilter 目前支持直接上传 KiCad / Altium 等 ECAD 项目，并建议上传 schematic、board、project 文件；其文档还特别说明当前不要上传 zip 或嵌套目录。([docs.quilter.ai](https://docs.quilter.ai/using-quilter/upload-your-design-files))  
+KiCad 原生格式是 S-expression 系列文件，官方开发文档列出了 schematic、board、symbol、footprint 等文件格式。([dev-docs.kicad.org](https://dev-docs.kicad.org/en/file-formats/index.html))
+
+建议下一步 KiCad 项目包含：
+
+```text
+active_acoustic_impedance.kicad_pro
+active_acoustic_impedance.kicad_sch
+active_acoustic_impedance.kicad_pcb
+sym-lib-table
+fp-lib-table
+```
+
+Quilter 用的 board 文件可以先放一个空板框：
+
+```text
+Board size: 100 mm × 80 mm 初版
+Mounting holes: 4 × M3
+Heatsink keepout near OPA548
+High-current zone near SPK connector
+Analog small-signal zone separated from OPA548 output
+```
+
+PCB 约束：
+
+| 项目 | 建议 |
+|---|---|
+| OPA548 输出线 | 短、宽、远离 AD633/MCU |
+| `DRV` / `SPK` | 高电流走线，建议 polygon 或 ≥2 mm 宽 |
+| RSHUNT | Kelvin 走线，检测线不要经过功率电流 |
+| AD633 | 远离功率输出和 MCU 时钟 |
+| 模拟地 | 星形回到电源入口或 OPA548 附近单点 |
+| 数字地 | 与模拟地单点连接 |
+| OPA548 | 预留散热器、铜皮、热过孔 |
+| SPK 线 | 端子旁加 TVS/钳位位置 |
+| Snubber | 靠近 OPA548 输出 |
+
+---
+
+## 18. 调试流程
+
+### 阶段 1：不接喇叭，只接假负载
+
+用一个小信号源模拟反电动势：
+
+```text
+信号源 → 10 Ω 串联 → SPK
+```
+
+观察：
+
+\[
+\frac{V_\mathrm{SPK}}{I_\mathrm{port}}
+\]
+
+是否等于：
+
+\[
+R_x(t)
+\]
+
+先测试固定值：
+
+```text
+Rtarget = 100 Ω → Rx = 92.8 Ω
+Rtarget = 20 Ω  → Rx = 12.8 Ω
+Rtarget = 7.2 Ω → Rx = 0 Ω
+Rtarget = 5 Ω   → Rx = -2.2 Ω
+```
+
+不要一开始就测：
+
+```text
+Rtarget = 1 Ω
+```
+
+---
+
+### 阶段 2：接喇叭，但限制最小阻值
+
+先设置：
+
+\[
+R_\mathrm{target}\in[10,100]\,\Omega
+\]
+
+确认没有自激、没有异常发热。
+
+---
+
+### 阶段 3：逐步降低最小值
+
+依次尝试：
+
+\[
+R_\mathrm{min}=7.2\,\Omega
+\]
+
+\[
+R_\mathrm{min}=5\,\Omega
+\]
+
+\[
+R_\mathrm{min}=3\,\Omega
+\]
+
+\[
+R_\mathrm{min}=1\,\Omega
+\]
+
+每一步都记录：
+
+- `SPK` 电压
+- `DRV` 电压
+- `RSHUNT` 电流
+- OPA548 温度
+- 喇叭线圈温升
+- 是否有 90 Hz 附近自激
+- 是否有高频振荡
+
+---
+
+## 19. 第一版不建议做的事情
+
+第一版不要同时加入：
+
+1. 负电阻
+2. 负电感
+3. 高电流
+4. Class-D
+5. 自动自适应控制
+6. 双正弦大幅度叠加
+7. 声学阵列
+
+建议顺序：
+
+```text
+V1: 只做 R(t)，不做 -L
+V2: 加部分电感补偿，例如 -0.5Le
+V3: 加全 -Le 或频段限制 -Le
+V4: 做多通道/阵列
+V5: 改 Class-D 或离散功率级降成本
+```
+
+---
+
+## 20. 总结版电路关系
+
+最终硬件实现的数学关系是：
+
+\[
+R_\mathrm{target}(t)
+=
+50.5
++
+49.5\sin(2\pi f_mt)
+\]
+
+或：
+
+\[
+R_\mathrm{target}(t)
+=
+R_b
++
+A_1\sin(2\pi f_1t+\phi_1)
++
+A_2\sin(2\pi f_2t+\phi_2)
+\]
+
+\[
+R_x(t)=R_\mathrm{target}(t)-7.2
+\]
+
+电流检测：
+
+\[
+v_I=5i_p
+\]
+
+命令电压：
+
+\[
+V_K=\frac{R_x}{10}
+\]
+
+乘法器：
+
+\[
+V_\mathrm{MUL}
+=
+\frac{v_I V_K}{10}
+\]
+
+后级放大：
+
+\[
+V_\mathrm{CMD}
+=
+20V_\mathrm{MUL}
+=
+R_x i_p
+\]
+
+功率级闭环：
+
+\[
+V_\mathrm{SPK}\approx V_\mathrm{CMD}
+\]
+
+所以：
+
+\[
+V_\mathrm{SPK}\approx R_x(t)i_p
+\]
+
+这使动圈电声膜的总电学阻抗变为：
+
+\[
+R_e+R_x(t)=R_\mathrm{target}(t)
+\]
+
+即实现你要的：
+
+\[
+7.2\,\Omega
+\rightarrow
+1\sim100\,\Omega
+\]
+
+并且可以按 \(10\sim1000\,\mathrm{Hz}\) 的单正弦或双正弦叠加实时变化。
+
+---
+Learn more:
+1. [https://www.ti.com/lit/ds/symlink/opa548.pdf?ref\_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252Fja-jp%252FOPA548%253Fbm-verify%253DAAQAAAAL\_\_\_\_\_4UdogYiOiNu1VXZxh7NLdqf2IbMhC\_uxCd7KrS1Xj98-vQQhC\_z9hXULZArEOCyiVroLoLtQIBL1FsqPxi1cqTJiPZsG\_zM1uptsmmwqa3xH35z7d98lI4MvLJzfcmileQ4KDPmG2tMqBk\_a1DHbfMZs1NCxxwOzzNwMiihusybELouZk2yeyz-0LjmKVKkD4RK8-3zgxNpVBYe1eNwRdtisUaTOqgT3xFdjdQ\_2CTkVA9ersAPc3aLz5-4VyfKTIA&ts=1778795946419](https://www.ti.com/lit/ds/symlink/opa548.pdf?ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252Fja-jp%252FOPA548%253Fbm-verify%253DAAQAAAAL_____4UdogYiOiNu1VXZxh7NLdqf2IbMhC_uxCd7KrS1Xj98-vQQhC_z9hXULZArEOCyiVroLoLtQIBL1FsqPxi1cqTJiPZsG_zM1uptsmmwqa3xH35z7d98lI4MvLJzfcmileQ4KDPmG2tMqBk_a1DHbfMZs1NCxxwOzzNwMiihusybELouZk2yeyz-0LjmKVKkD4RK8-3zgxNpVBYe1eNwRdtisUaTOqgT3xFdjdQ_2CTkVA9ersAPc3aLz5-4VyfKTIA&ts=1778795946419)
+2. [https://www.ti.com/lit/ds/symlink/lm3886.pdf?ref\_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252Fde-de%252FLM3886&ts=1778917978836](https://www.ti.com/lit/ds/symlink/lm3886.pdf?ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252Fde-de%252FLM3886&ts=1778917978836)
+3. [https://www.ti.com/product/OPA548](https://www.ti.com/product/OPA548)
+4. [https://www.analog.com/en/products/ad633.html](https://www.analog.com/en/products/ad633.html)
+5. [https://www.ti.com/product/INA149](https://www.ti.com/product/INA149)
+6. [https://www.ti.com/lit/ds/symlink/opa1656.pdf?ts=1745487201461](https://www.ti.com/lit/ds/symlink/opa1656.pdf?ts=1745487201461)
+7. [https://www.vishay.com/docs/30206/lvr.pdf](https://www.vishay.com/docs/30206/lvr.pdf)
+8. [https://www.st.com/en/microcontrollers-microprocessors/stm32g431cb.html](https://www.st.com/en/microcontrollers-microprocessors/stm32g431cb.html)
+9. [https://docs.quilter.ai/using-quilter/upload-your-design-files](https://docs.quilter.ai/using-quilter/upload-your-design-files)
+10. [https://dev-docs.kicad.org/en/file-formats/index.html](https://dev-docs.kicad.org/en/file-formats/index.html)

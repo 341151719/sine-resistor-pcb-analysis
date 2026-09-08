@@ -1,0 +1,6 @@
+RUN signoff_fixed_r1_carrier1k [full]
+RUN signoff_fixed_r5_carrier1k [full]
+RUN signoff_fixed_r7p2_carrier1k [full]
+RUN signoff_fixed_r20_carrier1k [full]
+RUN signoff_fixed_r100_carrier1k [full]
+Done: /mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/results_fixed_signoff_runtime | simulation_failures=0 | acceptance_failures=2

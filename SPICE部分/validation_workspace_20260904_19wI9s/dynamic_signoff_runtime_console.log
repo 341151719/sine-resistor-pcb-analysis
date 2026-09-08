@@ -1,0 +1,6 @@
+RUN signoff_dynamic_fm10_carrier10k [full]
+RUN signoff_dynamic_fm30_carrier10k [full]
+RUN signoff_dynamic_fm100_carrier10k [full]
+RUN signoff_dynamic_fm300_carrier10k [full]
+RUN signoff_dynamic_fm1000_carrier10k [full]
+Done: /mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/results_dynamic_signoff_runtime | simulation_failures=0 | acceptance_failures=5

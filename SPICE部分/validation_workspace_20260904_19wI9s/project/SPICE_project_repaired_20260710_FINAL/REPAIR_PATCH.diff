@@ -1,0 +1,1337 @@
+--- /mnt/data/project_audit/1SPICE_SPICE_SIM_latest_pure_vendor_20260707/1SPICE_SPICE_SIM/scripts/run_sweeps.py	2026-07-07 07:57:33.000000000 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/scripts/run_sweeps.py	2026-07-10 03:29:37.673464558 +0000
+@@ -17,6 +17,12 @@
+ v3.3 Pa-limited sweep changes:
+   7) Acoustic stress cases above 5 Pa are removed from the default rerun suite.
+      Only Pamp=1 Pa and Pamp=5 Pa stress tests are generated.
++
++v4 acceptance repair:
++  8) Fixed impedance uses DC-aware complex phasor fitting.
++  9) Dynamic impedance uses local carrier phasors with linear envelope terms.
++ 10) Simulation completion and engineering acceptance are separate states.
++ 11) Non-zero exit codes are returned for simulation or acceptance failures.
+ """
+ from __future__ import annotations
+ 
+@@ -37,12 +43,22 @@
+ matplotlib.use("Agg")
+ import matplotlib.pyplot as plt
+ 
++from validation_metrics import (
++    ValidationPolicy,
++    apply_acceptance,
++    dynamic_complex_impedance,
++    fixed_complex_impedance,
++)
++
+ ROOT = Path(__file__).resolve().parents[1]
+ NGSPICE_BIN = os.getenv("NGSPICE_BIN", "ngspice")
+-DEFAULT_MODEL_LIB = "../../../spice/models/ngspice_compatible_macros.lib"
++DEFAULT_MODEL_LIB = str((ROOT / "spice" / "models" / "official_pure_rawps_wrapped_models.lib").resolve())
+ MODEL_LIB = os.getenv("SPICE_MODEL_LIB", DEFAULT_MODEL_LIB)
+-MODEL_LIB_CHOICE = "custom" if os.getenv("SPICE_MODEL_LIB") else "local"
+-RUNTIME_MODEL_POLICY = "custom_model_lib_unclassified" if os.getenv("SPICE_MODEL_LIB") else "local_ngspice_surrogate"
++MODEL_LIB_CHOICE = "custom" if os.getenv("SPICE_MODEL_LIB") else "official-pure"
++RUNTIME_MODEL_POLICY = "custom_model_lib_unclassified" if os.getenv("SPICE_MODEL_LIB") else "official_pure_raw_vendor_macromodels_no_device_surrogate"
++POLICY = ValidationPolicy()
++SAVE_CASE_CSV = True
++GENERATE_PLOTS = True
+ RESULTS = ROOT / "results"
+ CASES = RESULTS / "cases"
+ TEMPLATES = ROOT / "spice" / "circuits"
+@@ -385,38 +401,20 @@
+     return out
+ 
+ 
+-def least_squares_reff(df: pd.DataFrame, spk: SpeakerTS, tail: pd.Series) -> tuple[float, float, int]:
+-    """Return total effective resistance Re + Rx_fit from Vspk ≈ Rx_fit*Iport."""
+-    ip = df.loc[tail, "v(iport)"].to_numpy(float)
+-    v = df.loc[tail, "v(spk)"].to_numpy(float)
+-    finite_mask = np.isfinite(ip) & np.isfinite(v)
+-    ip = ip[finite_mask]
+-    v = v[finite_mask]
+-    if ip.size == 0:
+-        return float("nan"), float("nan"), 0
+-    # Avoid meaningless fit when current is almost zero.
+-    pk = float(np.nanmax(np.abs(ip)))
+-    thr = max(50e-6, 0.02 * pk)
+-    m = np.abs(ip) >= thr
+-    ip = ip[m]
+-    v = v[m]
+-    denom = float(np.sum(ip * ip))
+-    if ip.size < 8 or denom <= 1e-24:
+-        return float("nan"), float("nan"), int(ip.size)
+-    rx_fit = float(np.sum(v * ip) / denom)
+-    return spk.Re + rx_fit, rx_fit, int(ip.size)
+-
+-
+ def summarize(df: pd.DataFrame, spk: SpeakerTS, cfg: SimConfig, name: str, model: str) -> dict:
++    """Summarize one completed simulation and apply explicit acceptance policy.
++
++    The legacy point-wise V/I traces remain diagnostic only. Fixed electrical
++    impedance uses a DC-aware complex phasor fit. Dynamic electrical impedance
++    uses local carrier phasors with a first-order envelope model.
++    """
+     tail_start = float(df["tail_start_s"].iloc[0]) if "tail_start_s" in df.columns else 0.5 * float(df["time"].max())
+     tail = df["time"] >= tail_start
+     valid = df.get("valid_reff_pointwise", pd.Series(np.ones(len(df), dtype=int))).astype(bool)
+     vt = tail & valid
+ 
+-    reff_fit, rx_fit, fit_n = least_squares_reff(df, spk, tail)
+     rtarget_tail_mean = amean(df.loc[tail, "v(rtarget)"])
+     rtarget_tail_rms_dev = rms(df.loc[tail, "v(rtarget)"] - rtarget_tail_mean)
+-
+     rx_i = df.loc[tail, "rx_iport_v"] if "rx_iport_v" in df.columns else pd.Series(dtype=float)
+     denom_v = max(rms(rx_i), 1e-12)
+ 
+@@ -424,13 +422,15 @@
+         "case": name,
+         "model": model,
+         **model_metadata(),
+-        "status": "ok",
++        "status": "ok",  # Backward-compatible simulation completion marker.
++        "simulation_status": "completed",
+         "tail_start_s": tail_start,
+         "softstart_tstart_s": cfg.TSTART,
+         "softstart_tramp_s": cfg.TRAMP,
+         "pamp_pa": cfg.Pamp,
+         "itest_amp_a": cfg.ItestAmp,
+         "itest_freq_hz": cfg.ItestFreq,
++        "modulation_freq_hz": cfg.fm1 if cfg.A1 != 0 and cfg.A2 == 0 else float("nan"),
+         "rtarget_cmd_min_ohm": amin(df["v(rtarget)"]),
+         "rtarget_cmd_max_ohm": amax(df["v(rtarget)"]),
+         "rtarget_des_min_ohm": amin(df["v(rdes)"]) if "v(rdes)" in df.columns else float("nan"),
+@@ -439,6 +439,7 @@
+         "rx_cmd_max_ohm": amax(df["v(rxnode)"]),
+         "iport_pk_a": amax(np.abs(df["v(iport)"])),
+         "iport_pk_tail_a": amax(np.abs(df.loc[tail, "v(iport)"])),
++        "iport_dc_tail_a": amean(df.loc[tail, "v(iport)"]),
+         "iport_threshold_for_reff_a": float(df["iport_threshold_for_reff"].iloc[0]),
+         "vspk_pk_v": amax(np.abs(df["v(spk)"])),
+         "vspk_pk_tail_v": amax(np.abs(df.loc[tail, "v(spk)"])),
+@@ -450,23 +451,13 @@
+         "qeff_max": amax(df["v(qnode)"]),
+         "rem_min": amin(df["v(remnode)"]),
+         "rem_max": amax(df["v(remnode)"]),
+-
+-        # Robust primary metrics.
+         "synerr_rms_tail_v": rms(df.loc[tail, "v(synerr)"]) if "v(synerr)" in df.columns else float("nan"),
+         "synerr_abs_max_tail_v": amax(np.abs(df.loc[tail, "v(synerr)"])) if "v(synerr)" in df.columns else float("nan"),
+         "synerr_norm_rms_tail": (rms(df.loc[tail, "v(synerr)"]) / denom_v) if "v(synerr)" in df.columns else float("nan"),
+         "cmderr_rms_tail_v": rms(df.loc[tail, "v(cmderr)"]) if "v(cmderr)" in df.columns else float("nan"),
+         "cmderr_abs_max_tail_v": amax(np.abs(df.loc[tail, "v(cmderr)"])) if "v(cmderr)" in df.columns else float("nan"),
+-
+-        # Robust least-squares resistance estimate, most useful for fixed-R injection tests.
+-        "reff_fit_tail_ohm": reff_fit,
+-        "rx_fit_tail_ohm": rx_fit,
+-        "reff_fit_err_vs_tail_mean_ohm": reff_fit - rtarget_tail_mean if math.isfinite(reff_fit) else float("nan"),
+         "rtarget_tail_mean_ohm": rtarget_tail_mean,
+         "rtarget_tail_rms_dev_ohm": rtarget_tail_rms_dev,
+-        "reff_fit_sample_count": fit_n,
+-
+-        # Masked pointwise V/I metrics. Still diagnostic, not primary.
+         "reff_pointwise_rms_err_tail_ohm": rms(df.loc[vt, "reff_pointwise_err"]),
+         "reff_pointwise_abs_err_tail_max_ohm": amax(np.abs(df.loc[vt, "reff_pointwise_err"])),
+         "reff_pointwise_valid_fraction_tail": float(vt.sum() / max(int(tail.sum()), 1)),
+@@ -481,9 +472,6 @@
+         s["ilim_ratio_pk"] = amax(df["v(ilimratio)"])
+         s["ilim_ratio_tail_pk"] = amax(df.loc[tail, "v(ilimratio)"])
+ 
+-    # Conservative thermal/power estimates from available node data. These are
+-    # not a replacement for a package-level thermal model, but they make every
+-    # sweep row usable for hardware risk triage.
+     if "v(iport)" in df.columns and "v(drv)" in df.columns:
+         iout = df["v(iport)"].to_numpy(float)
+         vdrv = df["v(drv)"].to_numpy(float)
+@@ -500,12 +488,52 @@
+         s["rshunt_power_pk_w"] = float("nan")
+     s["supply_regen_risk_flag"] = bool(np.nanmin(df["port_power_w"]) < -0.05) if "port_power_w" in df.columns else False
+ 
+-    # Preserve realism/fault parameters in summaries so post-processing does
+-    # not need to inspect each config JSON.
++    # Fixed-R electrical injection: primary impedance result is a complex phasor.
++    is_fixed_einj = cfg.ItestAmp > 0 and cfg.A1 == 0 and cfg.A2 == 0
++    if is_fixed_einj:
++        fixed = fixed_complex_impedance(
++            df["time"].to_numpy(float),
++            df["v(spk)"].to_numpy(float),
++            df["v(iport)"].to_numpy(float),
++            cfg.ItestFreq,
++            spk.Re,
++            tail_start,
++            POLICY,
++        )
++        s.update(fixed)
++        if fixed.get("phasor_status") == "ok":
++            # Keep old columns, now sourced from the correct complex fit.
++            s["reff_fit_tail_ohm"] = fixed["ztotal_real_ohm"]
++            s["rx_fit_tail_ohm"] = fixed["zsynthetic_real_ohm"]
++            s["reff_fit_err_vs_tail_mean_ohm"] = fixed["ztotal_real_ohm"] - rtarget_tail_mean
++            s["reff_fit_sample_count"] = int(tail.sum())
++        else:
++            s["reff_fit_tail_ohm"] = float("nan")
++            s["rx_fit_tail_ohm"] = float("nan")
++            s["reff_fit_err_vs_tail_mean_ohm"] = float("nan")
++            s["reff_fit_sample_count"] = 0
++
++    # Dynamic electrical injection: local complex carrier phasors, not v(t)/i(t).
++    is_dynamic_einj = cfg.ItestAmp > 0 and cfg.A1 != 0 and cfg.A2 == 0
++    if is_dynamic_einj:
++        dyn, rows = dynamic_complex_impedance(
++            df["time"].to_numpy(float),
++            df["v(spk)"].to_numpy(float),
++            df["v(iport)"].to_numpy(float),
++            df["v(rtarget)"].to_numpy(float),
++            cfg.ItestFreq,
++            cfg.fm1,
++            spk.Re,
++            tail_start,
++            POLICY,
++        )
++        s.update(dyn)
++        df.attrs["dynamic_phasor_rows"] = rows
++
+     for key in ["RDRV_PAR", "LDRV_PAR", "RSPK_PAR", "LSPK_PAR", "RSPEAKER_SERIES", "RSPK_SHORT", "RSH_SCALE", "VOS_I_TRIM", "DC_SERVO_ENABLE", "DC_SERVO_FC", "DC_SERVO_K", "DC_SERVO_LIMIT", "FIX_SCHED_ENABLE", "FIX_SCHED_FULL", "FIX_SCHED_OFF", "C_U4A_F", "C_U4B_F", "R_U4A_LEAD", "C_U4A_LEAD", "R_U4B_LEAD", "C_U4B_LEAD", "RISO_OUT", "RZOBEL", "CZOBEL"]:
+         s[key.lower()] = getattr(cfg, key)
+-    return s
+ 
++    return apply_acceptance(s, POLICY)
+ 
+ def plot_case(df: pd.DataFrame, name: str, path: Path, cfg: SimConfig | None = None, *, tail_only: bool = False) -> None:
+     """Create readable diagnostic plots.
+@@ -640,7 +668,7 @@
+         encoding="utf-8",
+     )
+     if write_only:
+-        return {"case": name, "model": model, **model_metadata(), "status": "written_only", "cir": str(cir)}
++        return {"case": name, "model": model, **model_metadata(), "status": "written_only", "simulation_status": "written_only", "acceptance_status": "not_evaluated", "acceptance_pass": False, "cir": str(cir)}
+ 
+     log = case_dir / f"{name}.log"
+     r = subprocess.run([NGSPICE_BIN, "-b", "-o", str(log), str(cir)], cwd=case_dir, capture_output=True, text=True)
+@@ -650,19 +678,41 @@
+             "model": model,
+             **model_metadata(),
+             "status": "ngspice_failed",
++            "simulation_status": "ngspice_failed",
++            "acceptance_status": "not_evaluated",
++            "acceptance_pass": False,
+             "returncode": r.returncode,
+             "log": str(log),
+             "stdout": r.stdout[-2000:],
+             "stderr": r.stderr[-2000:],
+         }
+ 
+-    df = add_derived(read_wrdata(case_dir / datafile), spk, cfg)
+-    df.to_csv(case_dir / f"{name}.csv", index=False)
+-    summary = summarize(df, spk, cfg, name, model)
+-    (case_dir / f"{name}_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+-    plot_case(df, name, case_dir / f"{name}.png", cfg=cfg, tail_only=False)
+-    plot_case(df, name, case_dir / f"{name}_tail.png", cfg=cfg, tail_only=True)
+-    return summary
++    try:
++        df = add_derived(read_wrdata(case_dir / datafile), spk, cfg)
++        if SAVE_CASE_CSV:
++            df.to_csv(case_dir / f"{name}.csv", index=False)
++        summary = summarize(df, spk, cfg, name, model)
++        dynamic_rows = df.attrs.get("dynamic_phasor_rows", [])
++        if dynamic_rows:
++            pd.DataFrame(dynamic_rows).to_csv(case_dir / f"{name}_dynamic_phasor.csv", index=False)
++        (case_dir / f"{name}_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
++        if GENERATE_PLOTS:
++            plot_case(df, name, case_dir / f"{name}.png", cfg=cfg, tail_only=False)
++            plot_case(df, name, case_dir / f"{name}_tail.png", cfg=cfg, tail_only=True)
++        return summary
++    except Exception as exc:
++        return {
++            "case": name,
++            "model": model,
++            **model_metadata(),
++            "status": "postprocess_failed",
++            "simulation_status": "postprocess_failed",
++            "acceptance_status": "not_evaluated",
++            "acceptance_pass": False,
++            "returncode": 0,
++            "log": str(log),
++            "error": repr(exc),
++        }
+ 
+ 
+ def case_list(base: SimConfig) -> list[tuple[str, str, SimConfig]]:
+@@ -752,7 +802,33 @@
+     ]
+ 
+ 
++def fixed_signoff_case_list(base: SimConfig) -> list[tuple[str, str, SimConfig]]:
++    return [
++        (
++            f"signoff_fixed_r{safe(rt)}_carrier1k",
++            "full",
++            replace(base, R0=rt, A1=0, A2=0, Pamp=0, ItestAmp=1e-3, ItestFreq=1000, tstop=0.04, tstep=1e-6),
++        )
++        for rt in [1, 5, 7.2, 20, 100]
++    ]
++
++
++def dynamic_signoff_case_list(base: SimConfig) -> list[tuple[str, str, SimConfig]]:
++    cases: list[tuple[str, str, SimConfig]] = []
++    for fm, tstop in [(10, 0.15), (30, 0.09), (100, 0.06), (300, 0.04), (1000, 0.03)]:
++        cases.append((
++            f"signoff_dynamic_fm{safe(fm)}_carrier10k",
++            "full",
++            replace(base, Pamp=0, ItestAmp=1e-3, ItestFreq=10000, fm1=fm, tstop=tstop, tstep=2e-6),
++        ))
++    return cases
++
++
+ def selected_cases(base: SimConfig, suite: str) -> list[tuple[str, str, SimConfig]]:
++    if suite == "fixed-signoff":
++        return fixed_signoff_case_list(base)
++    if suite == "dynamic-signoff":
++        return dynamic_signoff_case_list(base)
+     cases = case_list(base)
+     if suite in {"parasitic", "complete"}:
+         cases += parasitic_case_list(base)
+@@ -782,9 +858,12 @@
+     [c for c in thermal_cols if c in df.columns]
+     df[[c for c in thermal_cols if c in df.columns]].to_csv(results_dir / "thermal_power_summary.csv", index=False)
+ 
+-    status_counts = df["status"].fillna("<missing>").value_counts().to_dict() if "status" in df else {}
++    simulation_counts = df.get("simulation_status", df.get("status", pd.Series(dtype=str))).fillna("<missing>").value_counts().to_dict()
++    acceptance_counts = df.get("acceptance_status", pd.Series(dtype=str)).fillna("<missing>").value_counts().to_dict()
+     model_counts = df.get("runtime_model_policy", pd.Series(dtype=str)).fillna("<missing>").value_counts().to_dict()
+-    failures = df[df["status"].fillna("") != "ok"] if "status" in df else pd.DataFrame()
++    sim_failures = df[df.get("simulation_status", df.get("status", pd.Series(index=df.index, dtype=str))).fillna("") != "completed"]
++    acceptance_failures = df[df.get("acceptance_status", pd.Series(index=df.index, dtype=str)).fillna("") == "fail"]
++    failures = pd.concat([sim_failures, acceptance_failures]).drop_duplicates(subset=["case"])
+ 
+     def worst(col: str, largest_abs: bool = False, data: pd.DataFrame | None = None) -> str:
+         d = df if data is None else data
+@@ -805,7 +884,8 @@
+ 
+ - suite: `{suite}`
+ - case 数量：{len(df)}
+-- 状态统计：{json.dumps(status_counts, ensure_ascii=False)}
++- 仿真状态统计：{json.dumps(simulation_counts, ensure_ascii=False)}
++- 验收状态统计：{json.dumps(acceptance_counts, ensure_ascii=False)}
+ - 模型策略统计：{json.dumps(model_counts, ensure_ascii=False)}
+ 
+ ## 关键最坏值
+@@ -815,13 +895,18 @@
+ - 最大 `xmax_ratio_pk`：{worst('xmax_ratio_pk')}
+ - 最大 OPA548 估算峰值功耗：{worst('opa548_power_est_pk_w')}
+ - 最大 RSHUNT 估算峰值功耗：{worst('rshunt_power_pk_w')}
+-- 最大 `Reff` 拟合误差绝对值：{worst('reff_fit_err_vs_tail_mean_ohm', largest_abs=True)}
++- 最大固定阻抗实部误差绝对值：{worst('fixed_real_error_ohm')}
++- 最大固定阻抗虚部绝对值：{worst('ztotal_imag_ohm', largest_abs=True)}
++- 最大动态 p95 实部相对误差：{worst('dynamic_p95_abs_real_rel_error')}
++- 最大动态 p95 虚部相对值：{worst('dynamic_p95_abs_imag_rel')}
+ 
+ ## 失败情况
+ 
+ 失败 case 数量：{len(failures)}
+ 
+-失败明细见：`failures.csv`
++- 仿真失败：`simulation_failures.csv`
++- 验收失败：`acceptance_failures.csv`
++- 合并失败：`failures.csv`
+ 
+ ## 解释边界
+ 
+@@ -889,11 +974,16 @@
+     ap.add_argument("--case-filter", default="", help="Substring filter for case names")
+     ap.add_argument("--results-dir", default="results", help="Output directory relative to project root or absolute path")
+     ap.add_argument("--smoke", action="store_true", help="Write outputs to results_smoke/ so smoke tests do not overwrite full results")
+-    ap.add_argument("--suite", choices=["default", "parasitic", "fault", "complete"], default="default", help="Case suite to run")
++    ap.add_argument("--suite", choices=["default", "parasitic", "fault", "complete", "fixed-signoff", "dynamic-signoff"], default="default", help="Case suite to run")
++    ap.add_argument("--allow-acceptance-fail", action="store_true", help="Return zero when simulations complete even if engineering acceptance fails")
++    ap.add_argument("--no-plots", action="store_true", help="Skip PNG generation for faster split regressions")
++    ap.add_argument("--no-case-csv", action="store_true", help="Keep ngspice .dat and summary only; skip large derived CSV")
+     ap.add_argument("--model-lib", default=None, help="SPICE library to include from generated case directories. Use \"official\" for spice/models/official_wrapped_models.lib, or pass a relative/absolute path.")
+     args = ap.parse_args()
+ 
+-    global MODEL_LIB, MODEL_LIB_CHOICE, RUNTIME_MODEL_POLICY, RESULTS, CASES
++    global MODEL_LIB, MODEL_LIB_CHOICE, RUNTIME_MODEL_POLICY, RESULTS, CASES, SAVE_CASE_CSV, GENERATE_PLOTS
++    SAVE_CASE_CSV = not args.no_case_csv
++    GENERATE_PLOTS = not args.no_plots
+     if args.model_lib:
+         ml = args.model_lib.lower()
+         if ml in {"official-pure", "vendor-pure", "pure-official"}:
+@@ -905,7 +995,8 @@
+             MODEL_LIB_CHOICE = "official-fallback"
+             RUNTIME_MODEL_POLICY = "official_audit_with_ngspice_surrogate_fallback"
+         elif ml in {"surrogate", "default"}:
+-            MODEL_LIB = DEFAULT_MODEL_LIB
++            candidate = ROOT / "spice" / "models" / "ngspice_compatible_macros.lib"
++            MODEL_LIB = str(candidate.resolve())
+             MODEL_LIB_CHOICE = "local"
+             RUNTIME_MODEL_POLICY = "local_ngspice_surrogate"
+         else:
+@@ -913,6 +1004,13 @@
+             MODEL_LIB_CHOICE = "custom"
+             RUNTIME_MODEL_POLICY = "custom_model_lib_unclassified"
+ 
++    model_path = Path(MODEL_LIB)
++    if not model_path.is_absolute():
++        model_path = (ROOT / model_path).resolve()
++    if not model_path.exists():
++        raise FileNotFoundError(f"Selected SPICE model library does not exist: {model_path}")
++    MODEL_LIB = str(model_path)
++
+     if args.smoke:
+         args.results_dir = "results_smoke"
+     out = Path(args.results_dir)
+@@ -941,12 +1039,26 @@
+         print(f"RUN {name} [{model}]")
+         summaries.append(run_case(name, model, cfg, spk, write_only=args.write_only))
+ 
++    if not summaries:
++        raise SystemExit("No cases matched the requested filter")
+     df = pd.DataFrame(summaries)
+     df.to_csv(RESULTS / "all_summary.csv", index=False)
+-    fails = df[df["status"].fillna("") != "ok"] if "status" in df else pd.DataFrame()
+-    fails.to_csv(RESULTS / "failures.csv", index=False)
++    if args.write_only:
++        (RESULTS / "validation_policy.json").write_text(json.dumps(POLICY.to_dict(), indent=2), encoding="utf-8")
++        print(f"Done (write-only): {RESULTS}")
++        return
++    sim_fails = df[df.get("simulation_status", df.get("status", pd.Series(dtype=str))).fillna("") != "completed"]
++    acceptance_fails = df[df.get("acceptance_status", pd.Series(index=df.index, dtype=str)).fillna("") == "fail"]
++    sim_fails.to_csv(RESULTS / "simulation_failures.csv", index=False)
++    acceptance_fails.to_csv(RESULTS / "acceptance_failures.csv", index=False)
++    pd.concat([sim_fails, acceptance_fails]).drop_duplicates(subset=["case"]).to_csv(RESULTS / "failures.csv", index=False)
++    (RESULTS / "validation_policy.json").write_text(json.dumps(POLICY.to_dict(), indent=2), encoding="utf-8")
+     write_completion_reports(RESULTS, summaries, args.suite)
+-    print("Done:", RESULTS)
++    print(f"Done: {RESULTS} | simulation_failures={len(sim_fails)} | acceptance_failures={len(acceptance_fails)}")
++    if len(sim_fails):
++        raise SystemExit(2)
++    if len(acceptance_fails) and not args.allow_acceptance_fail:
++        raise SystemExit(3)
+ 
+ 
+ if __name__ == "__main__":
+--- /mnt/data/project_audit/1SPICE_SPICE_SIM_latest_pure_vendor_20260707/1SPICE_SPICE_SIM/spice/circuits/full_component_template.cir	2026-07-07 07:56:12.000000000 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/spice/circuits/full_component_template.cir	2026-07-10 03:30:13.256284519 +0000
+@@ -100,6 +100,10 @@
+ 
+ * ============================================================
+ * MCU/DAC command and analog scaling
++* CONTROL CONTRACT:
++* - MCU/DAC generates only the bounded target trajectory Rx_des(t).
++* - MCU firmware must not close a fast loop using instantaneous V(SPK)/Iport.
++* - Real-time synthesis is performed by the analog multiply path Rx_cmd*Iport.
+ * Raw DAC emits desired profile. The analog command is soft-ramped:
+ * VK_RAW = soft(t) * Rx_des/10. Actual RXNODE = 10*VK after RC.
+ * ============================================================
+@@ -216,6 +220,10 @@
+ * ============================================================
+ * Probes
+ * ============================================================
++* B_REFF/B_ERR are diagnostic-only observability nodes. They are downstream of
++* the control path and must never be connected back into VK, MUL, VCMD or DRV.
++* Primary acceptance is calculated offline from complex carrier phasors with a
++* DC intercept; instantaneous V/I is not an acceptance or control variable.
+ B_RDES    RDES    0 V = {Rt_des(time)}
+ B_RXDES   RXDES   0 V = {Rx_des(time)}
+ B_RX      RXNODE  0 V = {10*V(VK)}
+--- /mnt/data/project_audit/1SPICE_SPICE_SIM_latest_pure_vendor_20260707/RUN_QUICK_SMOKE.sh	2026-07-07 07:58:33.000000000 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/RUN_QUICK_SMOKE.sh	2026-07-10 03:30:35.058159769 +0000
+@@ -2,8 +2,15 @@
+ set -euo pipefail
+ ROOT="$(cd "$(dirname "$0")" && pwd)"
+ PROJ="$ROOT/1SPICE_SPICE_SIM"
+-# This expects ngspice to be available in PATH. In the ChatGPT sandbox, run:
+-#   source /mnt/data/setup_spice_env.sh
+ cd "$PROJ"
+-python scripts/run_sweeps.py --clean --results-dir results_smoke_fixed_r7p2 --case-filter full_fixed_r7p2 --model-lib official-pure
+-python scripts/run_sweeps.py --clean --results-dir results_smoke_einj_r7p2 --case-filter full_einj_fixed_r7p2_f1000 --model-lib official-pure
++python scripts/check_project.py
++python tests/test_validation_metrics.py
++python scripts/audit_firmware.py . --allow-missing --json-out firmware_audit.json
++python scripts/run_sweeps.py \
++  --clean \
++  --results-dir results_quick_smoke \
++  --case-filter full_einj_fixed_r7p2_f1000 \
++  --model-lib official-pure \
++  --no-plots \
++  --no-case-csv
++printf '\nQUICK SMOKE PASSED\n'
+--- /dev/null	2026-07-10 02:44:00.942175201 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/scripts/validation_metrics.py	2026-07-10 03:22:43.002911107 +0000
+@@ -0,0 +1,322 @@
++#!/usr/bin/env python3
++"""Numerically robust SPICE acceptance metrics.
++
++Design rules implemented here:
++- Never use instantaneous v(t)/i(t) as a control or primary acceptance metric.
++- Fixed impedance is estimated from affine sinusoidal fits with a DC intercept.
++- Dynamic impedance is estimated from local complex carrier phasors with a
++  first-order envelope term, then compared against Rtarget at each window.
++- Simulation completion and engineering acceptance are separate states.
++"""
++from __future__ import annotations
++
++from dataclasses import dataclass, asdict
++import math
++from typing import Any
++
++import numpy as np
++
++
++@dataclass(frozen=True)
++class ValidationPolicy:
++    fixed_real_rel_tol: float = 0.05
++    fixed_real_abs_tol_ohm: float = 0.10
++    fixed_imag_rel_tol: float = 0.05
++    fixed_imag_abs_tol_ohm: float = 0.10
++    dynamic_p95_real_rel_tol: float = 0.10
++    dynamic_p95_imag_rel_tol: float = 0.10
++    min_dynamic_carrier_ratio: float = 10.0
++    dc_iport_abs_limit_a: float = 0.020
++    ilim_ratio_limit: float = 0.80
++    xmax_ratio_limit: float = 0.80
++    vsat_limit_v: float = 0.10
++    min_phasor_current_a: float = 20e-6
++    min_fixed_cycles: int = 8
++    max_fixed_cycles: int = 40
++    dynamic_window_cycles: float = 1.0
++    dynamic_step_cycles: float = 0.5
++    min_dynamic_windows: int = 12
++
++    def to_dict(self) -> dict[str, Any]:
++        return asdict(self)
++
++
++def _finite_xy(*arrays: np.ndarray) -> tuple[np.ndarray, ...]:
++    converted = [np.asarray(a, dtype=float).ravel() for a in arrays]
++    if not converted:
++        return tuple()
++    n = min(len(a) for a in converted)
++    converted = [a[:n] for a in converted]
++    mask = np.ones(n, dtype=bool)
++    for a in converted:
++        mask &= np.isfinite(a)
++    return tuple(a[mask] for a in converted)
++
++
++def _weighted_lstsq(A: np.ndarray, y: np.ndarray, weights: np.ndarray | None = None) -> np.ndarray:
++    if weights is not None:
++        w = np.sqrt(np.asarray(weights, dtype=float))
++        A = A * w[:, None]
++        y = y * w
++    coef, *_ = np.linalg.lstsq(A, y, rcond=None)
++    return coef
++
++
++def affine_sine_phasor(
++    time_s: np.ndarray,
++    signal: np.ndarray,
++    freq_hz: float,
++    *,
++    weights: np.ndarray | None = None,
++) -> dict[str, float | complex]:
++    """Fit x(t)=dc+a*cos(wt)+b*sin(wt), returning phasor a-j*b."""
++    t, x = _finite_xy(time_s, signal)
++    if t.size < 8 or not math.isfinite(freq_hz) or freq_hz <= 0:
++        return {"ok": False, "dc": float("nan"), "phasor": complex(np.nan, np.nan), "rms_residual": float("nan"), "n": int(t.size)}
++    if weights is not None:
++        weights = np.asarray(weights, dtype=float).ravel()[: len(np.asarray(time_s).ravel())]
++        finite_mask = np.isfinite(np.asarray(time_s, float).ravel()) & np.isfinite(np.asarray(signal, float).ravel())
++        weights = weights[finite_mask]
++    w = 2.0 * np.pi * freq_hz
++    A = np.column_stack([np.ones_like(t), np.cos(w * t), np.sin(w * t)])
++    coef = _weighted_lstsq(A, x, weights)
++    fit = A @ coef
++    residual = x - fit
++    return {
++        "ok": True,
++        "dc": float(coef[0]),
++        "phasor": complex(float(coef[1]), float(-coef[2])),
++        "rms_residual": float(np.sqrt(np.mean(residual * residual))),
++        "n": int(t.size),
++    }
++
++
++def local_affine_envelope_phasor(
++    time_s: np.ndarray,
++    signal: np.ndarray,
++    freq_hz: float,
++    center_s: float,
++) -> dict[str, float | complex]:
++    """Fit a carrier whose DC and I/Q envelope are locally linear.
++
++    x(t)=d0+d1*tau + (a0+a1*tau)cos(wt) + (b0+b1*tau)sin(wt)
++    The returned center phasor is a0-j*b0. This suppresses bias from a rapidly
++    changing target resistance without requiring instantaneous division.
++    """
++    t, x = _finite_xy(time_s, signal)
++    if t.size < 12:
++        return {"ok": False, "dc": float("nan"), "phasor": complex(np.nan, np.nan), "n": int(t.size), "rms_residual": float("nan")}
++    tau = t - float(center_s)
++    wt = 2.0 * np.pi * freq_hz * t
++    c = np.cos(wt)
++    s = np.sin(wt)
++    A = np.column_stack([np.ones_like(t), tau, c, s, tau * c, tau * s])
++    # Hann weighting reduces edge sensitivity while preserving the center value.
++    phase = (t - t.min()) / max(float(t.max() - t.min()), 1e-15)
++    weights = np.maximum(0.05, 0.5 - 0.5 * np.cos(2 * np.pi * phase))
++    coef = _weighted_lstsq(A, x, weights)
++    fit = A @ coef
++    residual = x - fit
++    return {
++        "ok": True,
++        "dc": float(coef[0]),
++        "phasor": complex(float(coef[2]), float(-coef[3])),
++        "n": int(t.size),
++        "rms_residual": float(np.sqrt(np.mean(residual * residual))),
++    }
++
++
++def fixed_complex_impedance(
++    time_s: np.ndarray,
++    voltage_v: np.ndarray,
++    current_a: np.ndarray,
++    freq_hz: float,
++    series_resistance_ohm: float,
++    tail_start_s: float,
++    policy: ValidationPolicy,
++) -> dict[str, Any]:
++    t, v, i = _finite_xy(time_s, voltage_v, current_a)
++    if t.size < 16 or freq_hz <= 0:
++        return {"phasor_status": "not_evaluated", "phasor_reason": "insufficient_data_or_invalid_frequency"}
++    t_end = float(np.max(t))
++    available_cycles = max(0.0, (t_end - tail_start_s) * freq_hz)
++    cycles = int(min(policy.max_fixed_cycles, math.floor(available_cycles)))
++    if cycles < policy.min_fixed_cycles:
++        return {
++            "phasor_status": "not_evaluated",
++            "phasor_reason": f"only_{available_cycles:.3g}_tail_cycles_available",
++            "phasor_cycles": available_cycles,
++        }
++    start = max(float(tail_start_s), t_end - cycles / freq_hz)
++    m = t >= start
++    vf = affine_sine_phasor(t[m], v[m], freq_hz)
++    inf = affine_sine_phasor(t[m], i[m], freq_hz)
++    ip = complex(inf["phasor"])
++    vp = complex(vf["phasor"])
++    if not vf["ok"] or not inf["ok"] or abs(ip) < policy.min_phasor_current_a:
++        return {
++            "phasor_status": "not_evaluated",
++            "phasor_reason": "carrier_current_too_small_or_fit_failed",
++            "carrier_current_peak_a": abs(ip),
++        }
++    zsynthetic = vp / ip
++    ztotal = series_resistance_ohm + zsynthetic
++    return {
++        "phasor_status": "ok",
++        "phasor_frequency_hz": float(freq_hz),
++        "phasor_cycles": int(cycles),
++        "carrier_current_peak_a": float(abs(ip)),
++        "carrier_voltage_peak_v": float(abs(vp)),
++        "iport_dc_fit_a": float(inf["dc"]),
++        "vspk_dc_fit_v": float(vf["dc"]),
++        "i_fit_residual_rms_a": float(inf["rms_residual"]),
++        "v_fit_residual_rms_v": float(vf["rms_residual"]),
++        "zsynthetic_real_ohm": float(zsynthetic.real),
++        "zsynthetic_imag_ohm": float(zsynthetic.imag),
++        "ztotal_real_ohm": float(ztotal.real),
++        "ztotal_imag_ohm": float(ztotal.imag),
++        "ztotal_mag_ohm": float(abs(ztotal)),
++        "ztotal_phase_deg": float(np.degrees(np.angle(ztotal))),
++    }
++
++
++def dynamic_complex_impedance(
++    time_s: np.ndarray,
++    voltage_v: np.ndarray,
++    current_a: np.ndarray,
++    target_ohm: np.ndarray,
++    carrier_hz: float,
++    modulation_hz: float,
++    series_resistance_ohm: float,
++    tail_start_s: float,
++    policy: ValidationPolicy,
++) -> tuple[dict[str, Any], list[dict[str, float]]]:
++    t, v, i, rt = _finite_xy(time_s, voltage_v, current_a, target_ohm)
++    if t.size < 32 or carrier_hz <= 0 or modulation_hz <= 0:
++        return ({"dynamic_phasor_status": "not_evaluated", "dynamic_phasor_reason": "invalid_frequency_or_insufficient_data"}, [])
++    ratio = carrier_hz / modulation_hz
++    window = policy.dynamic_window_cycles / carrier_hz
++    step = policy.dynamic_step_cycles / carrier_hz
++    half = 0.5 * window
++    first = max(float(tail_start_s) + half, float(t.min()) + half)
++    last = float(t.max()) - half
++    if last <= first:
++        return ({"dynamic_phasor_status": "not_evaluated", "dynamic_phasor_reason": "tail_too_short", "carrier_to_mod_ratio": ratio}, [])
++
++    centers = np.arange(first, last + 0.25 * step, step)
++    rows: list[dict[str, float]] = []
++    for center in centers:
++        m = (t >= center - half) & (t <= center + half)
++        if int(np.sum(m)) < 16:
++            continue
++        vf = local_affine_envelope_phasor(t[m], v[m], carrier_hz, center)
++        inf = local_affine_envelope_phasor(t[m], i[m], carrier_hz, center)
++        if not vf["ok"] or not inf["ok"]:
++            continue
++        ip = complex(inf["phasor"])
++        if abs(ip) < policy.min_phasor_current_a:
++            continue
++        z = series_resistance_ohm + complex(vf["phasor"]) / ip
++        rtarget = float(np.interp(center, t, rt))
++        scale = max(abs(rtarget), 1.0)
++        rows.append({
++            "time_s": float(center),
++            "rtarget_ohm": rtarget,
++            "ztotal_real_ohm": float(z.real),
++            "ztotal_imag_ohm": float(z.imag),
++            "real_error_ohm": float(z.real - rtarget),
++            "real_rel_error": float((z.real - rtarget) / scale),
++            "imag_rel": float(z.imag / scale),
++            "carrier_current_peak_a": float(abs(ip)),
++            "iport_dc_fit_a": float(inf["dc"]),
++            "vspk_dc_fit_v": float(vf["dc"]),
++        })
++
++    if len(rows) < policy.min_dynamic_windows:
++        return ({
++            "dynamic_phasor_status": "not_evaluated",
++            "dynamic_phasor_reason": f"only_{len(rows)}_valid_windows",
++            "carrier_to_mod_ratio": float(ratio),
++            "dynamic_valid_windows": int(len(rows)),
++        }, rows)
++
++    real_rel = np.abs([r["real_rel_error"] for r in rows])
++    imag_rel = np.abs([r["imag_rel"] for r in rows])
++    imag_abs = np.abs([r["ztotal_imag_ohm"] for r in rows])
++    metrics = {
++        "dynamic_phasor_status": "ok" if ratio >= policy.min_dynamic_carrier_ratio else "low_carrier_ratio",
++        "dynamic_phasor_reason": "" if ratio >= policy.min_dynamic_carrier_ratio else "carrier_to_modulation_ratio_below_policy",
++        "carrier_to_mod_ratio": float(ratio),
++        "dynamic_valid_windows": int(len(rows)),
++        "dynamic_median_abs_real_rel_error": float(np.median(real_rel)),
++        "dynamic_p95_abs_real_rel_error": float(np.percentile(real_rel, 95)),
++        "dynamic_median_abs_imag_rel": float(np.median(imag_rel)),
++        "dynamic_p95_abs_imag_rel": float(np.percentile(imag_rel, 95)),
++        "dynamic_median_abs_imag_ohm": float(np.median(imag_abs)),
++        "dynamic_p95_abs_imag_ohm": float(np.percentile(imag_abs, 95)),
++        "dynamic_rtarget_min_ohm": float(min(r["rtarget_ohm"] for r in rows)),
++        "dynamic_rtarget_max_ohm": float(max(r["rtarget_ohm"] for r in rows)),
++        "dynamic_ztotal_real_min_ohm": float(min(r["ztotal_real_ohm"] for r in rows)),
++        "dynamic_ztotal_real_max_ohm": float(max(r["ztotal_real_ohm"] for r in rows)),
++    }
++    return metrics, rows
++
++
++def safety_acceptance(summary: dict[str, Any], policy: ValidationPolicy) -> tuple[bool, list[str]]:
++    reasons: list[str] = []
++    dc = abs(float(summary.get("iport_dc_tail_a", 0.0)))
++    ilim = float(summary.get("ilim_ratio_tail_pk", 0.0))
++    xmax = float(summary.get("xmax_ratio_pk", 0.0))
++    vsat = float(summary.get("opa548_vsat_max_v", 0.0))
++    if math.isfinite(dc) and dc > policy.dc_iport_abs_limit_a:
++        reasons.append(f"dc_iport={dc:.6g}A>{policy.dc_iport_abs_limit_a:.6g}A")
++    if math.isfinite(ilim) and ilim > policy.ilim_ratio_limit:
++        reasons.append(f"ilim_ratio={ilim:.6g}>{policy.ilim_ratio_limit:.6g}")
++    if math.isfinite(xmax) and xmax > policy.xmax_ratio_limit:
++        reasons.append(f"xmax_ratio={xmax:.6g}>{policy.xmax_ratio_limit:.6g}")
++    if math.isfinite(vsat) and vsat > policy.vsat_limit_v:
++        reasons.append(f"vsat_margin_violation={vsat:.6g}V>{policy.vsat_limit_v:.6g}V")
++    return not reasons, reasons
++
++
++def apply_acceptance(summary: dict[str, Any], policy: ValidationPolicy) -> dict[str, Any]:
++    """Attach acceptance_status without changing simulation_status."""
++    out = dict(summary)
++    safety_ok, reasons = safety_acceptance(out, policy)
++    out["safety_pass"] = bool(safety_ok)
++
++    target_mean = float(out.get("rtarget_tail_mean_ohm", float("nan")))
++    fixed_status = out.get("phasor_status")
++    dyn_status = out.get("dynamic_phasor_status")
++
++    if fixed_status == "ok":
++        real_error = abs(float(out["ztotal_real_ohm"]) - target_mean)
++        imag_error = abs(float(out["ztotal_imag_ohm"]))
++        real_tol = max(policy.fixed_real_abs_tol_ohm, policy.fixed_real_rel_tol * max(abs(target_mean), 1.0))
++        imag_tol = max(policy.fixed_imag_abs_tol_ohm, policy.fixed_imag_rel_tol * max(abs(target_mean), 1.0))
++        out["fixed_real_error_ohm"] = real_error
++        out["fixed_real_tolerance_ohm"] = real_tol
++        out["fixed_imag_tolerance_ohm"] = imag_tol
++        if real_error > real_tol:
++            reasons.append(f"fixed_real_error={real_error:.6g}ohm>{real_tol:.6g}ohm")
++        if imag_error > imag_tol:
++            reasons.append(f"fixed_imag={imag_error:.6g}ohm>{imag_tol:.6g}ohm")
++        out["acceptance_class"] = "fixed_electrical_impedance"
++    elif dyn_status in {"ok", "low_carrier_ratio"}:
++        p95_real = float(out.get("dynamic_p95_abs_real_rel_error", float("inf")))
++        p95_imag = float(out.get("dynamic_p95_abs_imag_rel", float("inf")))
++        ratio = float(out.get("carrier_to_mod_ratio", 0.0))
++        if ratio < policy.min_dynamic_carrier_ratio:
++            reasons.append(f"carrier_ratio={ratio:.6g}<{policy.min_dynamic_carrier_ratio:.6g}")
++        if p95_real > policy.dynamic_p95_real_rel_tol:
++            reasons.append(f"dynamic_p95_real_rel={p95_real:.6g}>{policy.dynamic_p95_real_rel_tol:.6g}")
++        if p95_imag > policy.dynamic_p95_imag_rel_tol:
++            reasons.append(f"dynamic_p95_imag_rel={p95_imag:.6g}>{policy.dynamic_p95_imag_rel_tol:.6g}")
++        out["acceptance_class"] = "dynamic_electrical_impedance"
++    else:
++        out["acceptance_class"] = "safety_only"
++
++    out["acceptance_pass"] = bool(not reasons)
++    out["acceptance_status"] = "pass" if not reasons else "fail"
++    out["acceptance_reasons"] = "; ".join(reasons)
++    return out
+--- /dev/null	2026-07-10 02:44:00.942175201 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/scripts/audit_control_path.py	2026-07-10 03:27:21.725750961 +0000
+@@ -0,0 +1,67 @@
++#!/usr/bin/env python3
++"""Audit the SPICE control path for forbidden instantaneous V/I feedback."""
++from __future__ import annotations
++
++import argparse
++import json
++import re
++from pathlib import Path
++
++
++def audit(path: Path) -> dict:
++    text = path.read_text(encoding="utf-8", errors="replace")
++    lines = text.splitlines()
++    probe_idx = next((i for i, line in enumerate(lines) if "* Probes" in line), len(lines))
++    control_lines = lines[:probe_idx]
++    probe_lines = lines[probe_idx:]
++
++    forbidden = []
++    div_patterns = [
++        re.compile(r"V\([^)]*\)\s*/\s*V\([^)]*\)", re.I),
++        re.compile(r"\b(?:voltage|vmeas|v_sense|vspk)\w*\s*/\s*(?:current|imeas|i_sense|iport)\w*", re.I),
++        re.compile(r"\b(?:impedance|reff|rest|zest)\w*\s*=.*?/", re.I),
++    ]
++    for n, line in enumerate(control_lines, 1):
++        stripped = line.strip()
++        if not stripped or stripped.startswith("*"):
++            continue
++        if any(p.search(stripped) for p in div_patterns):
++            forbidden.append({"line": n, "text": stripped})
++
++    required_evidence = {
++        "dac_target_generator": any("XU_DAC" in l for l in control_lines),
++        "current_sense": any("XU_INA" in l for l in control_lines),
++        "analog_multiplier": any("XU_MULT" in l and "AD633" in l for l in control_lines),
++        "multiplier_control_comment": any("VCMD = 20*MUL = Rx_cmd*ip" in l for l in control_lines),
++        "pointwise_vi_only_in_probe_section": any("B_REFF" in l for l in probe_lines) and not any("B_REFF" in l for l in control_lines),
++    }
++    passed = not forbidden and all(required_evidence.values())
++    return {
++        "file": str(path),
++        "status": "pass" if passed else "fail",
++        "forbidden_instantaneous_vi_control_hits": forbidden,
++        "required_evidence": required_evidence,
++        "conclusion": (
++            "MCU/DAC generates the target trajectory; the analog path multiplies target impedance by measured current. "
++            "Instantaneous V/I exists only as a diagnostic probe."
++            if passed else
++            "The SPICE control path does not satisfy the no-instantaneous-V/I contract."
++        ),
++    }
++
++
++def main() -> None:
++    ap = argparse.ArgumentParser()
++    ap.add_argument("path", nargs="?", default=str(Path(__file__).resolve().parents[1] / "spice" / "circuits" / "full_component_template.cir"))
++    ap.add_argument("--json-out")
++    args = ap.parse_args()
++    result = audit(Path(args.path))
++    payload = json.dumps(result, ensure_ascii=False, indent=2)
++    print(payload)
++    if args.json_out:
++        Path(args.json_out).write_text(payload + "\n", encoding="utf-8")
++    raise SystemExit(0 if result["status"] == "pass" else 2)
++
++
++if __name__ == "__main__":
++    main()
+--- /dev/null	2026-07-10 02:44:00.942175201 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/scripts/audit_firmware.py	2026-07-10 03:27:21.752790545 +0000
+@@ -0,0 +1,96 @@
++#!/usr/bin/env python3
++"""Static firmware audit for accidental instantaneous V/I impedance feedback.
++
++This scanner is intentionally conservative. It does not prove runtime behavior;
++it identifies code that requires manual review and verifies the intended command
++pattern where source is available.
++"""
++from __future__ import annotations
++
++import argparse
++import json
++import re
++from pathlib import Path
++
++SOURCE_EXTS = {".c", ".h", ".cc", ".cpp", ".hpp", ".ino", ".s", ".asm", ".rs"}
++SKIP_DIRS = {".git", "build", "cmake-build-debug", "cmake-build-release", "Debug", "Release", "Middlewares", "Drivers"}
++
++RISK_PATTERNS = [
++    ("voltage_divided_by_current", re.compile(r"\b(?:v(?:oltage)?|vmeas|vspk|v_sense)\w*\s*/\s*(?:i(?:current)?|imeas|iport|i_sense)\w*", re.I)),
++    ("impedance_assignment_with_division", re.compile(r"\b(?:z|r|impedance|reff|rest|zest)\w*\s*=\s*[^;\n]*/[^;\n]+", re.I)),
++    ("reciprocal_current", re.compile(r"\b1(?:\.0+)?\s*/\s*(?:i|imeas|iport|current)\w*", re.I)),
++]
++ALLOWED_PATTERNS = [
++    re.compile(r"(?:vcmd|v_cmd|dac_cmd|command)\w*\s*=\s*[^;\n]*(?:rtarget|r_target|rx|r_synth)\w*\s*\*\s*(?:i|imeas|iport|current)\w*", re.I),
++    re.compile(r"(?:rtarget|r_target|rx|r_synth)\w*\s*\*\s*(?:i|imeas|iport|current)\w*", re.I),
++]
++
++
++def collect(root: Path) -> list[Path]:
++    if root.is_file():
++        return [root] if root.suffix.lower() in SOURCE_EXTS else []
++    files = []
++    for p in root.rglob("*"):
++        if any(part in SKIP_DIRS for part in p.parts):
++            continue
++        if p.is_file() and p.suffix.lower() in SOURCE_EXTS:
++            files.append(p)
++    return sorted(files)
++
++
++def audit(root: Path) -> dict:
++    files = collect(root)
++    if not files:
++        return {
++            "root": str(root),
++            "status": "not_auditable",
++            "source_file_count": 0,
++            "risk_hits": [],
++            "allowed_multiply_hits": [],
++            "conclusion": "No MCU firmware source files are present in the supplied project. Runtime firmware behavior cannot be signed off.",
++        }
++    risk_hits = []
++    allowed_hits = []
++    for path in files:
++        text = path.read_text(encoding="utf-8", errors="replace")
++        for lineno, line in enumerate(text.splitlines(), 1):
++            code = line.split("//", 1)[0]
++            for name, pat in RISK_PATTERNS:
++                if pat.search(code):
++                    risk_hits.append({"file": str(path), "line": lineno, "rule": name, "text": line.strip()})
++            if any(p.search(code) for p in ALLOWED_PATTERNS):
++                allowed_hits.append({"file": str(path), "line": lineno, "text": line.strip()})
++    status = "review_required" if risk_hits else "pass_static_scan"
++    return {
++        "root": str(root),
++        "status": status,
++        "source_file_count": len(files),
++        "risk_hits": risk_hits,
++        "allowed_multiply_hits": allowed_hits,
++        "conclusion": (
++            "Potential instantaneous V/I logic was found and requires manual control-flow review."
++            if risk_hits else
++            "No obvious instantaneous V/I feedback expression was found. Static scanning alone does not prove runtime behavior."
++        ),
++    }
++
++
++def main() -> None:
++    ap = argparse.ArgumentParser()
++    ap.add_argument("root", nargs="?", default=str(Path(__file__).resolve().parents[1]))
++    ap.add_argument("--json-out")
++    ap.add_argument("--allow-missing", action="store_true", help="Return zero when no firmware source is supplied, while retaining not_auditable status")
++    args = ap.parse_args()
++    result = audit(Path(args.root))
++    payload = json.dumps(result, ensure_ascii=False, indent=2)
++    print(payload)
++    if args.json_out:
++        Path(args.json_out).write_text(payload + "\n", encoding="utf-8")
++    if result["status"] == "review_required":
++        raise SystemExit(2)
++    if result["status"] == "not_auditable" and not args.allow_missing:
++        raise SystemExit(4)
++
++
++if __name__ == "__main__":
++    main()
+--- /dev/null	2026-07-10 02:44:00.942175201 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/scripts/check_project.py	2026-07-10 03:27:21.777929232 +0000
+@@ -0,0 +1,53 @@
++#!/usr/bin/env python3
++"""Structural project check; no simulation is run."""
++from __future__ import annotations
++
++import importlib.util
++import json
++import subprocess
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++REQUIRED = [
++    ROOT / "scripts" / "run_sweeps.py",
++    ROOT / "scripts" / "validation_metrics.py",
++    ROOT / "scripts" / "audit_control_path.py",
++    ROOT / "scripts" / "audit_firmware.py",
++    ROOT / "spice" / "circuits" / "full_component_template.cir",
++    ROOT / "spice" / "models" / "official_pure_rawps_wrapped_models.lib",
++]
++
++
++def main() -> None:
++    problems = []
++    for path in REQUIRED:
++        if not path.exists():
++            problems.append(f"missing: {path.relative_to(ROOT)}")
++
++    for module in ["numpy", "pandas", "matplotlib"]:
++        if importlib.util.find_spec(module) is None:
++            problems.append(f"python module unavailable: {module}")
++
++    control_report = ROOT / "control_path_audit.json"
++    cp = subprocess.run(
++        [sys.executable, str(ROOT / "scripts" / "audit_control_path.py"), "--json-out", str(control_report)],
++        capture_output=True,
++        text=True,
++    )
++    if cp.returncode:
++        problems.append("SPICE control-path audit failed")
++
++    model_text = (ROOT / "spice" / "models" / "official_pure_rawps_wrapped_models.lib").read_text(encoding="utf-8", errors="replace") if (ROOT / "spice" / "models" / "official_pure_rawps_wrapped_models.lib").exists() else ""
++    for token in ["AD633_NG_SURR", "OPA548_NG_SURR", "OPA1656_NG_SURR", "INA149_NG_SURR"]:
++        if token not in model_text:
++            problems.append(f"model wrapper missing subcircuit: {token}")
++
++    result = {"status": "pass" if not problems else "fail", "problems": problems}
++    (ROOT / "project_check.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
++    print(json.dumps(result, indent=2))
++    raise SystemExit(0 if not problems else 2)
++
++
++if __name__ == "__main__":
++    main()
+--- /dev/null	2026-07-10 02:44:00.942175201 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/scripts/postprocess_case.py	2026-07-10 03:29:59.213223201 +0000
+@@ -0,0 +1,54 @@
++#!/usr/bin/env python3
++"""Re-run corrected acceptance post-processing on an existing ngspice case."""
++from __future__ import annotations
++
++import argparse
++import json
++import sys
++from pathlib import Path
++
++import pandas as pd
++
++SCRIPT_DIR = Path(__file__).resolve().parent
++sys.path.insert(0, str(SCRIPT_DIR))
++import run_sweeps as rs  # noqa: E402
++
++
++def main() -> None:
++    ap = argparse.ArgumentParser()
++    ap.add_argument("case_dir", type=Path)
++    ap.add_argument("--write-derived-csv", action="store_true")
++    ap.add_argument("--plots", action="store_true")
++    args = ap.parse_args()
++
++    case_dir = args.case_dir.resolve()
++    configs = list(case_dir.glob("*_config.json"))
++    if len(configs) != 1:
++        raise SystemExit(f"Expected exactly one *_config.json in {case_dir}, found {len(configs)}")
++    cfg_path = configs[0]
++    name = cfg_path.name.removesuffix("_config.json")
++    payload = json.loads(cfg_path.read_text(encoding="utf-8"))
++    spk = rs.SpeakerTS(**payload["speaker"])
++    cfg = rs.SimConfig(**payload["config"])
++    data_path = case_dir / f"{name}.dat"
++    if not data_path.exists():
++        raise SystemExit(f"Missing ngspice wrdata output: {data_path}")
++
++    df = rs.add_derived(rs.read_wrdata(data_path), spk, cfg)
++    summary = rs.summarize(df, spk, cfg, name, payload.get("model", "full"))
++    if args.write_derived_csv:
++        df.to_csv(case_dir / f"{name}.csv", index=False)
++    dynamic_rows = df.attrs.get("dynamic_phasor_rows", [])
++    if dynamic_rows:
++        pd.DataFrame(dynamic_rows).to_csv(case_dir / f"{name}_dynamic_phasor.csv", index=False)
++    (case_dir / f"{name}_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
++    if args.plots:
++        rs.plot_case(df, name, case_dir / f"{name}.png", cfg=cfg, tail_only=False)
++        rs.plot_case(df, name, case_dir / f"{name}_tail.png", cfg=cfg, tail_only=True)
++    print(json.dumps(summary, ensure_ascii=False, indent=2))
++    if summary.get("acceptance_status") == "fail":
++        raise SystemExit(3)
++
++
++if __name__ == "__main__":
++    main()
+--- /dev/null	2026-07-10 02:44:00.942175201 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/scripts/aggregate_split_results.py	2026-07-10 03:30:35.027103077 +0000
+@@ -0,0 +1,61 @@
++#!/usr/bin/env python3
++"""Aggregate independently-run result directories without hiding failures."""
++from __future__ import annotations
++
++import argparse
++import json
++import shutil
++from pathlib import Path
++
++import pandas as pd
++
++
++def main() -> None:
++    ap = argparse.ArgumentParser()
++    ap.add_argument("inputs", nargs="+", type=Path)
++    ap.add_argument("--out", required=True, type=Path)
++    ap.add_argument("--allow-acceptance-fail", action="store_true")
++    args = ap.parse_args()
++
++    frames = []
++    missing = []
++    for root in args.inputs:
++        p = root / "all_summary.csv"
++        if not p.exists():
++            missing.append(str(p))
++            continue
++        df = pd.read_csv(p)
++        df.insert(0, "source_results_dir", str(root))
++        frames.append(df)
++    if missing:
++        raise SystemExit("Missing split summaries:\n" + "\n".join(missing))
++    if not frames:
++        raise SystemExit("No input summaries")
++
++    out = args.out
++    if out.exists():
++        shutil.rmtree(out)
++    out.mkdir(parents=True)
++    df = pd.concat(frames, ignore_index=True, sort=False)
++    df.to_csv(out / "all_summary.csv", index=False)
++    sim_fail = df[df.get("simulation_status", pd.Series(index=df.index, dtype=str)).fillna("") != "completed"]
++    acc_fail = df[df.get("acceptance_status", pd.Series(index=df.index, dtype=str)).fillna("") == "fail"]
++    sim_fail.to_csv(out / "simulation_failures.csv", index=False)
++    acc_fail.to_csv(out / "acceptance_failures.csv", index=False)
++    status = {
++        "cases": len(df),
++        "simulation_failures": len(sim_fail),
++        "acceptance_failures": len(acc_fail),
++        "simulation_status_counts": df.get("simulation_status", pd.Series(dtype=str)).value_counts(dropna=False).to_dict(),
++        "acceptance_status_counts": df.get("acceptance_status", pd.Series(dtype=str)).value_counts(dropna=False).to_dict(),
++    }
++    (out / "aggregate_status.json").write_text(json.dumps(status, indent=2), encoding="utf-8")
++    print(json.dumps(status, indent=2))
++    if len(sim_fail):
++        raise SystemExit(2)
++    if len(acc_fail) and not args.allow_acceptance_fail:
++        raise SystemExit(3)
++
++
++if __name__ == "__main__":
++    main()
+--- /dev/null	2026-07-10 02:44:00.942175201 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/tests/test_validation_metrics.py	2026-07-10 03:27:33.925039929 +0000
+@@ -0,0 +1,62 @@
++#!/usr/bin/env python3
++from __future__ import annotations
++
++import sys
++from pathlib import Path
++
++import numpy as np
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "scripts"))
++
++from validation_metrics import (  # noqa: E402
++    ValidationPolicy,
++    dynamic_complex_impedance,
++    fixed_complex_impedance,
++)
++
++
++def test_fixed_complex_fit_rejects_dc_bias_error() -> None:
++    policy = ValidationPolicy()
++    fs = 200_000
++    f = 1000.0
++    t = np.arange(0, 0.05, 1 / fs)
++    current = 8e-3 + 1e-3 * np.sin(2 * np.pi * f * t)
++    zsynthetic = 0.05 + 0.25j
++    # For i=Ipk*sin(wt), multiplication by a complex impedance is formed from
++    # the analytic components: real part in phase and imaginary part quadrature.
++    carrier_sin = 1e-3 * np.sin(2 * np.pi * f * t)
++    carrier_cos = 1e-3 * np.cos(2 * np.pi * f * t)
++    voltage = 0.06 + zsynthetic.real * carrier_sin + zsynthetic.imag * carrier_cos
++    result = fixed_complex_impedance(t, voltage, current, f, 7.2, 0.01, policy)
++    assert result["phasor_status"] == "ok"
++    assert abs(result["ztotal_real_ohm"] - 7.25) < 1e-4
++    # Sign follows the exp(+jwt) phasor convention used by the fitter.
++    assert abs(abs(result["ztotal_imag_ohm"]) - 0.25) < 1e-4
++
++    # The old no-intercept slope is badly biased by DC offsets.
++    old = 7.2 + float(np.sum(voltage * current) / np.sum(current * current))
++    assert abs(old - result["ztotal_real_ohm"]) > 0.5
++
++
++def test_dynamic_local_phasor_tracks_resistance_envelope() -> None:
++    policy = ValidationPolicy(min_dynamic_windows=8)
++    dt = 2e-6
++    t = np.arange(0, 0.08, dt)
++    fm = 100.0
++    fc = 10_000.0
++    rt = 50.5 + 30.0 * np.sin(2 * np.pi * fm * t)
++    current_ac = 1e-3 * np.sin(2 * np.pi * fc * t)
++    current = 5e-3 + current_ac
++    voltage = 0.02 + (rt - 7.2) * current_ac
++    metrics, rows = dynamic_complex_impedance(t, voltage, current, rt, fc, fm, 7.2, 0.02, policy)
++    assert metrics["dynamic_phasor_status"] == "ok"
++    assert len(rows) >= 8
++    assert metrics["dynamic_p95_abs_real_rel_error"] < 0.03
++    assert metrics["dynamic_p95_abs_imag_rel"] < 0.03
++
++
++if __name__ == "__main__":
++    test_fixed_complex_fit_rejects_dc_bias_error()
++    test_dynamic_local_phasor_tracks_resistance_envelope()
++    print("validation metric tests passed")
+--- /dev/null	2026-07-10 02:44:00.942175201 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/MCU_CONTROL_CONTRACT.md	2026-07-10 03:31:00.494578878 +0000
+@@ -0,0 +1,36 @@
++# MCU control contract
++
++## Required runtime role
++
++The MCU/DAC is permitted to generate only the bounded target-resistance trajectory:
++
++```text
++Rtarget(t) in [1 ohm, 100 ohm]
++Rx(t) = Rtarget(t) - Re_est
++```
++
++The real-time impedance synthesis path is:
++
++```text
++measured current -> analog scale -> AD633 multiply by Rx command -> VCMD -> OPA548
++```
++
++The firmware must not implement a fast feedback loop based on instantaneous:
++
++```text
++R_est(t) = Vspk(t) / Iport(t)
++```
++
++because Iport crosses zero, the port impedance is complex, and division noise/phase error can enter the power loop.
++
++## Permitted MCU measurements
++
++The MCU may sample voltage and current for telemetry, logging, slow calibration, RMS protection, temperature estimation, and offline/slow lock-in impedance estimation. Any division must occur only after coherent windowing or complex phasor extraction, with current-amplitude qualification.
++
++## Required protections
++
++Firmware should independently supervise current, output saturation, DC current, temperature/power integral, target bounds, and target slew rate. A protection decision must not be based on a single instantaneous V/I sample.
++
++## Audit status of supplied package
++
++No C/C++/assembly/STM32 project files were supplied. Therefore the actual MCU firmware is not auditable from this archive. `scripts/audit_firmware.py` is included for the firmware source tree when available. A `not_auditable` result is not a pass.
+--- /dev/null	2026-07-10 02:44:00.942175201 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/REPAIR_NOTES_20260710.md	2026-07-10 03:31:00.510209591 +0000
+@@ -0,0 +1,53 @@
++# SPICE acceptance and control-path repair — 2026-07-10
++
++## Repaired defects
++
++1. The old fixed-resistance estimator used a zero-intercept scalar slope, `sum(v*i)/sum(i*i)`. Device-macro DC offsets could corrupt a correct 7.2-ohm result into approximately 0.057 ohm.
++2. Fixed impedance now uses separate affine sinusoidal fits for voltage and current, including DC intercepts, and reports complex total impedance.
++3. Dynamic current-injection cases now use local complex carrier fits with first-order I/Q envelope terms. Instantaneous V/I remains diagnostic only.
++4. `simulation_status` and `acceptance_status` are separate. A completed ngspice run is no longer reported as an engineering pass.
++5. The runner returns exit code 2 for simulation/post-processing failures and exit code 3 for acceptance failures. `--allow-acceptance-fail` is available only for exploratory sweeps.
++6. `simulation_failures.csv`, `acceptance_failures.csv`, and `validation_policy.json` are generated.
++7. Missing model-library paths are detected before simulation. The packaged pure-vendor wrapper is the default.
++8. Expensive regressions can be split by fixed resistance or modulation frequency. `--no-plots` and `--no-case-csv` reduce post-processing cost.
++9. Project/control-path and firmware audit scripts were added.
++
++## Verified repaired results
++
++Pure-vendor 1 mA, 1 kHz electrical-injection checks:
++
++| Target | Complex total impedance | Acceptance |
++|---:|---:|---|
++| 1 ohm | approximately 1.0537 + j0.3418 ohm | fail: reactive component exceeds policy |
++| 7.2 ohm | approximately 7.2487 - j0.00787 ohm | pass |
++| 100 ohm | approximately 98.8159 - j5.6054 ohm | fail: reactive component exceeds policy |
++
++The failures above are engineering results, not script failures. The repaired scripts distinguish them correctly.
++
++A dynamic 1-100-ohm, fm=100 Hz, 1 kHz-carrier case was reprocessed with the repaired local complex estimator and failed with large p95 real and imaginary relative errors. This confirms that the previous dynamic-signoff limitation remains; the repair does not hide it.
++
++## Exit codes
++
++```text
++0: all selected simulations and acceptance checks passed
++2: ngspice or post-processing failure
++3: simulations completed, but one or more acceptance checks failed
++4: firmware audit requested but no firmware source was supplied
++```
++
++## Authoritative outputs
++
++Use `all_summary.csv` columns:
++
++```text
++simulation_status
++acceptance_status
++acceptance_class
++acceptance_reasons
++ztotal_real_ohm
++ztotal_imag_ohm
++dynamic_p95_abs_real_rel_error
++dynamic_p95_abs_imag_rel
++```
++
++Do not use point-wise `reff_pointwise` or netlist `B_REFF` as a primary pass/fail metric.
+--- /dev/null	2026-07-10 02:44:00.942175201 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/RUN_FIXED_SIGNOFF_SPLIT.sh	2026-07-10 03:30:35.085276094 +0000
+@@ -0,0 +1,21 @@
++#!/usr/bin/env bash
++set -euo pipefail
++ROOT="$(cd "$(dirname "$0")" && pwd)"
++PROJ="$ROOT/1SPICE_SPICE_SIM"
++cd "$PROJ"
++rm -rf split_fixed_r* results_fixed_signoff_combined
++for tag in r1 r5 r7p2 r20 r100; do
++  echo "=== fixed split: $tag ==="
++  python scripts/run_sweeps.py \
++    --clean \
++    --results-dir "split_fixed_${tag}" \
++    --suite fixed-signoff \
++    --case-filter "signoff_fixed_${tag}_" \
++    --model-lib official-pure \
++    --allow-acceptance-fail \
++    --no-plots \
++    --no-case-csv
++done
++python scripts/aggregate_split_results.py \
++  split_fixed_r1 split_fixed_r5 split_fixed_r7p2 split_fixed_r20 split_fixed_r100 \
++  --out results_fixed_signoff_combined
+--- /dev/null	2026-07-10 02:44:00.942175201 +0000
++++ /mnt/data/SPICE_project_repaired_20260710_FINAL/RUN_DYNAMIC_SIGNOFF_SPLIT.sh	2026-07-10 03:30:35.111015447 +0000
+@@ -0,0 +1,21 @@
++#!/usr/bin/env bash
++set -euo pipefail
++ROOT="$(cd "$(dirname "$0")" && pwd)"
++PROJ="$ROOT/1SPICE_SPICE_SIM"
++cd "$PROJ"
++rm -rf split_dynamic_fm* results_dynamic_signoff_combined
++for fm in 10 30 100 300 1000; do
++  echo "=== dynamic split: fm=${fm}Hz ==="
++  python scripts/run_sweeps.py \
++    --clean \
++    --results-dir "split_dynamic_fm${fm}" \
++    --suite dynamic-signoff \
++    --case-filter "signoff_dynamic_fm${fm}_" \
++    --model-lib official-pure \
++    --allow-acceptance-fail \
++    --no-plots \
++    --no-case-csv
++done
++python scripts/aggregate_split_results.py \
++  split_dynamic_fm10 split_dynamic_fm30 split_dynamic_fm100 split_dynamic_fm300 split_dynamic_fm1000 \
++  --out results_dynamic_signoff_combined

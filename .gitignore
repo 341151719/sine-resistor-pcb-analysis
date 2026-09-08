@@ -1,0 +1,44 @@
+# Local/editor state
+.codex_stability_audit_tmp/
+**/.git/
+**/.git/
+*.kicad_prl
+*.bak
+*.tmp
+Thumbs.db
+.DS_Store
+
+# Python/firmware caches and build products
+__pycache__/
+*.py[cod]
+*.o
+*.a
+*.elf
+*.bin
+*.hex
+*.map
+
+# Installed toolchains and archives are not project source.
+**/环境/
+**/runtime/
+*.zip
+*.tar
+*.whl
+
+# Large regenerable simulation waveforms and generated result trees.
+*.dat
+**/results*/
+**/split_*/
+**/cases/
+
+# Duplicate pristine copy is retained outside this archive; the repaired
+# project and original_project are the useful review sources.
+SPICE部分/validation_workspace_20260904_19wI9s/pristine_manifest_check/
+
+# The embedded firmware checkout has its own Git history and is not imported
+# as a nested repository. Its design/debug records are represented by the
+# surrounding documentation and SPICE/PCB sources.
+实际调试部分/
+
+# Bundled helper skill is external tooling, not this board project.
+本次对话中的辅助skill/

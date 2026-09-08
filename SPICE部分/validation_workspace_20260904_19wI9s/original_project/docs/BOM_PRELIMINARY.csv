@@ -1,0 +1,12 @@
+Ref,Part,Value / Orderable,Reason,First-version note
+U1,OPA548T/OPA548F,Power op amp,±18 V power follower with current limit,Use heatsink and jumper RCL 33.2k/22.1k
+U2,AD633ARZ,4-quadrant multiplier,Implements ISIG*VK/10,Needs ±15 V and careful decoupling
+U3,INA149AID,Unity-gain diff amp,Measures SPK-DRV across 0.1 ohm shunt,High common-mode capability
+U4,OPA1656ID,Dual audio op amp,Gain 50 and gain 20 stages,Fast enough for loop and audio-band current signal
+U6,STM32G431CBT6,MCU/DAC,Generates Rtarget command,Simulation uses DAC surrogate
+RSHUNT,Vishay LVR05R1000FE70,0.1 ohm 5 W current sense,Low inductance and Kelvin sense preferred
+RCL1,Thin film,33.2k,~1.52 A OPA548 limit,Default safer setting
+RCL2,Thin film,22.1k,~1.99 A OPA548 limit,Stress option
+RSNUB,Power resistor,4.7 ohm 2 W,Output snubber,Fit footprint for tuning 3.3-10 ohm
+CSNUB,Film/C0G,47 nF 100 V,Output snubber,Fit footprint for tuning 10-100 nF
+DCLAMP,Schottky,>=5 A >=60 V,OPA548 output rail clamps,Close to power pins

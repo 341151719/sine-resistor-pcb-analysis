@@ -1,0 +1,183 @@
+* ============================================================================
+* OPA548 shutdown branch - physically bounded KiCad-local SPICE
+* Date: 2026-09-04
+*
+* Scope: TP8/VCMD -> R5 -> OPA548 +IN, real R10/TLP185 E/S path,
+*        OPA548 OFF input/leakage/clamp bounds, output snubber and PGND/AGND.
+*
+* This deck does NOT inject a 105 kHz source and does NOT add an arbitrary
+* U4 pole.  U4B is the official TI OPA1656 model with R15=1k/R16=39k.
+* The only transient stimulus is one 1 mV, 2 us startup pulse at the U4B
+* non-inverting input.  A persistent tone would invalidate this experiment.
+*
+* Board values taken from project.kicad_pcb:
+*   R5=100R, R10=100k, R11=1k, R7=57.6k, R6/R46=0R, RSH2=0.1R,
+*   R12=4.7R, C4=47nF, C5/C6=470uF, C7/C8=100nF, C27=10pF,
+*   D1/D2=SS56B, U7=TLP185, U1=OPA548F/500, U4=OPA1656IDR.
+*
+* Datasheet constraints used:
+*   OPA548 differential input 10Mohm||6pF; common-mode 1G||4pF;
+*   E/S LOW <= V-+0.8V, HIGH >= V-+2.4V, I_E/S LOW magnitude <=70uA;
+*   shutdown IQ typ 6mA; >20 kHz shutdown leakage can increase.
+*   TLP185 input Ct typ 30pF, CCE <=10pF, isolation Cs typ 0.8pF,
+*   IDARK typ 0.01uA / max 10uA, CTR min 50% at IF=5mA.
+*
+* The OPA548 OFF surrogate intentionally reports when R10 plus bounded E/S
+* current violates the LOW threshold; it does not silently force E/S LOW.
+* This separates a real R10 design-margin failure from a demonstrated TP8
+* oscillation.  IESLOW=0/6u/70u and IDARK=0.01u/1u/10u are bounded cases.
+* ============================================================================
+
+.include "/mnt/c/Users/Administrator/Documents/稳定性原因分析CODEX/SPICE部分/validation_workspace_20260904_19wI9s/original_project/spice/models/ngspice_compatible_macros.lib"
+
+.options method=gear reltol=2e-4 abstol=1e-11 vntol=1e-8 gmin=1e-12 rshunt=1e12
+.param J1=5 J2=10 EN=0 TEMP=27
+.param IESLOW=6u IDARK=1u CTR=1
+.param CCE=10p CISO=0.8p CLED=30p CES=2p
+.param CDIODE=320p
+
+* --------------------------- AGND / PGND -----------------------------------
+* KiCad R3 is a 0R bridge; 5mR + 2nH is a conservative copper/via model.
+VAG AGND 0 0
+RG3 AGND G3M 5m
+LG3 G3M PGND 2n
+* KiCad R4 is the AGND-DGND 0R bridge used by the optocoupler LED side.
+RGD AGND DGND 5m
+
+* --------------------------- U4 ANA rails ----------------------------------
+VJ2P J2P AGND {J2}
+RFBP J2P FBP 0.25
+LFBP FBP APBEAD 240n
+RAPS APBEAD APSM 3.5586m
+LAPS APSM APU4 2.9988n
+C15 APU4 AGND 100n
+C11 APU4 AGND 1u
+
+VJ2N J2N AGND {-J2}
+RFBN J2N FBN 0.25
+LFBN FBN ANBEAD 240n
+RANS ANBEAD ANSM 49.93m
+LANS ANSM ANU4 20.106n
+C16 ANU4 AGND 100n
+C10 ANU4 AGND 100n
+C12 ANU4 AGND 1u
+
+* --------------------------- healthy U4B ----------------------------------
+* One-shot startup perturbation only; no 100-110 kHz source.
+VSTART TP7 AGND PULSE(0 1m 10u 20n 20n 2u 1)
+* Healthy OPA1656 ngspice surrogate: A0/GBW are data-sheet-based;
+* no extra pole or artificial 100-110 kHz element is inserted.
+XU4B TP7 U4N U4O APU4 ANU4 OPA1656_NG_SURR
+
+* PCB-aware feedback routes and exact populated values.
+ROR16 U4O OR16M 5.380m
+LOR16 OR16M R16O 4.1652n
+RNR16 U4N NR16M 5.780m
+LNR16 NR16M R16N 4.4694n
+RNR15 U4N NR15M 6.723m
+LNR15 NR15M R15N 5.6334n
+R16 R16O R16N 39k
+R15 R15N AGND 1k
+* DNP VCMD/U4B_N copper remains, but no capacitor is populated.
+CSTUBV U4O AGND 5.25p
+CSTUBN U4N AGND 6.31p
+RTP8 TP8 U4O 1m
+RTP8P TP8 AGND 10Meg
+CTP8 TP8 AGND 10p
+
+* --------------------------- R5 and route ----------------------------------
+RVR5 U4O VR5M 59.938m
+LVR5 VR5M R5V 35.2578n
+CVR5A U4O AGND 2.93815p
+CVR5B R5V AGND 2.93815p
+R5 R5V INP 100
+
+* --------------------------- J1 OPA rails ----------------------------------
+VPPS PP_SRC PGND {J1}
+LPP PP_SRC PWR_P 0.2u
+RPP PWR_P PWR_PM 50m
+C5 PWR_PM PGND 470u
+C7 PWR_PM PGND 100n
+C27 PWR_PM PWR_NM 10p
+
+VPNS PN_SRC PGND {-J1}
+LPN PN_SRC PWR_N 0.2u
+RPN PWR_N PWR_NM 50m
+C6 PWR_NM PGND 470u
+C8 PWR_NM PGND 100n
+
+* --------------------------- R10 / U7 TLP185 -------------------------------
+* R11 drives the optocoupler LED from the MCU command. EN=0 is OFF.
+VMCU_EN MCU_EN DGND {EN}
+R11 MCU_EN LED_A 1k
+XU7 LED_A DGND PWR_P OPA_ES TLP185_PHYS params: CTR={CTR} IDARK={IDARK} CCE={CCE} CISO={CISO} CLED={CLED}
+R10 OPA_ES PWR_N 100k
+
+* --------------------------- OPA548 OFF physical surrogate ------------------
+* Pin order follows the TI OPA548 macro: +IN -IN ILIM V- V+ OUT E/S.
+XU1OFF INP INN ILIM PWR_N PWR_P OPA_OUT OPA_ES OPA548_OFF_PHYS params: IESLOW={IESLOW} CES={CES}
+R7 ILIM PWR_N 57.6k
+
+* Real board output/feedback and J4 OPEN.
+R46 OPA_OUT DRV 10m
+RSH2 DRV SPK 0.1
+R6 SPK INN 10m
+R12 DRV SNUB_MID 4.7
+C4 SNUB_MID PGND 47n
+.model DSS D(Is=5u N=1.05 Rs=0.02 Cjo={CDIODE} M=0.45 Vj=0.35 Bv=60 Ibv=1m)
+D1 DRV PWR_P DSS
+D2 PWR_N DRV DSS
+
+* --------------------------- physical subcircuits -------------------------
+.subckt TLP185_PHYS A K C E params: CTR=1 IDARK=1u CCE=10p CISO=0.8p CLED=30p
+.model DLED_T D(Is=1e-14 N=1.8 Rs=3 Cjo={CLED} Vj=0.7 M=0.5 Bv=5 Ibv=5u)
+DLED A K DLED_T
+* Phototransistor current is bounded by the specified CTR range.
+BPHOTO C E I={CTR*I(DLED)}
+IDARK_SRC C E DC {IDARK}
+CCE_DEV C E {CCE}
+* Isolation capacitance across the optocoupler barrier.
+CISO_DEV A E {CISO}
+RISO_DEV A E 1e12
+.ends TLP185_PHYS
+
+.subckt OPA548_OFF_PHYS INP INN ILIM VNEG VPOS OUT ES params: IESLOW=6u CES=2p
+* TI OPA548 datasheet input impedance constraints.
+RDIFF INP INN 10Meg
+CDIFF INP INN 6p
+RCMP INP VNEG 1Gig
+CCMP INP VNEG 4p
+RCMN INN VNEG 1Gig
+CCMN INN VNEG 4p
+* E/S low-mode current is bounded by the datasheet 70uA specification.
+* Direction is V+ -> E/S, matching the official model's IEO convention.
+IES VPOS ES DC {IESLOW}
+CES_DEV ES VNEG {CES}
+* Input ESD clamps, with no extra arbitrary pole or gain element.
+.model DCLAMP D(Is=1n N=1.3 Rs=2 Cjo=0.1p)
+DIPU INP VPOS DCLAMP
+DIPL VNEG INP DCLAMP
+DINU INN VPOS DCLAMP
+DINL VNEG INN DCLAMP
+* Disabled output is high impedance; output leakage is only a bounded sweep.
+ROFF OUT VNEG 100Meg
+COFF OUT VNEG 6p
+.ends OPA548_OFF_PHYS
+
+* --------------------------- analyses --------------------------------------
+.control
+set noaskquit
+* DC operating point flags whether R10 + bounded E/S current can satisfy OFF.
+op
+print v(OPA_ES) v(PWR_N) v(PWR_P) v(TP8) v(U4O)
+* A single broadband startup pulse; no periodic 105kHz source.
+tran 0.05u 3m 0 0.05u
+meas tran TP8_MAX MAX v(TP8) from=0.1m to=3m
+meas tran TP8_MIN MIN v(TP8) from=0.1m to=3m
+meas tran TP8_PP PARAM='TP8_MAX-TP8_MIN'
+meas tran ES_DELTA FIND v(OPA_ES)-v(PWR_N) AT=2m
+meas tran U4O_FINAL FIND v(U4O) AT=2m
+wrdata results/opa548_shutdown_branch_tran.dat time v(TP7) v(TP8) v(U4O) v(U4N) v(OPA_ES) v(PWR_P) v(PWR_N) v(SPK) v(DRV) i(VPPS) i(VPNS)
+quit
+.endc
+.end

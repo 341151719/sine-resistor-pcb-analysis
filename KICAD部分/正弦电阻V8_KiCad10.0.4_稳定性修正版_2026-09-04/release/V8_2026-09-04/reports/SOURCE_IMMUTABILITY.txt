@@ -1,0 +1,6 @@
+Original V7 PCB SHA256: 86e70d618cebdb8de6bb21000b544058a16afe8acae95ba884a65c92d7876ec0
+Original V7 SCH SHA256: e00058a79256b9dd9a489f64c12c8dbecd658ff4a05c56c5311f6ada80fc8e41
+Original 2026-07-14 fabrication ZIP SHA256: 758dfaf6444b9039d592fe1de5649081be83b0748326e3bdb54c6a9bd434e7d7
+
+These hashes were re-read from the original paths after the V8 release was generated.
+They match the V8 baseline capture for the V7 PCB and schematic; source artifacts were not overwritten.

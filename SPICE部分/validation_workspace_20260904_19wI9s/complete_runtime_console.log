@@ -1,0 +1,17 @@
+RUN ideal_single_sine [ideal]
+Traceback (most recent call last):
+  File "/mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/scripts/run_sweeps.py", line 1065, in <module>
+    main()
+  File "/mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/scripts/run_sweeps.py", line 1040, in main
+    summaries.append(run_case(name, model, cfg, spk, write_only=args.write_only))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/scripts/run_sweeps.py", line 649, in run_case
+    netlist = render((TEMPLATES / template_name).read_text(encoding="utf-8"), spk, cfg, datafile)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/spice/circuits/ideal_reference_template.cir'

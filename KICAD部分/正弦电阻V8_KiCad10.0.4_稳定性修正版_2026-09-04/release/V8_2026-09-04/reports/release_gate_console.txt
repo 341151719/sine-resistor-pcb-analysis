@@ -1,0 +1,76 @@
+{
+  "pass": true,
+  "checks": {
+    "r12": {
+      "value": "4.7R 2W",
+      "position_mm": [
+        154.354,
+        89.74
+      ],
+      "orientation_deg": 180.0,
+      "pads": {
+        "1": {
+          "net": "DRV",
+          "position_mm": [
+            157.420288,
+            89.74
+          ],
+          "size_mm": [
+            1.282522,
+            3.456
+          ]
+        },
+        "2": {
+          "net": "SNUB_MID",
+          "position_mm": [
+            151.287712,
+            89.74
+          ],
+          "size_mm": [
+            1.282522,
+            3.456
+          ]
+        }
+      }
+    },
+    "values": {
+      "C27": "10nF",
+      "R10": "6.8kR",
+      "C16": "100nF"
+    },
+    "c16_position_mm": [
+      116.873,
+      104.5
+    ],
+    "testpoints_pth": true,
+    "j7_pth": true,
+    "fiducials": [
+      "FID1",
+      "FID2",
+      "FID3",
+      "FID4",
+      "FID5",
+      "FID6"
+    ],
+    "assembly": {
+      "bom_count": 73,
+      "cpl_count": 73,
+      "refs_equal": true
+    },
+    "drc": {
+      "unconnected": 0,
+      "non_graphical": [],
+      "graphical_warning_count": 59
+    },
+    "erc": {
+      "total": 436,
+      "by_type": {
+        "pin_not_driven": 16,
+        "pin_to_pin": 288,
+        "unconnected_wire_endpoint": 105,
+        "endpoint_off_grid": 27
+      },
+      "unchanged_from_conversion_baseline": true
+    }
+  }
+}

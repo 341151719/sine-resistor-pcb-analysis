@@ -1,0 +1,287 @@
+{
+  "created": "2026-07-10",
+  "project": "active acoustic impedance SPICE repaired acceptance path",
+  "file_count": 56,
+  "files": [
+    {
+      "path": "1SPICE_SPICE_SIM/MCU_CONTROL_CONTRACT.md",
+      "bytes": 1441,
+      "sha256": "690f37a58e97ec5575eec7ac2de5112b7453dcbde8646902e4ab87ba10111dae"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/PROJECT_VALIDITY_STATUS.md",
+      "bytes": 4122,
+      "sha256": "ee6aa9cfa8d586e17a84325df3cb117c3a6ec547ad7cc121649e849a90580ec8"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/README.md",
+      "bytes": 3321,
+      "sha256": "841afa32816a7f2ceece8044c6a4afc97b3fa0edde151df6ccabcf39f20545c9"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/README_#U65b0#U624b#U5148#U770b.md",
+      "bytes": 5200,
+      "sha256": "577b8bf49ddbb61a13d39269284f82b329a1f0b509aa8b094bc34b6b75cbc9dd"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/REPAIR_NOTES_20260710.md",
+      "bytes": 2649,
+      "sha256": "586ae30ef895e75cd6b2e27a8c285545224f0608fc647744c73e3cfb614b5daa"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/control_path_audit.json",
+      "bytes": 580,
+      "sha256": "696b3c8a1bac69bccb3b5871c1c6d996fc75ed9bd5e20442c1e5acb790ef133f"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/firmware_audit.json",
+      "bytes": 256,
+      "sha256": "17b4947255c1d44dbcd32cc8e6948866ab2f31c1faec751a0ddd82332172ad36"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/project_check.json",
+      "bytes": 40,
+      "sha256": "e444cffedecf2693ba9b55e28197f2d905cac1129a7403db9e930525f7e96015"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/requirements.txt",
+      "bytes": 39,
+      "sha256": "38abbf1ffaacfebb77f17b90bd700b8823858d1307789fa7cb79825a2a21a508"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/scripts/aggregate_split_results.py",
+      "bytes": 2185,
+      "sha256": "e2a5d689b6bbccf757aafc16d024152a193c1baf1bd9aea5ddbebeb7976f9657"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/scripts/audit_control_path.py",
+      "bytes": 2731,
+      "sha256": "2e3cde1a6a24525fc038800eafdc4f7c75da17de664512c0fc234885cde59e03"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/scripts/audit_firmware.py",
+      "bytes": 3966,
+      "sha256": "02e50788c59b24b5937fab61bcbe925ec5b8db873aff54c56ebaf27ef946127d"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/scripts/check_project.py",
+      "bytes": 1971,
+      "sha256": "56363ae8adbe11284e9200c2f6fa2ce992dd8b6476fe1ec3dd5983ed65ab5380"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/scripts/postprocess_case.py",
+      "bytes": 2071,
+      "sha256": "b3ee1155c7dbe465c1915e76a98df87137272a548fa7f57c66ebd646f7ba72bc"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/scripts/run_sweeps.py",
+      "bytes": 44913,
+      "sha256": "d1b02e6b1121553dbc618ee4332d50690336e3151aa15cf2d0593ba684747fe4"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/scripts/validation_metrics.py",
+      "bytes": 13909,
+      "sha256": "8c555c30e0c76cd9715dcccfe3fc3ce4af49347241ecee8b5dae6b082039d383"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/spice/circuits/full_component_template.cir",
+      "bytes": 9294,
+      "sha256": "8329f151e922c9c0d994eed163601a5a6bd216739bd5421ec6458750a55f45b0"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/spice/models/official_pure_rawps_wrapped_models.lib",
+      "bytes": 2274,
+      "sha256": "5bf5314fe4f2ae9c86b25944dd7424e592c7f49631fdd8416d3913879e69f6d2"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/spice/models/vendor_official/AD633/ad633.cir",
+      "bytes": 3032,
+      "sha256": "00cbdcca9bf0658a21448ea82785b3187f87e15e1fa36f4066d870bd536c3985"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/spice/models/vendor_official/INA149/sbomc47/ina149.lib",
+      "bytes": 11567,
+      "sha256": "7adccaf61abbb093980aa6fe6604bea72068541cf4112141e22aaaa79a463c8b"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/spice/models/vendor_official/INA149/sbomc47.zip",
+      "bytes": 79309,
+      "sha256": "a782346e9a67ae6b195a3fd4a9f6e5e973c3cb677aa2d96a779c5c802a268d4e"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/spice/models/vendor_official/OPA1656/sbomaw6c/OPA1656.LIB",
+      "bytes": 17885,
+      "sha256": "9847ed60c62e792ee6f1c84899278a3c11ce71a6d21804bdd88f51199f1ba055"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/spice/models/vendor_official/OPA1656/sbomaw6c.zip",
+      "bytes": 28584,
+      "sha256": "8f696ee73bfb9a5d7d15b70ed27629dfe5b92ba54e8da894aa25fe51d3cb312f"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/spice/models/vendor_official/OPA548/sbom088c/OPA548.LIB",
+      "bytes": 4969,
+      "sha256": "994219b8d79edea3161425452fe03e541cb7576b2d055068ac50b708fe37ae89"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/spice/models/vendor_official/OPA548/sbom088c.zip",
+      "bytes": 26454,
+      "sha256": "73860253212c29861f6dfb38b78fac611a729c765dc480fd7fc9abf8ad5acdbc"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/spice/models/vendor_official/README.md",
+      "bytes": 1026,
+      "sha256": "7b056cd91d23d109bf12b70306f498c0697ce344daec60a329a72169ddfe4aa2"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/tests/test_validation_metrics.py",
+      "bytes": 2281,
+      "sha256": "7ab9bfa9a7e669b35507b4f44cd9ea533c12f3fb5465c922c0a682d98bdf69e3"
+    },
+    {
+      "path": "1SPICE_SPICE_SIM/validation_combined_actual_runs.csv",
+      "bytes": 6635,
+      "sha256": "66229846988d1770a813db8f41e76fd52aa18b5eba0ccc8bb7db9d3634b5ac79"
+    },
+    {
+      "path": "README_LATEST_RESULTS.md",
+      "bytes": 5706,
+      "sha256": "b192dc2a6c6c32092dba28e1d598b5232025e1fbd9bf1b621a542bf6a89a4030"
+    },
+    {
+      "path": "README_REPAIRED.md",
+      "bytes": 1211,
+      "sha256": "ae0c4bb0bf5a5d83967d731184f4758bfc33a0c73d56a78c6f69330999fc92a4"
+    },
+    {
+      "path": "REPAIR_PATCH.diff",
+      "bytes": 60946,
+      "sha256": "e3f1d1e2507b7af38802651259a7a5225d2148a0bad2beeaff1ab5aef1b2015f"
+    },
+    {
+      "path": "RUN_DYNAMIC_SIGNOFF_SPLIT.sh",
+      "bytes": 709,
+      "sha256": "b8c9b41c25a7e6c32e189d22f00c41d8d9fb9373e9a69c275e1ecba719d13e5a"
+    },
+    {
+      "path": "RUN_FIXED_SIGNOFF_SPLIT.sh",
+      "bytes": 669,
+      "sha256": "2b7218437e2fc4b1d0b011b116cc1e1b5d3e48d22c92b8751675a413f61f107a"
+    },
+    {
+      "path": "RUN_QUICK_SMOKE.sh",
+      "bytes": 490,
+      "sha256": "69fd9a3706fb546e4d402db2619ec21c65b8bcccc3c9c7e5baebfc3a71d8a3f5"
+    },
+    {
+      "path": "reports/AB_FINAL_SPICE_AND_PCB_DECISION_REPORT.md",
+      "bytes": 9589,
+      "sha256": "20d0a83e35e2b497f3ef08f746d7558ce4e6399fa045298812a3e6acd011dd60"
+    },
+    {
+      "path": "reports/AB_final_status_table.csv",
+      "bytes": 5767,
+      "sha256": "14a9c5f3f3ee9ca88b255b6fa1adfec57791f431b8dec88ab1baf922c24b0332"
+    },
+    {
+      "path": "reports/COMPLETE_THREE_FIXES_VERIFICATION_REPORT.md",
+      "bytes": 10101,
+      "sha256": "b498865d86d765c159e06149cf701010433110fba5153e01af1c71fc38a4b5b5"
+    },
+    {
+      "path": "reports/DYNAMIC_SIGNOFF_FINAL_CONCLUSION.md",
+      "bytes": 4333,
+      "sha256": "bcf2e298e0a449b64b302a0b3d72f047e078673b8d45d18b70e3db285f5e7646"
+    },
+    {
+      "path": "reports/HISTORICAL_RESULTS_NOTICE.md",
+      "bytes": 463,
+      "sha256": "3ce0dcb4c1ad9c8af8c3af1a2a05cfeb6d6bfd496043530b3ccc0bf72124af04"
+    },
+    {
+      "path": "reports/OFFICIAL_PURE_MACRO_SIGNOFF_STATUS.md",
+      "bytes": 5973,
+      "sha256": "4925ff3902f2aad3206248bcc3a542f9962d74201979ae2c420424d6755fd294"
+    },
+    {
+      "path": "reports/PCB_change_action_table.csv",
+      "bytes": 3116,
+      "sha256": "c78d4ad01ea8fa9862f6c3346ae111796430a7a437d5185c630fccd910617d65"
+    },
+    {
+      "path": "reports/PURE_VENDOR_DYNAMIC_SIGNOFF_REPORT.md",
+      "bytes": 13026,
+      "sha256": "5f5d73fdd756292da5cd981180d25f9ee1e9c2c0b138c25c4ea835115b5f2f22"
+    },
+    {
+      "path": "reports/complete_fix_curated_comparison.csv",
+      "bytes": 2875,
+      "sha256": "d0c2b56dc56cd9d1248919323a705b7976fee30d22d0d8d3b00322ee3f98e5af"
+    },
+    {
+      "path": "reports/complete_fix_improvement_table.csv",
+      "bytes": 727,
+      "sha256": "ce010be1b5c66d00f10f23ab84962b519c3dee30ad7dc606c19ed9927ce6ae0c"
+    },
+    {
+      "path": "reports/dynamic_signoff_table.csv",
+      "bytes": 7179,
+      "sha256": "182d276712b800814ee3dc49e2f6a99e943a917c83bd4d1182469893aca8281b"
+    },
+    {
+      "path": "reports/fastcomp_dynamic_signoff_table.csv",
+      "bytes": 6606,
+      "sha256": "c030d3ddf6c8d132acbf43c930f27b5bb3d8bb09db34b8cfa5aacacc2f42b4cc"
+    },
+    {
+      "path": "reports/spice_feasibility_report.md",
+      "bytes": 2617,
+      "sha256": "8a7e113d6f4b8bf67a2c76548f789479ed67af000d8570ee8015e4251592f2a8"
+    },
+    {
+      "path": "verification_results/REPAIRED_VALIDATION_SUMMARY.md",
+      "bytes": 1417,
+      "sha256": "fc17f4b3b1995809be2614077b4538361e3a2e10901e8f1974a516aeea5b9272"
+    },
+    {
+      "path": "verification_results/control_path_audit.json",
+      "bytes": 580,
+      "sha256": "696b3c8a1bac69bccb3b5871c1c6d996fc75ed9bd5e20442c1e5acb790ef133f"
+    },
+    {
+      "path": "verification_results/dynamic_fm100_carrier10k_repaired.csv",
+      "bytes": 2861,
+      "sha256": "65a78e25c07513eb15e985ed005bd7541149b8292002c74f0ad231fd6505904d"
+    },
+    {
+      "path": "verification_results/firmware_audit.json",
+      "bytes": 256,
+      "sha256": "17b4947255c1d44dbcd32cc8e6948866ab2f31c1faec751a0ddd82332172ad36"
+    },
+    {
+      "path": "verification_results/fixed_signoff_compact.csv",
+      "bytes": 1274,
+      "sha256": "2635970718d64e7c662864096045ee65512ccb8a26b1dfa6073989eaacb9cf12"
+    },
+    {
+      "path": "verification_results/fixed_signoff_repaired.csv",
+      "bytes": 8165,
+      "sha256": "34ff5133e14a601fa112dd9cbee5ea947c2b3998754692a301bc7d6688d319df"
+    },
+    {
+      "path": "verification_results/project_check.json",
+      "bytes": 40,
+      "sha256": "e444cffedecf2693ba9b55e28197f2d905cac1129a7403db9e930525f7e96015"
+    },
+    {
+      "path": "verification_results/signoff_dynamic_fm100_carrier10k_dynamic_phasor.csv",
+      "bytes": 120294,
+      "sha256": "a3a5dc87c708cc50528b1bfb9dcc7267cebc8cba7035ecca0d664c91181ddfa2"
+    },
+    {
+      "path": "verification_results/validation_policy.json",
+      "bytes": 519,
+      "sha256": "6602f73da82a0f46b173473f279ee420ffa5de123584ddb1a630fdc7af06fbf9"
+    }
+  ]
+}

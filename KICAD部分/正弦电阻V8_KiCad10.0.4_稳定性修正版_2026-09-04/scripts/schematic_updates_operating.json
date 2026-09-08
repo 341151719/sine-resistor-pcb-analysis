@@ -1,0 +1,5 @@
+{
+  "J5": {
+    "Description": "VK source selector terminal: bridge 1-2 for MCU control (default), or 2-3 for external control; never leave pin 2 open"
+  }
+}

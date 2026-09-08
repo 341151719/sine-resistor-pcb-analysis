@@ -1,0 +1,32 @@
+请用节点描述法的方式，去尝试规划
+Rated power	30 W
+Nominal impedance Z	8 Ohm
+Frequency response	80–20000 Hz
+Mean sound pressure level	86 dB (1 W/1 m)
+Opening angle (-6 dB)	113°/4000 Hz
+Excursion limit	+/−4 mm
+Resonance frequency fs	90 Hz
+Magnetic induction	0.95 T
+Magnetic flux	180 µWb
+Height of front pole-plate	3 mm
+Voice coil diameter	20 mm
+Height of winding	6 mm
+Cutout diameter	100 mm
+Net weight	0.38 kg
+D.C. resistance Rdc	7.2 Ohm
+Mechanical Q factor Qms	2.29
+Electrical Q factor Qes	0.95
+Total Q factor Qts	0.67
+Equivalent volume Vas	2.3 l
+Effective piston area Sd	50 cm²
+Dynamically moved mass Mms	5.7 g
+Force factor Bxl	4.6 T m
+Inductance of the voice coil L	0.2 mH
+如果我希望在一个被动电声膜，注意是被动性的情况下，使用负阻抗变换器的方式，将其的电阻变小。其会被外界的声压激发，我希望其最终的声学段看过去的电学阻抗小了。
+重新强调，我希望是外界有一个声源，我们的电声膜是作为被动的反射体，来改变其阻抗
+有一个特点是，我希望其电阻变大变小的方式是正弦的形式。
+我希望可以以正弦的形式，甚至两个正弦函数叠加的方式，使得其Rdc从7.2Ω到1-100Ω变化，实时变化，变化速度是10-1000hz之间变化。
+请设计相关的电路来实现。
+输出节点描述法，最终输出SPICE结果.并选好元器件。
+注意，给出详细的选择元器件的逻辑，并说清楚排除了哪些元器件。
+注意成本，复杂度等问题。我们计划下一步要生成可上传 Quilter 的 KiCad 文件

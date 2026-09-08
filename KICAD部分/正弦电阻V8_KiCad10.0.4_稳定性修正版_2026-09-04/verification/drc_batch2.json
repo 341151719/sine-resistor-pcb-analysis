@@ -1,0 +1,3571 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-09-04T19:39:53",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.4",
+    "schematic_parity": [],
+    "source": "project.kicad_pcb",
+    "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Track [ANA_P] on Top Layer, length 5.9670 mm",
+                    "pos": {
+                        "x": 122.858,
+                        "y": 105.377
+                    },
+                    "uuid": "c15399ac-8e4b-4376-a3bb-94b9359f846f"
+                },
+                {
+                    "description": "Track [ANA_P] on Top Layer, length 0.8754 mm",
+                    "pos": {
+                        "x": 122.223,
+                        "y": 102.313
+                    },
+                    "uuid": "6b858e0f-ad71-4f47-b9bf-0fd70e763786"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        }
+    ],
+    "violations": [
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [ANA_P] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 131.8415,
+                        "y": 147.922
+                    },
+                    "uuid": "50a824ba-7b4f-43de-9fd7-e4d5c37dc8d1"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [ANA_P] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 126.414,
+                        "y": 117.426
+                    },
+                    "uuid": "afb993b4-2ed6-470e-b746-f68b34448c77"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 130.478,
+                        "y": 100.789
+                    },
+                    "uuid": "0b5177df-3695-442a-ac8f-efe36e816543"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 146.48,
+                        "y": 88.724
+                    },
+                    "uuid": "159f9c0d-84bb-4c9a-a437-8c54f8b50685"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 106.094,
+                        "y": 73.357
+                    },
+                    "uuid": "1dedf01f-1d53-451c-a46a-8afe839a2f20"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 122.35,
+                        "y": 149.938
+                    },
+                    "uuid": "341e0e8e-45fc-4ae1-a700-704e8dbdabb4"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 106.856,
+                        "y": 97.487
+                    },
+                    "uuid": "34b8a8fe-cfe7-48da-b991-2fbce444fcd1"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 122.35,
+                        "y": 138.521
+                    },
+                    "uuid": "370055d9-a196-4ca4-b0f7-f8c81180d513"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 116.889,
+                        "y": 110.187
+                    },
+                    "uuid": "4125ef5e-f245-427b-b5d7-a74b7781ef2a"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 146.5815,
+                        "y": 96.501
+                    },
+                    "uuid": "45987a64-8ae0-4413-be6f-37454ed33a53"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 111.936,
+                        "y": 97.503
+                    },
+                    "uuid": "53e489c7-ae1f-40f8-8422-3e73ceb07f74"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 131.0955,
+                        "y": 93.931
+                    },
+                    "uuid": "53faf7ea-7231-498b-9bb0-b83c8477fc68"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 143.051,
+                        "y": 81.866
+                    },
+                    "uuid": "54bfd068-4e35-4851-859f-01ebd413e4e1"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 146.435,
+                        "y": 92.1635
+                    },
+                    "uuid": "5ab4b0f4-2086-4581-bb0f-f8bbbceaf832"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 122.35,
+                        "y": 127.586
+                    },
+                    "uuid": "64095bfc-9f07-4bda-a247-c820875a2473"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 108.5945,
+                        "y": 107.012
+                    },
+                    "uuid": "66c91157-41bc-481c-8eb9-ddf612abd158"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 133.018,
+                        "y": 144.096
+                    },
+                    "uuid": "7d3f3e03-8fb5-42be-a694-40764c54be9f"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 121.588,
+                        "y": 114.759
+                    },
+                    "uuid": "95ca40d2-68f7-42c2-b21f-baa520c4baec"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 130.097,
+                        "y": 112.346
+                    },
+                    "uuid": "984a8b2d-239c-4ceb-8836-6a271fed5c6d"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 160.6345,
+                        "y": 106.3075
+                    },
+                    "uuid": "9c7d9c81-ee5e-4d61-86db-daab58ff38f6"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 158.452,
+                        "y": 101.644
+                    },
+                    "uuid": "a5c5325a-0754-40a9-b262-1f7dc399813b"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 127.049,
+                        "y": 104.599
+                    },
+                    "uuid": "a850f2c5-2b0d-426c-8e71-a8d6294bc9a3"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 114.8825,
+                        "y": 105.361
+                    },
+                    "uuid": "bf3a9148-466b-4745-aa1e-15157ea57eeb"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [ISIG] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 106.769,
+                        "y": 102.44
+                    },
+                    "uuid": "aacbca14-600a-4ce9-bc2f-8040293d3256"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [U4A_N] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 112.063,
+                        "y": 106.885
+                    },
+                    "uuid": "455882bd-ce2f-466f-acea-5526ad9f0c80"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 153.175,
+                        "y": 147.815
+                    },
+                    "uuid": "05983ef8-cf16-4bd9-ad70-01035d953e66"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 173.023,
+                        "y": 148.668
+                    },
+                    "uuid": "2b293574-af96-4b75-9771-9c38c72ae263"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 128.2775,
+                        "y": 134.7065
+                    },
+                    "uuid": "2c399aba-5238-4d70-bfb1-1078e6724dce"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 178.4495,
+                        "y": 121.236
+                    },
+                    "uuid": "60899ecc-5767-4165-91ac-e9f2a330dd4c"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 151.052,
+                        "y": 109.6535
+                    },
+                    "uuid": "8673222d-4d99-4d17-945e-1e7ee7bf1420"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 158.761,
+                        "y": 145.194
+                    },
+                    "uuid": "9492dfde-00a8-462d-9f61-07a252457144"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 197.788,
+                        "y": 125.3
+                    },
+                    "uuid": "99caccc9-b227-4614-a5f9-dfc2fb148416"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 113.206,
+                        "y": 150.065
+                    },
+                    "uuid": "aa3c46c4-a73a-4232-b8ae-d6b358271527"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 189.2285,
+                        "y": 132.8695
+                    },
+                    "uuid": "afda2bc6-edc0-43d4-bc6e-7485a8d084dc"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 161.196,
+                        "y": 148.049
+                    },
+                    "uuid": "bdfe888a-b0e6-4de8-964c-b322f66f056f"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 128.3595,
+                        "y": 126.3565
+                    },
+                    "uuid": "c7ce9c7f-ea73-4e47-a06e-d6bb54393250"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 160.196,
+                        "y": 116.283
+                    },
+                    "uuid": "ceffe662-e5a8-4fe4-9f3e-4f18fa971fbf"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 161.974,
+                        "y": 156.669
+                    },
+                    "uuid": "cf36a7c8-89ec-4a14-844f-3f49e750686b"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 189.152,
+                        "y": 87.073
+                    },
+                    "uuid": "df62f5c8-6110-4cca-a10d-b9b0e1db02b0"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 200.963,
+                        "y": 125.427
+                    },
+                    "uuid": "e2383a6f-b35c-49dd-822b-8ac472fed867"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 188.8305,
+                        "y": 129.5505
+                    },
+                    "uuid": "e710d8d2-3bba-440f-9b3d-bc3f7967b533"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 167.181,
+                        "y": 121.236
+                    },
+                    "uuid": "efcf51ac-7180-4adc-9ac6-c5dde2d7634c"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 163.244,
+                        "y": 117.8195
+                    },
+                    "uuid": "eff1fd86-e044-4936-acc1-2b817d211413"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [V3V3] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 111.933,
+                        "y": 131.373
+                    },
+                    "uuid": "a5dddf0e-aee9-4012-9d5a-ba2ad876897f"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [V3V3] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 116.635,
+                        "y": 131.373
+                    },
+                    "uuid": "b67fa706-4432-4f1b-95ce-aaee420cca79"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [AD633_Z] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 111.555,
+                        "y": 157.685
+                    },
+                    "uuid": "697a1a2e-1b2b-4279-b230-c9f0a57e9ca6"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PWR_P] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 153.728,
+                        "y": 87.2
+                    },
+                    "uuid": "2ee27136-f1ef-476f-bd59-d1518f2e631d"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PWR_P] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 168.959,
+                        "y": 90.083
+                    },
+                    "uuid": "40fe75aa-9a63-47f1-9cc5-0c91c17f3d0e"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PWR_P] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 162.228,
+                        "y": 100.789
+                    },
+                    "uuid": "47a190e4-1455-40f8-b15d-4241619deb5b"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PWR_P] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 170.5585,
+                        "y": 82.3675
+                    },
+                    "uuid": "6a99c9e3-306d-4cbe-99d5-28d48fa382e6"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PWR_P] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 148.8675,
+                        "y": 68.277
+                    },
+                    "uuid": "a6c80c40-2cac-4854-9340-48b35ecd5146"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PWR_P] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 168.904,
+                        "y": 99.138
+                    },
+                    "uuid": "a7ab7073-b1c7-4bbf-9a2c-cddcdfe05084"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PWR_P] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 166.043,
+                        "y": 79.7145
+                    },
+                    "uuid": "b05f5cd3-217b-4b10-be06-d64dc9195a9a"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 147.496,
+                        "y": 71.287
+                    },
+                    "uuid": "088e0531-63a7-43ef-9e99-1eb502d72a99"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 182.675,
+                        "y": 97.36
+                    },
+                    "uuid": "158cc1e1-4c69-426f-92fe-e12273568c6b"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 147.369,
+                        "y": 68.5185
+                    },
+                    "uuid": "5961ceae-e137-4dd1-a6f8-193a1d84037f"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 189.533,
+                        "y": 107.012
+                    },
+                    "uuid": "6b920db7-f3d2-4551-ae1a-492b0ebe1ce2"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 173.582,
+                        "y": 91.899
+                    },
+                    "uuid": "6c03bf14-9b22-46e8-af02-cb04aa4ef9ba"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 158.656,
+                        "y": 94.058
+                    },
+                    "uuid": "88e75e73-07f6-477e-9316-246ee48c45f3"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 162.228,
+                        "y": 94.058
+                    },
+                    "uuid": "a40b7292-6fcb-4d87-9e2b-38e446f8e1cc"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 180.516,
+                        "y": 90.629
+                    },
+                    "uuid": "d56b19b2-1333-4155-80b2-4bd78ca587e2"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 142.616,
+                        "y": 107.2025
+                    },
+                    "uuid": "e424e6d6-a6ea-4e55-8a58-8ecb34e409df"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PWR_N] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 148.893,
+                        "y": 69.928
+                    },
+                    "uuid": "04532682-f65b-459b-b69c-b9c6264d4755"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PWR_N] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 157.402,
+                        "y": 76.532
+                    },
+                    "uuid": "63041507-683d-4ad5-9488-bbd87dce0fe6"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PWR_N] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 185.977,
+                        "y": 68.15
+                    },
+                    "uuid": "7f34331f-15c6-42df-9019-32e9a1f0a294"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [PWR_N] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 168.3155,
+                        "y": 77.3025
+                    },
+                    "uuid": "aa70da77-c5a1-4145-9922-099672fa1983"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [DRV] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 168.9965,
+                        "y": 84.178
+                    },
+                    "uuid": "3dcf77ec-1302-434a-bb4e-97e50537ca0e"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [ZTRIM] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 112.825,
+                        "y": 159.971
+                    },
+                    "uuid": "f50c88d6-ba90-4f0e-8a1b-90996853b18d"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [IPORT] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 116.381,
+                        "y": 121.49
+                    },
+                    "uuid": "45fb5c52-8a20-41f5-bd04-20e93438fd6e"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [IPORT] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 112.063,
+                        "y": 142.318
+                    },
+                    "uuid": "543e292d-6367-4b0c-aeb9-8edecffa1491"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [IPORT] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 110.92,
+                        "y": 121.49
+                    },
+                    "uuid": "c73e1f3f-2509-453b-8155-914077afef41"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Annular width (board setup constraints min annular width 0.1000 mm; actual 0.0890 mm)",
+            "items": [
+                {
+                    "description": "Via [OPA_OUT] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 176.579,
+                        "y": 79.326
+                    },
+                    "uuid": "99fad02c-2cc0-4114-83bb-ead8b5d86221"
+                }
+            ],
+            "severity": "error",
+            "type": "annular_width"
+        },
+        {
+            "description": "Clearance violation ( clearance 0.1016 mm; actual 0.0260 mm)",
+            "items": [
+                {
+                    "description": "Pad 2 [AGND] of C15 on Top Layer",
+                    "pos": {
+                        "x": 127.75,
+                        "y": 95.36
+                    },
+                    "uuid": "80708ceb-2a4d-47e4-8fad-3b942646f49a"
+                },
+                {
+                    "description": "Track [ANA_P] on Top Layer, length 2.4355 mm",
+                    "pos": {
+                        "x": 126.668,
+                        "y": 97.487
+                    },
+                    "uuid": "cf92f871-aee4-486d-9477-7d9a224010ba"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2160 mm)",
+            "items": [
+                {
+                    "description": "Track [ANA_P] on Bottom Layer, length 9.0170 mm",
+                    "pos": {
+                        "x": 128.827,
+                        "y": 99.646
+                    },
+                    "uuid": "9ab2b36b-3f09-49a6-a2bf-2048c3c23676"
+                },
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 130.478,
+                        "y": 100.789
+                    },
+                    "uuid": "0b5177df-3695-442a-ac8f-efe36e816543"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2160 mm)",
+            "items": [
+                {
+                    "description": "Track [ANA_N] on Bottom Layer, length 13.7160 mm",
+                    "pos": {
+                        "x": 115.873,
+                        "y": 101.17
+                    },
+                    "uuid": "f9cc9c18-c0cd-42f9-bfa3-976bbe275406"
+                },
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 116.889,
+                        "y": 110.187
+                    },
+                    "uuid": "4125ef5e-f245-427b-b5d7-a74b7781ef2a"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1904 mm)",
+            "items": [
+                {
+                    "description": "Track [PWR_N] on Top Layer, length 4.8854 mm",
+                    "pos": {
+                        "x": 148.004,
+                        "y": 92.534
+                    },
+                    "uuid": "049d5d2c-afbe-44bf-aa75-eb17c4b9b75e"
+                },
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 146.435,
+                        "y": 92.1635
+                    },
+                    "uuid": "5ab4b0f4-2086-4581-bb0f-f8bbbceaf832"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1907 mm)",
+            "items": [
+                {
+                    "description": "Track [ADC_SPK] on Top Layer, length 12.7364 mm",
+                    "pos": {
+                        "x": 164.133,
+                        "y": 101.408
+                    },
+                    "uuid": "9283843c-8b3c-4625-96cf-63bf4eb27158"
+                },
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 160.6345,
+                        "y": 106.3075
+                    },
+                    "uuid": "9c7d9c81-ee5e-4d61-86db-daab58ff38f6"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1905 mm)",
+            "items": [
+                {
+                    "description": "Track [ANA_N] on Bottom Layer, length 13.7160 mm",
+                    "pos": {
+                        "x": 115.873,
+                        "y": 101.17
+                    },
+                    "uuid": "f9cc9c18-c0cd-42f9-bfa3-976bbe275406"
+                },
+                {
+                    "description": "Via [AGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 114.8825,
+                        "y": 105.361
+                    },
+                    "uuid": "bf3a9148-466b-4745-aa1e-15157ea57eeb"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1905 mm)",
+            "items": [
+                {
+                    "description": "Track [ISIG] on Bottom Layer, length 37.4650 mm",
+                    "pos": {
+                        "x": 121.588,
+                        "y": 108.536
+                    },
+                    "uuid": "00ce9463-8d3f-4c72-8cc1-9d620532c84d"
+                },
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 151.052,
+                        "y": 109.6535
+                    },
+                    "uuid": "8673222d-4d99-4d17-945e-1e7ee7bf1420"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2154 mm)",
+            "items": [
+                {
+                    "description": "Track [DGND] on Top Layer, length 10.1392 mm",
+                    "pos": {
+                        "x": 117.9305,
+                        "y": 135.4855
+                    },
+                    "uuid": "6f3dc235-7935-4edd-9cdd-f4314a1dba73"
+                },
+                {
+                    "description": "Via [V3V3] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 111.933,
+                        "y": 131.373
+                    },
+                    "uuid": "a5dddf0e-aee9-4012-9d5a-ba2ad876897f"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1905 mm)",
+            "items": [
+                {
+                    "description": "Track [V3V3] on Top Layer, length 17.6625 mm",
+                    "pos": {
+                        "x": 159.942,
+                        "y": 132.4185
+                    },
+                    "uuid": "50b96032-2861-44ce-b1de-c2af488cdd10"
+                },
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 158.761,
+                        "y": 145.194
+                    },
+                    "uuid": "9492dfde-00a8-462d-9f61-07a252457144"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2160 mm)",
+            "items": [
+                {
+                    "description": "Track [NRST] on Top Layer, length 32.4955 mm",
+                    "pos": {
+                        "x": 158.2915,
+                        "y": 120.22
+                    },
+                    "uuid": "fe9e784d-d94f-4e69-bc18-32f31cf250b9"
+                },
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 178.4495,
+                        "y": 121.236
+                    },
+                    "uuid": "60899ecc-5767-4165-91ac-e9f2a330dd4c"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1905 mm)",
+            "items": [
+                {
+                    "description": "Track [NRST] on Top Layer, length 3.3220 mm",
+                    "pos": {
+                        "x": 194.8765,
+                        "y": 124.3095
+                    },
+                    "uuid": "2c380d49-debb-4828-a75e-af810402f0b4"
+                },
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 197.788,
+                        "y": 125.3
+                    },
+                    "uuid": "99caccc9-b227-4614-a5f9-dfc2fb148416"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2160 mm)",
+            "items": [
+                {
+                    "description": "Track [NRST] on Top Layer, length 32.4955 mm",
+                    "pos": {
+                        "x": 158.2915,
+                        "y": 120.22
+                    },
+                    "uuid": "fe9e784d-d94f-4e69-bc18-32f31cf250b9"
+                },
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 167.181,
+                        "y": 121.236
+                    },
+                    "uuid": "efcf51ac-7180-4adc-9ac6-c5dde2d7634c"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2020 mm)",
+            "items": [
+                {
+                    "description": "Track [U4A_LEAD_MID] on Bottom Layer, length 8.8160 mm",
+                    "pos": {
+                        "x": 108.9885,
+                        "y": 132.6925
+                    },
+                    "uuid": "0586f701-ce50-43e6-ac20-60813f94b55d"
+                },
+                {
+                    "description": "Via [V3V3] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 116.635,
+                        "y": 131.373
+                    },
+                    "uuid": "b67fa706-4432-4f1b-95ce-aaee420cca79"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2020 mm)",
+            "items": [
+                {
+                    "description": "Track [U4A_LEAD_MID] on Bottom Layer, length 8.8160 mm",
+                    "pos": {
+                        "x": 108.9885,
+                        "y": 132.6925
+                    },
+                    "uuid": "0586f701-ce50-43e6-ac20-60813f94b55d"
+                },
+                {
+                    "description": "Via [V3V3] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 111.933,
+                        "y": 131.373
+                    },
+                    "uuid": "a5dddf0e-aee9-4012-9d5a-ba2ad876897f"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Clearance violation ( clearance 0.1016 mm; actual 0.1008 mm)",
+            "items": [
+                {
+                    "description": "Track [VK] on Top Layer, length 15.6210 mm",
+                    "pos": {
+                        "x": 120.318,
+                        "y": 79.961
+                    },
+                    "uuid": "511e6f87-28da-47ad-a28d-1d1016bcebd1"
+                },
+                {
+                    "description": "Via [ANA_P_EXT] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 119.5695,
+                        "y": 89.076
+                    },
+                    "uuid": "ffd425f4-f81f-47b8-90e0-f56586a531ed"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2098 mm)",
+            "items": [
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 147.369,
+                        "y": 68.5185
+                    },
+                    "uuid": "5961ceae-e137-4dd1-a6f8-193a1d84037f"
+                },
+                {
+                    "description": "Via [PWR_P] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 148.8675,
+                        "y": 68.277
+                    },
+                    "uuid": "a6c80c40-2cac-4854-9340-48b35ecd5146"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2098 mm)",
+            "items": [
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 147.369,
+                        "y": 68.5185
+                    },
+                    "uuid": "5961ceae-e137-4dd1-a6f8-193a1d84037f"
+                },
+                {
+                    "description": "Via [PWR_P] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 148.8675,
+                        "y": 68.277
+                    },
+                    "uuid": "a6c80c40-2cac-4854-9340-48b35ecd5146"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1905 mm)",
+            "items": [
+                {
+                    "description": "Track [PGND] on Bottom Layer, length 3.4450 mm",
+                    "pos": {
+                        "x": 164.608,
+                        "y": 78.007
+                    },
+                    "uuid": "ef76e2f9-7e0c-4b98-a4d0-5e2429d09d4d"
+                },
+                {
+                    "description": "Via [PWR_P] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 166.043,
+                        "y": 79.7145
+                    },
+                    "uuid": "b05f5cd3-217b-4b10-be06-d64dc9195a9a"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1910 mm)",
+            "items": [
+                {
+                    "description": "Track [PWR_P] on Bottom Layer, length 2.1080 mm",
+                    "pos": {
+                        "x": 148.131,
+                        "y": 67.21
+                    },
+                    "uuid": "3005eadb-d934-45f2-9184-4e23695f76c2"
+                },
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 147.369,
+                        "y": 68.5185
+                    },
+                    "uuid": "5961ceae-e137-4dd1-a6f8-193a1d84037f"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2415 mm)",
+            "items": [
+                {
+                    "description": "Track [PWR_N] on Top Layer, length 5.8420 mm",
+                    "pos": {
+                        "x": 148.893,
+                        "y": 69.928
+                    },
+                    "uuid": "6c30e142-35b7-42dc-8285-af5a7a9a0c70"
+                },
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 147.496,
+                        "y": 71.287
+                    },
+                    "uuid": "088e0531-63a7-43ef-9e99-1eb502d72a99"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2320 mm)",
+            "items": [
+                {
+                    "description": "Track [SENSE_DRV] on Bottom Layer, length 3.8100 mm",
+                    "pos": {
+                        "x": 159.942,
+                        "y": 96.09
+                    },
+                    "uuid": "0d2bfa9d-983b-4572-aee3-d91cc5c2ac5e"
+                },
+                {
+                    "description": "Via [PGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 158.656,
+                        "y": 94.058
+                    },
+                    "uuid": "88e75e73-07f6-477e-9316-246ee48c45f3"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2415 mm)",
+            "items": [
+                {
+                    "description": "Track [PGND] on Top Layer, length 2.0700 mm",
+                    "pos": {
+                        "x": 147.496,
+                        "y": 71.287
+                    },
+                    "uuid": "4a72a75a-2771-424c-89c0-3b2d153fefee"
+                },
+                {
+                    "description": "Via [PWR_N] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 148.893,
+                        "y": 69.928
+                    },
+                    "uuid": "04532682-f65b-459b-b69c-b9c6264d4755"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1906 mm)",
+            "items": [
+                {
+                    "description": "Track [PWR_P] on Bottom Layer, length 10.9078 mm",
+                    "pos": {
+                        "x": 158.71,
+                        "y": 75.99
+                    },
+                    "uuid": "5f43eb6b-e78d-48d9-b2ba-33ae50947529"
+                },
+                {
+                    "description": "Via [PWR_N] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 157.402,
+                        "y": 76.532
+                    },
+                    "uuid": "63041507-683d-4ad5-9488-bbd87dce0fe6"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1906 mm)",
+            "items": [
+                {
+                    "description": "Track [PWR_P] on Top Layer, length 2.3455 mm",
+                    "pos": {
+                        "x": 169.412,
+                        "y": 78.056
+                    },
+                    "uuid": "ba20f23e-a7a0-448e-9077-0284ff3ef040"
+                },
+                {
+                    "description": "Via [PWR_N] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 168.3155,
+                        "y": 77.3025
+                    },
+                    "uuid": "aa70da77-c5a1-4145-9922-099672fa1983"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1968 mm)",
+            "items": [
+                {
+                    "description": "Track [SWDIO] on Top Layer, length 13.6435 mm",
+                    "pos": {
+                        "x": 174.8065,
+                        "y": 132.247
+                    },
+                    "uuid": "3342cdae-a423-4e1e-8d5f-b2d139a90bf6"
+                },
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 189.2285,
+                        "y": 132.8695
+                    },
+                    "uuid": "afda2bc6-edc0-43d4-bc6e-7485a8d084dc"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1907 mm)",
+            "items": [
+                {
+                    "description": "Track [SWDIO] on Top Layer, length 3.0314 mm",
+                    "pos": {
+                        "x": 188.45,
+                        "y": 132.247
+                    },
+                    "uuid": "ef97a4ab-472d-4813-be10-0acd8b66e439"
+                },
+                {
+                    "description": "Via [DGND] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 189.2285,
+                        "y": 132.8695
+                    },
+                    "uuid": "afda2bc6-edc0-43d4-bc6e-7485a8d084dc"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "Items shorting two nets (nets AGND and ANA_P)",
+            "items": [
+                {
+                    "description": "Pad 2 [AGND] of C15 on Top Layer",
+                    "pos": {
+                        "x": 127.75,
+                        "y": 95.36
+                    },
+                    "uuid": "80708ceb-2a4d-47e4-8fad-3b942646f49a"
+                },
+                {
+                    "description": "Pad 2 [ANA_P] of FB1 on Top Layer",
+                    "pos": {
+                        "x": 126.668,
+                        "y": 95.0515
+                    },
+                    "uuid": "03d2c500-41ae-46a1-901f-160af421f711"
+                }
+            ],
+            "severity": "error",
+            "type": "shorting_items"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint D3",
+                    "pos": {
+                        "x": 155.8355,
+                        "y": 83.263
+                    },
+                    "uuid": "17c07a42-7bb1-46f4-89e8-ccdc1618410e"
+                },
+                {
+                    "description": "Footprint D2",
+                    "pos": {
+                        "x": 159.9845,
+                        "y": 83.263
+                    },
+                    "uuid": "9f85c87f-9abf-402b-912f-4bc540265df7"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP5",
+                    "pos": {
+                        "x": 181.786,
+                        "y": 114.378
+                    },
+                    "uuid": "1be29c77-e7aa-47e0-95fe-2b73f626cf56"
+                },
+                {
+                    "description": "Footprint TP3",
+                    "pos": {
+                        "x": 187.247,
+                        "y": 114.378
+                    },
+                    "uuid": "85a39307-9536-4c40-97f4-d8fabee7cf5e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R10",
+                    "pos": {
+                        "x": 176.96,
+                        "y": 88.978
+                    },
+                    "uuid": "215239a6-56fe-4e98-9209-1766d05966ed"
+                },
+                {
+                    "description": "Footprint C5",
+                    "pos": {
+                        "x": 176.071,
+                        "y": 95.328
+                    },
+                    "uuid": "62538331-dc63-4f86-9581-483ac210fa19"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP16",
+                    "pos": {
+                        "x": 93.14,
+                        "y": 95.455
+                    },
+                    "uuid": "218490ed-d81a-4b9b-91dc-dfb9f8e308e3"
+                },
+                {
+                    "description": "Footprint J6",
+                    "pos": {
+                        "x": 99.236,
+                        "y": 104.472
+                    },
+                    "uuid": "e4beb0b4-105c-4eb4-b495-95f1701d8ccc"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C16",
+                    "pos": {
+                        "x": 116.873,
+                        "y": 102.17
+                    },
+                    "uuid": "2351e168-8ee8-4302-8703-0267a1b12088"
+                },
+                {
+                    "description": "Footprint U4",
+                    "pos": {
+                        "x": 121.588,
+                        "y": 99.265
+                    },
+                    "uuid": "730fd376-4054-4244-94aa-80a603b82395"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C16",
+                    "pos": {
+                        "x": 116.873,
+                        "y": 102.17
+                    },
+                    "uuid": "2351e168-8ee8-4302-8703-0267a1b12088"
+                },
+                {
+                    "description": "Footprint C13",
+                    "pos": {
+                        "x": 116.127,
+                        "y": 98.376
+                    },
+                    "uuid": "7de5c1e6-58e6-46ae-9d79-72787fad0975"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP2",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 88.216
+                    },
+                    "uuid": "264e192c-a672-4cef-a0b9-8abc0f86f3a1"
+                },
+                {
+                    "description": "Footprint TP9",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 93.677
+                    },
+                    "uuid": "6cc8eddf-8a00-4eb0-909f-eb241f1b8341"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP13",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 99.138
+                    },
+                    "uuid": "2d58b785-e350-42c1-9d06-dc817c6f1dfc"
+                },
+                {
+                    "description": "Footprint TP4",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 104.599
+                    },
+                    "uuid": "34e365b6-7a27-43fe-8148-ef8e5c034386"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP13",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 99.138
+                    },
+                    "uuid": "2d58b785-e350-42c1-9d06-dc817c6f1dfc"
+                },
+                {
+                    "description": "Footprint TP9",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 93.677
+                    },
+                    "uuid": "6cc8eddf-8a00-4eb0-909f-eb241f1b8341"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U6",
+                    "pos": {
+                        "x": 122.741,
+                        "y": 132.5635
+                    },
+                    "uuid": "33d7b65c-2f34-4309-886d-9e3e9176d2a3"
+                },
+                {
+                    "description": "Footprint C1",
+                    "pos": {
+                        "x": 125.535,
+                        "y": 127.3565
+                    },
+                    "uuid": "8764d86c-7b13-4905-bca3-bece56d9e83f"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C15",
+                    "pos": {
+                        "x": 127.75,
+                        "y": 96.36
+                    },
+                    "uuid": "3c07d488-fd21-4a55-b4d1-b463570f5e55"
+                },
+                {
+                    "description": "Footprint FB1",
+                    "pos": {
+                        "x": 126.668,
+                        "y": 94.0855
+                    },
+                    "uuid": "7bcc53a8-8818-4832-9aa2-1412fbbcf95e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint D1",
+                    "pos": {
+                        "x": 164.133,
+                        "y": 83.263
+                    },
+                    "uuid": "3c5bfcf6-df1b-4baa-b503-e75bf8a71cf8"
+                },
+                {
+                    "description": "Footprint D2",
+                    "pos": {
+                        "x": 159.9845,
+                        "y": 83.263
+                    },
+                    "uuid": "9f85c87f-9abf-402b-912f-4bc540265df7"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R21",
+                    "pos": {
+                        "x": 134.5645,
+                        "y": 103.6145
+                    },
+                    "uuid": "3d2671d7-a744-4e25-bf2a-8a681f08cb2e"
+                },
+                {
+                    "description": "Footprint R19",
+                    "pos": {
+                        "x": 134.5645,
+                        "y": 107.42
+                    },
+                    "uuid": "7257c02b-2abe-473d-ae05-999769de0c3e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP1",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 118.696
+                    },
+                    "uuid": "494165bc-f495-47b6-a7eb-d643d2d0dda6"
+                },
+                {
+                    "description": "Footprint J4",
+                    "pos": {
+                        "x": 197.534,
+                        "y": 111.711
+                    },
+                    "uuid": "89444da7-588a-47d6-a33c-a11891e597d8"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1",
+                    "pos": {
+                        "x": 176.96,
+                        "y": 76.786
+                    },
+                    "uuid": "6ab612d6-0a52-46cc-8084-4c2363abcd03"
+                },
+                {
+                    "description": "Footprint TP10",
+                    "pos": {
+                        "x": 177.722,
+                        "y": 69.928
+                    },
+                    "uuid": "92e604b8-76e8-4e02-96da-4aa938a88f3c"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP11",
+                    "pos": {
+                        "x": 97.331,
+                        "y": 112.346
+                    },
+                    "uuid": "db4eae1f-f608-4cf4-a36d-18489f1981f5"
+                },
+                {
+                    "description": "Footprint J6",
+                    "pos": {
+                        "x": 99.236,
+                        "y": 104.472
+                    },
+                    "uuid": "e4beb0b4-105c-4eb4-b495-95f1701d8ccc"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP11",
+                    "pos": {
+                        "x": 97.331,
+                        "y": 112.346
+                    },
+                    "uuid": "db4eae1f-f608-4cf4-a36d-18489f1981f5"
+                },
+                {
+                    "description": "Footprint TP7",
+                    "pos": {
+                        "x": 93.013,
+                        "y": 113.362
+                    },
+                    "uuid": "e927a924-786b-4b40-9150-55e2c864551b"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J6",
+                    "pos": {
+                        "x": 99.236,
+                        "y": 104.472
+                    },
+                    "uuid": "e4beb0b4-105c-4eb4-b495-95f1701d8ccc"
+                },
+                {
+                    "description": "Footprint TP7",
+                    "pos": {
+                        "x": 93.013,
+                        "y": 113.362
+                    },
+                    "uuid": "e927a924-786b-4b40-9150-55e2c864551b"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Thermal relief connection to zone incomplete (layer Top Layer; zone min spoke count 2; actual 1)",
+            "items": [
+                {
+                    "description": "Zone [PWR_P] on Top Layer, priority 496",
+                    "pos": {
+                        "x": 147.115,
+                        "y": 112.5625
+                    },
+                    "uuid": "8232bc0b-1429-46e6-9ad6-4bd6ede6c46e"
+                },
+                {
+                    "description": "Pad 1 [PWR_P] of J1 on Top Layer",
+                    "pos": {
+                        "x": 148.575,
+                        "y": 65.297
+                    },
+                    "uuid": "65131a64-9988-4a99-a511-065fa2d4b6df"
+                }
+            ],
+            "severity": "error",
+            "type": "starved_thermal"
+        },
+        {
+            "description": "Front solder mask aperture bridges items with different nets",
+            "items": [
+                {
+                    "description": "Pad 2 [AGND] of C15 on Top Layer",
+                    "pos": {
+                        "x": 127.75,
+                        "y": 95.36
+                    },
+                    "uuid": "80708ceb-2a4d-47e4-8fad-3b942646f49a"
+                },
+                {
+                    "description": "Pad 2 [ANA_P] of FB1 on Top Layer",
+                    "pos": {
+                        "x": 126.668,
+                        "y": 95.0515
+                    },
+                    "uuid": "03d2c500-41ae-46a1-901f-160af421f711"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "Track [ANA_P] on Top Layer, length 0.8754 mm",
+                    "pos": {
+                        "x": 122.223,
+                        "y": 102.313
+                    },
+                    "uuid": "6b858e0f-ad71-4f47-b9bf-0fd70e763786"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "Track [ANA_P] on Top Layer, length 5.9670 mm",
+                    "pos": {
+                        "x": 122.858,
+                        "y": 105.377
+                    },
+                    "uuid": "c15399ac-8e4b-4376-a3bb-94b9359f846f"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Via [GPIO_SPARE8] on Top Layer - Bottom Layer",
+                    "pos": {
+                        "x": 159.0985,
+                        "y": 126.1075
+                    },
+                    "uuid": "ce91fb33-e2b5-4cad-90e4-d79cdc0b7cf3"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "Track [SERVO_INT_N] on Bottom Layer, length 1.3336 mm",
+                    "pos": {
+                        "x": 119.9735,
+                        "y": 145.6565
+                    },
+                    "uuid": "1e6988a5-e373-4f53-a271-ebf8c752a62d"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Arc of C16 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 116.121999,
+                        "y": 100.358999
+                    },
+                    "uuid": "345cef6b-2456-435b-8c06-0d959a49f3c1"
+                },
+                {
+                    "description": "Segment of C13 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 115.376,
+                        "y": 100.3395
+                    },
+                    "uuid": "65e78e6a-b5ec-4205-a761-afb2072673a4"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C13 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 115.376,
+                        "y": 100.3395
+                    },
+                    "uuid": "65e78e6a-b5ec-4205-a761-afb2072673a4"
+                },
+                {
+                    "description": "Segment of C16 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 115.9695,
+                        "y": 101.769
+                    },
+                    "uuid": "c058eda9-e800-44b3-84a2-4981296d483f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C13 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 115.376,
+                        "y": 100.3395
+                    },
+                    "uuid": "65e78e6a-b5ec-4205-a761-afb2072673a4"
+                },
+                {
+                    "description": "Segment of C16 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 116.122,
+                        "y": 100.2065
+                    },
+                    "uuid": "7c74ae4c-5d56-4d31-90ad-545f633463bd"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C16 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 116.122,
+                        "y": 100.2065
+                    },
+                    "uuid": "7c74ae4c-5d56-4d31-90ad-545f633463bd"
+                },
+                {
+                    "description": "Segment of C13 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 117.0305,
+                        "y": 100.187
+                    },
+                    "uuid": "e8574722-61f9-4a71-a891-1ab27bb9ee53"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C16 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 116.122,
+                        "y": 100.2065
+                    },
+                    "uuid": "7c74ae4c-5d56-4d31-90ad-545f633463bd"
+                },
+                {
+                    "description": "Arc of C13 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 116.878,
+                        "y": 100.187
+                    },
+                    "uuid": "979a65e4-64dc-47c8-a7d2-97b9d6331b00"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of FB1 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 127.684,
+                        "y": 95.696
+                    },
+                    "uuid": "aaa43a58-0731-407e-8906-7082e96bf3c3"
+                },
+                {
+                    "description": "Segment of C15 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 128.501,
+                        "y": 94.3965
+                    },
+                    "uuid": "d43b3767-e3e2-4735-b553-726a386521a3"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C15 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 126.8465,
+                        "y": 94.549
+                    },
+                    "uuid": "4260fb63-9fb8-4715-878e-f19ffcbb76eb"
+                },
+                {
+                    "description": "Segment of FB1 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 125.906,
+                        "y": 95.95
+                    },
+                    "uuid": "7495893b-4c8d-4036-91da-ab0e90ea8c15"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 151.5625,
+                        "y": 100.14
+                    },
+                    "uuid": "d25a213d-c720-42d0-bc5c-a6657e86ed27"
+                },
+                {
+                    "description": "Pad 7 [ANA_P] of U3 on Top Layer",
+                    "pos": {
+                        "x": 150.514,
+                        "y": 98.249
+                    },
+                    "uuid": "722df68c-4c6c-4e87-a6c0-5d2482fc1b45"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 151.5625,
+                        "y": 100.14
+                    },
+                    "uuid": "d25a213d-c720-42d0-bc5c-a6657e86ed27"
+                },
+                {
+                    "description": "Pad 8 [<no net>] of U3 on Top Layer",
+                    "pos": {
+                        "x": 150.514,
+                        "y": 99.519
+                    },
+                    "uuid": "1c6b92af-1218-46fd-a0ac-379a522a8787"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 151.5625,
+                        "y": 100.14
+                    },
+                    "uuid": "d25a213d-c720-42d0-bc5c-a6657e86ed27"
+                },
+                {
+                    "description": "Pad 5 [AGND] of U3 on Top Layer",
+                    "pos": {
+                        "x": 150.514,
+                        "y": 95.709
+                    },
+                    "uuid": "58936b85-3d81-448b-8431-c79e7a613d34"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 151.5625,
+                        "y": 100.14
+                    },
+                    "uuid": "d25a213d-c720-42d0-bc5c-a6657e86ed27"
+                },
+                {
+                    "description": "Pad 6 [VSENSE_RAW] of U3 on Top Layer",
+                    "pos": {
+                        "x": 150.514,
+                        "y": 96.979
+                    },
+                    "uuid": "f91d3663-4363-4b65-b54d-505bb66b32d8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 154.6055,
+                        "y": 95.088
+                    },
+                    "uuid": "4be0b332-3828-48b9-9aee-f385d74c9bbe"
+                },
+                {
+                    "description": "Pad 1 [AGND] of U3 on Top Layer",
+                    "pos": {
+                        "x": 155.654,
+                        "y": 99.519
+                    },
+                    "uuid": "5380f536-ee58-43f9-85f1-1ec4feec0b46"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 154.6055,
+                        "y": 95.088
+                    },
+                    "uuid": "4be0b332-3828-48b9-9aee-f385d74c9bbe"
+                },
+                {
+                    "description": "Pad 2 [SENSE_DRV] of U3 on Top Layer",
+                    "pos": {
+                        "x": 155.654,
+                        "y": 98.249
+                    },
+                    "uuid": "a8601d41-a65f-48e6-b821-d68d72936be8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 154.6055,
+                        "y": 95.088
+                    },
+                    "uuid": "4be0b332-3828-48b9-9aee-f385d74c9bbe"
+                },
+                {
+                    "description": "Pad 3 [SENSE_SPK] of U3 on Top Layer",
+                    "pos": {
+                        "x": 155.654,
+                        "y": 96.979
+                    },
+                    "uuid": "095a7b6a-5a8a-40e3-99dd-2474efeb75e2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 154.6055,
+                        "y": 95.088
+                    },
+                    "uuid": "4be0b332-3828-48b9-9aee-f385d74c9bbe"
+                },
+                {
+                    "description": "Pad 4 [ANA_N] of U3 on Top Layer",
+                    "pos": {
+                        "x": 155.654,
+                        "y": 95.709
+                    },
+                    "uuid": "cf8a9cfb-cfab-4520-a951-e4219c582c9f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 119.697,
+                        "y": 112.4755
+                    },
+                    "uuid": "7d017e74-40aa-4906-b5c9-d04e24d2903d"
+                },
+                {
+                    "description": "Pad 5 [MUL_RAW] of U2 on Top Layer",
+                    "pos": {
+                        "x": 124.128,
+                        "y": 111.427
+                    },
+                    "uuid": "0129994b-4c44-41d2-a106-ed44da90ab88"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 119.697,
+                        "y": 112.4755
+                    },
+                    "uuid": "7d017e74-40aa-4906-b5c9-d04e24d2903d"
+                },
+                {
+                    "description": "Pad 7 [ISIG] of U2 on Top Layer",
+                    "pos": {
+                        "x": 121.588,
+                        "y": 111.427
+                    },
+                    "uuid": "929f09b7-8d3f-40a6-9940-904f3d7fd87e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 119.697,
+                        "y": 112.4755
+                    },
+                    "uuid": "7d017e74-40aa-4906-b5c9-d04e24d2903d"
+                },
+                {
+                    "description": "Pad 8 [AGND] of U2 on Top Layer",
+                    "pos": {
+                        "x": 120.318,
+                        "y": 111.427
+                    },
+                    "uuid": "a0e8852b-1e03-4d5d-a0cf-0ec270260a5e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 119.697,
+                        "y": 112.4755
+                    },
+                    "uuid": "7d017e74-40aa-4906-b5c9-d04e24d2903d"
+                },
+                {
+                    "description": "Pad 6 [ANA_P] of U2 on Top Layer",
+                    "pos": {
+                        "x": 122.858,
+                        "y": 111.427
+                    },
+                    "uuid": "34c60fac-ed3d-4861-b02b-e4178ccdafa8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 124.749,
+                        "y": 115.5185
+                    },
+                    "uuid": "746d8411-3b65-45fd-acd5-ba6568bba513"
+                },
+                {
+                    "description": "Pad 4 [AD633_Z] of U2 on Top Layer",
+                    "pos": {
+                        "x": 124.128,
+                        "y": 116.567
+                    },
+                    "uuid": "e141affc-70f3-4f39-8ba4-969c8bd7432e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 124.749,
+                        "y": 115.5185
+                    },
+                    "uuid": "746d8411-3b65-45fd-acd5-ba6568bba513"
+                },
+                {
+                    "description": "Pad 1 [VK] of U2 on Top Layer",
+                    "pos": {
+                        "x": 120.318,
+                        "y": 116.567
+                    },
+                    "uuid": "ff83f6e5-1472-43e0-94e7-913bba4e6d8c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 124.749,
+                        "y": 115.5185
+                    },
+                    "uuid": "746d8411-3b65-45fd-acd5-ba6568bba513"
+                },
+                {
+                    "description": "Pad 2 [AGND] of U2 on Top Layer",
+                    "pos": {
+                        "x": 121.588,
+                        "y": 116.567
+                    },
+                    "uuid": "0cfd2bfd-560b-4d38-a255-d47dbcfdfc65"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 124.749,
+                        "y": 115.5185
+                    },
+                    "uuid": "746d8411-3b65-45fd-acd5-ba6568bba513"
+                },
+                {
+                    "description": "Pad 3 [ANA_N] of U2 on Top Layer",
+                    "pos": {
+                        "x": 122.858,
+                        "y": 116.567
+                    },
+                    "uuid": "5395432a-ce15-41bc-9de2-d8f62173c379"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 120.0665,
+                        "y": 101.791
+                    },
+                    "uuid": "eeb43569-734b-4dce-b5fb-069721522f89"
+                },
+                {
+                    "description": "Pad 1 [ISIG] of U4 on Top Layer",
+                    "pos": {
+                        "x": 119.018,
+                        "y": 97.36
+                    },
+                    "uuid": "6f22c810-2c10-40dd-837f-f2adf9cf90d8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 120.0665,
+                        "y": 101.791
+                    },
+                    "uuid": "eeb43569-734b-4dce-b5fb-069721522f89"
+                },
+                {
+                    "description": "Pad 2 [U4A_N] of U4 on Top Layer",
+                    "pos": {
+                        "x": 119.018,
+                        "y": 98.63
+                    },
+                    "uuid": "6f0a0996-7ec4-4e09-b7ff-5096bb66cfd0"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 120.0665,
+                        "y": 101.791
+                    },
+                    "uuid": "eeb43569-734b-4dce-b5fb-069721522f89"
+                },
+                {
+                    "description": "Pad 3 [VSENSE_RAW] of U4 on Top Layer",
+                    "pos": {
+                        "x": 119.018,
+                        "y": 99.9
+                    },
+                    "uuid": "fa8da0ac-f32e-4674-be67-980ac753920e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 120.0665,
+                        "y": 101.791
+                    },
+                    "uuid": "eeb43569-734b-4dce-b5fb-069721522f89"
+                },
+                {
+                    "description": "Pad 4 [ANA_N] of U4 on Top Layer",
+                    "pos": {
+                        "x": 119.018,
+                        "y": 101.17
+                    },
+                    "uuid": "66643270-872a-4e71-a987-3ebcaa54603c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 123.1095,
+                        "y": 96.739
+                    },
+                    "uuid": "6601b427-6a4f-4604-9e27-506c89ef1a18"
+                },
+                {
+                    "description": "Pad 5 [MUL_RAW] of U4 on Top Layer",
+                    "pos": {
+                        "x": 124.158,
+                        "y": 101.17
+                    },
+                    "uuid": "70a535a0-8ce6-4b28-82fe-8eab32a51681"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 123.1095,
+                        "y": 96.739
+                    },
+                    "uuid": "6601b427-6a4f-4604-9e27-506c89ef1a18"
+                },
+                {
+                    "description": "Pad 6 [U4B_N] of U4 on Top Layer",
+                    "pos": {
+                        "x": 124.158,
+                        "y": 99.9
+                    },
+                    "uuid": "91fde211-094e-4b57-8369-fa396d6de08e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 123.1095,
+                        "y": 96.739
+                    },
+                    "uuid": "6601b427-6a4f-4604-9e27-506c89ef1a18"
+                },
+                {
+                    "description": "Pad 7 [VCMD] of U4 on Top Layer",
+                    "pos": {
+                        "x": 124.158,
+                        "y": 98.63
+                    },
+                    "uuid": "bd17dc5d-fb15-4b8c-bf24-fe5a9f5e8af0"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 123.1095,
+                        "y": 96.739
+                    },
+                    "uuid": "6601b427-6a4f-4604-9e27-506c89ef1a18"
+                },
+                {
+                    "description": "Pad 8 [ANA_P] of U4 on Top Layer",
+                    "pos": {
+                        "x": 124.158,
+                        "y": 97.36
+                    },
+                    "uuid": "f3f2be2d-7f7d-4a55-b8cc-18d613eccdd5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of FB1 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 127.303,
+                        "y": 95.95
+                    },
+                    "uuid": "1f3b366b-04a5-437d-bc7e-4f60bd8bb1ed"
+                },
+                {
+                    "description": "Pad 2 [AGND] of C15 on Top Layer",
+                    "pos": {
+                        "x": 127.75,
+                        "y": 95.36
+                    },
+                    "uuid": "80708ceb-2a4d-47e4-8fad-3b942646f49a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of FB1 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 127.43,
+                        "y": 95.95
+                    },
+                    "uuid": "7ad82360-5c48-412d-b7b4-e8e637fdee2c"
+                },
+                {
+                    "description": "Pad 2 [AGND] of C15 on Top Layer",
+                    "pos": {
+                        "x": 127.75,
+                        "y": 95.36
+                    },
+                    "uuid": "80708ceb-2a4d-47e4-8fad-3b942646f49a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of FB1 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 127.684,
+                        "y": 95.696
+                    },
+                    "uuid": "aaa43a58-0731-407e-8906-7082e96bf3c3"
+                },
+                {
+                    "description": "Pad 2 [AGND] of C15 on Top Layer",
+                    "pos": {
+                        "x": 127.75,
+                        "y": 95.36
+                    },
+                    "uuid": "80708ceb-2a4d-47e4-8fad-3b942646f49a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 132.651,
+                        "y": 93.6495
+                    },
+                    "uuid": "f6b7e1d9-4a9b-46fe-bd09-1a17dabda601"
+                },
+                {
+                    "description": "Pad 4 [ANA_N] of U8 on Top Layer",
+                    "pos": {
+                        "x": 133.272,
+                        "y": 92.601
+                    },
+                    "uuid": "7b547c55-258a-4772-9544-80c2f1e8d09c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 132.651,
+                        "y": 93.6495
+                    },
+                    "uuid": "f6b7e1d9-4a9b-46fe-bd09-1a17dabda601"
+                },
+                {
+                    "description": "Pad 1 [DAC_BUF] of U8 on Top Layer",
+                    "pos": {
+                        "x": 137.082,
+                        "y": 92.601
+                    },
+                    "uuid": "f66de5f5-a20b-4376-a2f7-a0b8ae70dcce"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 132.651,
+                        "y": 93.6495
+                    },
+                    "uuid": "f6b7e1d9-4a9b-46fe-bd09-1a17dabda601"
+                },
+                {
+                    "description": "Pad 2 [DAC_BUF_N] of U8 on Top Layer",
+                    "pos": {
+                        "x": 135.812,
+                        "y": 92.601
+                    },
+                    "uuid": "3bd207eb-26c6-4314-9e83-7f7c59d680d7"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 132.651,
+                        "y": 93.6495
+                    },
+                    "uuid": "f6b7e1d9-4a9b-46fe-bd09-1a17dabda601"
+                },
+                {
+                    "description": "Pad 3 [DAC_R_FILT] of U8 on Top Layer",
+                    "pos": {
+                        "x": 134.542,
+                        "y": 92.601
+                    },
+                    "uuid": "957f6848-b5e0-4b30-8144-eef8d11c770c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 137.703,
+                        "y": 96.6925
+                    },
+                    "uuid": "e4ce01cf-5f48-4535-9903-51a5565bbe83"
+                },
+                {
+                    "description": "Pad 5 [DAC_BUF] of U8 on Top Layer",
+                    "pos": {
+                        "x": 133.272,
+                        "y": 97.741
+                    },
+                    "uuid": "60899e4a-590b-4bb5-8c30-dd457afcf626"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 137.703,
+                        "y": 96.6925
+                    },
+                    "uuid": "e4ce01cf-5f48-4535-9903-51a5565bbe83"
+                },
+                {
+                    "description": "Pad 6 [VK_AMP_N] of U8 on Top Layer",
+                    "pos": {
+                        "x": 134.542,
+                        "y": 97.741
+                    },
+                    "uuid": "89cdd618-5a4b-46bb-9c93-89765ad0343f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 137.703,
+                        "y": 96.6925
+                    },
+                    "uuid": "e4ce01cf-5f48-4535-9903-51a5565bbe83"
+                },
+                {
+                    "description": "Pad 7 [VK_MCU] of U8 on Top Layer",
+                    "pos": {
+                        "x": 135.812,
+                        "y": 97.741
+                    },
+                    "uuid": "f517052a-b35c-4836-b77a-037e28f7b898"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 137.703,
+                        "y": 96.6925
+                    },
+                    "uuid": "e4ce01cf-5f48-4535-9903-51a5565bbe83"
+                },
+                {
+                    "description": "Pad 8 [ANA_P] of U8 on Top Layer",
+                    "pos": {
+                        "x": 137.082,
+                        "y": 97.741
+                    },
+                    "uuid": "cc4dfb81-fbf4-4144-a152-660c3026a567"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Arc of C15 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 126.999,
+                        "y": 94.549
+                    },
+                    "uuid": "8244c519-e3ec-4b6a-af1c-5b0bdeb533ae"
+                },
+                {
+                    "description": "Pad 2 [ANA_P] of FB1 on Top Layer",
+                    "pos": {
+                        "x": 126.668,
+                        "y": 95.0515
+                    },
+                    "uuid": "03d2c500-41ae-46a1-901f-160af421f711"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of C15 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 126.8465,
+                        "y": 94.549
+                    },
+                    "uuid": "4260fb63-9fb8-4715-878e-f19ffcbb76eb"
+                },
+                {
+                    "description": "Pad 2 [ANA_P] of FB1 on Top Layer",
+                    "pos": {
+                        "x": 126.668,
+                        "y": 95.0515
+                    },
+                    "uuid": "03d2c500-41ae-46a1-901f-160af421f711"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of FB1 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 125.906,
+                        "y": 95.95
+                    },
+                    "uuid": "7495893b-4c8d-4036-91da-ab0e90ea8c15"
+                },
+                {
+                    "description": "Pad 2 [AGND] of C15 on Top Layer",
+                    "pos": {
+                        "x": 127.75,
+                        "y": 95.36
+                    },
+                    "uuid": "80708ceb-2a4d-47e4-8fad-3b942646f49a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C7 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 168.44,
+                        "y": 78.8865
+                    },
+                    "uuid": "16d05b8a-fde1-4c42-948d-c811b8b6e150"
+                },
+                {
+                    "description": "Segment of C8 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 167.341,
+                        "y": 78.8325
+                    },
+                    "uuid": "821fb45a-e8f4-435d-83f9-1e4f9d23d1bc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C7 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 168.44,
+                        "y": 78.8865
+                    },
+                    "uuid": "16d05b8a-fde1-4c42-948d-c811b8b6e150"
+                },
+                {
+                    "description": "Arc of C8 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 167.341,
+                        "y": 78.68
+                    },
+                    "uuid": "c1d65837-101b-47a7-b09d-36587029c1c2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Arc of C7 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 166.937999,
+                        "y": 79.038999
+                    },
+                    "uuid": "7c8d95cd-a82f-47f4-8372-b44f97087753"
+                },
+                {
+                    "description": "Segment of C8 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 167.341,
+                        "y": 78.8325
+                    },
+                    "uuid": "821fb45a-e8f4-435d-83f9-1e4f9d23d1bc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 125.7815,
+                        "y": 143.475
+                    },
+                    "uuid": "fd45b6d1-46e8-4c7f-b683-6f4872dfb93b"
+                },
+                {
+                    "description": "Pad 3 [AGND] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 124.733,
+                        "y": 145.366
+                    },
+                    "uuid": "febe440e-ca71-44ee-8e8e-86001557a423"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 125.7815,
+                        "y": 143.475
+                    },
+                    "uuid": "fd45b6d1-46e8-4c7f-b683-6f4872dfb93b"
+                },
+                {
+                    "description": "Pad 4 [ANA_N] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 124.733,
+                        "y": 144.096
+                    },
+                    "uuid": "edfe6314-55ae-4b72-8dd1-b9d82c6d3822"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 125.7815,
+                        "y": 143.475
+                    },
+                    "uuid": "fd45b6d1-46e8-4c7f-b683-6f4872dfb93b"
+                },
+                {
+                    "description": "Pad 1 [ZSERVO_OUT] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 124.733,
+                        "y": 147.906
+                    },
+                    "uuid": "e29812bc-a51a-4ce8-85ba-c7cc534a29a9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 125.7815,
+                        "y": 143.475
+                    },
+                    "uuid": "fd45b6d1-46e8-4c7f-b683-6f4872dfb93b"
+                },
+                {
+                    "description": "Pad 2 [SERVO_INT_N] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 124.733,
+                        "y": 146.636
+                    },
+                    "uuid": "54fac146-98a5-4eb3-88fc-a47fb6cec531"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 128.8245,
+                        "y": 148.527
+                    },
+                    "uuid": "98741e7c-61b1-4d51-a26e-8b2f4a3ab838"
+                },
+                {
+                    "description": "Pad 5 [AGND] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 129.873,
+                        "y": 144.096
+                    },
+                    "uuid": "74e08b4a-99ee-42f4-944c-210da30ac59a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 128.8245,
+                        "y": 148.527
+                    },
+                    "uuid": "98741e7c-61b1-4d51-a26e-8b2f4a3ab838"
+                },
+                {
+                    "description": "Pad 6 [$1N56724] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 129.873,
+                        "y": 145.366
+                    },
+                    "uuid": "84db46ed-7cdc-488a-9ab2-18b9d294ac31"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 128.8245,
+                        "y": 148.527
+                    },
+                    "uuid": "98741e7c-61b1-4d51-a26e-8b2f4a3ab838"
+                },
+                {
+                    "description": "Pad 7 [$1N56724] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 129.873,
+                        "y": 146.636
+                    },
+                    "uuid": "3de6e083-ff2d-4a57-8d05-61f3eff85763"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 128.8245,
+                        "y": 148.527
+                    },
+                    "uuid": "98741e7c-61b1-4d51-a26e-8b2f4a3ab838"
+                },
+                {
+                    "description": "Pad 8 [ANA_P] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 129.873,
+                        "y": 147.906
+                    },
+                    "uuid": "e3bfdccb-53fb-41ae-9ec0-0b12b486331b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        }
+    ]
+}

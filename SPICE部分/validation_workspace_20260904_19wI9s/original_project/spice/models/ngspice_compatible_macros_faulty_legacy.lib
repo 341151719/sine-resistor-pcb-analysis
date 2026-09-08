@@ -1,0 +1,138 @@
+* ============================================================
+* ngspice_compatible_macros.lib
+* Surrogate macromodels for full-component connection tests.
+* These are NOT official vendor models. They preserve pin-level
+* connectivity and first-order non-ideal behavior relevant to
+* the active synthetic-impedance loop: finite bandwidth, output
+* swing limit, output current limit, slew-rate proxy nodes and
+* input/output loading.
+* ============================================================
+
+.func clip(x, lo, hi) { min(max(x, lo), hi) }
+
+.model D5A_SCH D(IS=1e-8 N=1.05 RS=0.03 CJO=200p BV=60 IBV=1m TT=20n)
+.model DGEN D(IS=1e-14 N=1.8 RS=0.2 CJO=3p TT=10n)
+
+* ------------------------------------------------------------
+* OPA548_NG_SURR
+* Pin order: +IN -IN OUT VPOS VNEG ILIM
+* Default params approximate: 1 MHz GBW, 10 V/us slew-rate proxy,
+* 3 A current limit, high-voltage output stage.
+* ------------------------------------------------------------
+.SUBCKT OPA548_NG_SURR INP INN OUT VPOS VNEG ILIM PARAMS: A0=1e5 GBW=1e6 SR=10e6 ROUT=0.08 IOUT=3.0 VHEAD=2.0 RIN=1e9 CIN=4p
+RINP INP 0 {RIN}
+RINN INN 0 {RIN}
+CINP INP 0 {CIN}
+CINN INN 0 {CIN}
+.param FP={GBW/A0}
+.param RDOM=1e3
+.param CDOM={1/(2*3.141592653589793*RDOM*FP)}
+.param GM={A0/RDOM}
+GERR NDOM 0 VALUE = {GM*V(INP,INN)}
+RDOM NDOM 0 {RDOM}
+CDOM NDOM 0 {CDOM}
+* Slew-rate proxy: a current clamp into a small cap emulates large-signal slowing.
+.param CSR=1n
+BSR NSR 0 I = {clip((V(NDOM)-V(NSR))*CSR*2*3.141592653589793*GBW, -SR*CSR, SR*CSR)}
+CSR  NSR 0 {CSR}
+RLEAKSR NSR 0 1e12
+* Voltage command limited inside rails; current through output resistance limited.
+BOUT OUT 0 I = {clip((clip(V(NSR), V(VNEG)+VHEAD, V(VPOS)-VHEAD)-V(OUT))/ROUT, -IOUT, IOUT)}
+COUT OUT 0 30p
+ROUTL OUT 0 100Meg
+RILIM ILIM 0 100Meg
+.ENDS OPA548_NG_SURR
+
+* ------------------------------------------------------------
+* OPA1656_NG_SURR
+* Pin order: +IN -IN OUT VPOS VNEG
+* Approximate: 53 MHz GBW, 24 V/us slew-rate proxy, 100 mA output.
+* ------------------------------------------------------------
+.SUBCKT OPA1656_NG_SURR INP INN OUT VPOS VNEG PARAMS: A0=3.16e7 GBW=53e6 SR=24e6 ROUT=12 IOUT=0.1 VHEAD=0.25 RIN=1e12 CIN=5p
+RINP INP 0 {RIN}
+RINN INN 0 {RIN}
+CINP INP 0 {CIN}
+CINN INN 0 {CIN}
+.param FP={GBW/A0}
+.param RDOM=10e3
+.param CDOM={1/(2*3.141592653589793*RDOM*FP)}
+.param GM={A0/RDOM}
+GERR NDOM 0 VALUE = {GM*V(INP,INN)}
+RDOM NDOM 0 {RDOM}
+CDOM NDOM 0 {CDOM}
+.param CSR=1n
+BSR NSR 0 I = {clip((V(NDOM)-V(NSR))*CSR*2*3.141592653589793*GBW, -SR*CSR, SR*CSR)}
+CSR  NSR 0 {CSR}
+RLEAKSR NSR 0 1e12
+BOUT OUT 0 I = {clip((clip(V(NSR), V(VNEG)+VHEAD, V(VPOS)-VHEAD)-V(OUT))/ROUT, -IOUT, IOUT)}
+COUT OUT 0 8p
+ROUTL OUT 0 100Meg
+.ENDS OPA1656_NG_SURR
+
+* ------------------------------------------------------------
+* INA149_NG_SURR
+* Pin order: +IN -IN OUT VPOS VNEG
+* Approximate unity-gain difference amp: 500 kHz BW, finite CMRR,
+* output swing and 5 V/us slew-rate proxy.
+* ------------------------------------------------------------
+.SUBCKT INA149_NG_SURR INP INN OUT VPOS VNEG PARAMS: GAIN=1.0 BW=500k CMRRDB=100 OFFSET=0 ROUT=50 VHEAD=1.5 SR=5e6 RIN=1e9 CIN=3p
+RINP INP 0 {RIN}
+RINN INN 0 {RIN}
+CINP INP 0 {CIN}
+CINN INN 0 {CIN}
+.param ACM={GAIN/pow(10,CMRRDB/20)}
+BERR NRAW 0 V = {OFFSET + GAIN*V(INP,INN) + ACM*(V(INP)+V(INN))/2}
+RLP NRAW NLP 1k
+CLP NLP 0 {1/(2*3.141592653589793*1k*BW)}
+.param CSR=1n
+BSR NSR 0 I = {clip((V(NLP)-V(NSR))*CSR*2*3.141592653589793*BW, -SR*CSR, SR*CSR)}
+CSR NSR 0 {CSR}
+RLEAKSR NSR 0 1e12
+BOUT OUT 0 I = {(clip(V(NSR), V(VNEG)+VHEAD, V(VPOS)-VHEAD)-V(OUT))/ROUT}
+COUT OUT 0 12p
+ROUTL OUT 0 100Meg
+.ENDS INA149_NG_SURR
+
+* ------------------------------------------------------------
+* AD633_NG_SURR
+* Pin order: X1 X2 Y1 Y2 VNEG Z W VPOS
+* Function: W = (X1-X2)*(Y1-Y2)/10 + Z
+* Approximate 1 MHz bandwidth, 20 V/us slew-rate proxy, finite output.
+* ------------------------------------------------------------
+.SUBCKT AD633_NG_SURR X1 X2 Y1 Y2 VNEG Z W VPOS PARAMS: BW=1e6 SR=20e6 ROUT=50 VHEAD=1.2 RIN=10Meg CIN=3p
+RX1 X1 0 {RIN}
+RX2 X2 0 {RIN}
+RY1 Y1 0 {RIN}
+RY2 Y2 0 {RIN}
+RZ  Z  0 {RIN}
+CX1 X1 0 {CIN}
+CX2 X2 0 {CIN}
+CY1 Y1 0 {CIN}
+CY2 Y2 0 {CIN}
+BZ NRAW 0 V = {V(Z) + V(X1,X2)*V(Y1,Y2)/10}
+RLP NRAW NLP 1k
+CLP NLP 0 {1/(2*3.141592653589793*1k*BW)}
+.param CSR=1n
+BSR NSR 0 I = {clip((V(NLP)-V(NSR))*CSR*2*3.141592653589793*BW, -SR*CSR, SR*CSR)}
+CSR NSR 0 {CSR}
+RLEAKSR NSR 0 1e12
+BOUT W 0 I = {(clip(V(NSR), V(VNEG)+VHEAD, V(VPOS)-VHEAD)-V(W))/ROUT}
+COUT W 0 10p
+ROUTL W 0 100Meg
+.ENDS AD633_NG_SURR
+
+* ------------------------------------------------------------
+* DAC_STM32G431_SURR
+* Pin order: OUT VDD VSS
+* Behavioral DAC command generator, not a digital MCU simulation.
+* Outputs VDAC = 3.0*(Rtarget-1)/99.
+* ------------------------------------------------------------
+.SUBCKT DAC_STM32G431_SURR OUT VDD VSS PARAMS: R0=50.5 A1=49.5 FM1=100 PH1=0 A2=0 FM2=317 PH2=0 RMIN=1 RMAX=100 BW=20k
+.param TWOPI=6.283185307179586
+.func Rraw(t) { R0 + A1*sin(TWOPI*FM1*t+PH1) + A2*sin(TWOPI*FM2*t+PH2) }
+.func Rt(t)   { min(max(Rraw(t), RMIN), RMAX) }
+BRAW NDACRAW 0 V = { 3.0*(Rt(time)-1)/99 }
+RDAC NDACRAW OUT 1k
+CDAC OUT 0 {1/(2*3.141592653589793*1k*BW)}
+ROUTL OUT 0 10Meg
+.ENDS DAC_STM32G431_SURR

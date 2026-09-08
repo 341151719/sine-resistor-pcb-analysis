@@ -1,0 +1,58 @@
+.title Behavioral implementation chain reference - v3 softstart/injection
+.options method=gear maxord=2 reltol=1e-5 abstol=1e-10 vabstol=1e-7
+.temp 27
+.param Re=__Re__ Le=__Le__ Bl=__Bl__ Mms=__Mms__ fs=__fs__ Qms=__Qms__ Sd=__Sd__ XMAX=__XMAX__
+.param TWOPI=6.283185307179586
+.param W0={TWOPI*fs}
+.param Cms={1/(Mms*W0*W0)}
+.param Rms={W0*Mms/Qms}
+.param R0=__R0__ A1=__A1__ fm1=__fm1__ ph1=__ph1__ A2=__A2__ fm2=__fm2__ ph2=__ph2__ RMIN=__RMIN__ RMAX=__RMAX__
+.param TSTART=__TSTART__ TRAMP=__TRAMP__
+.func Rraw(t)   { R0 + A1*sin(TWOPI*fm1*t + ph1) + A2*sin(TWOPI*fm2*t + ph2) }
+.func Rt_des(t) { min(max(Rraw(t), RMIN), RMAX) }
+.func Rx_des(t) { Rt_des(t)-Re }
+.func soft(t)   { min(max((t-TSTART)/TRAMP,0),1) }
+.func Rx_cmd(t) { soft(t)*Rx_des(t) }
+.func Rt_cmd(t) { Re + Rx_cmd(t) }
+.param Pamp=__Pamp__ fa=__fa__ RSH=__RSH__ VDRVLIM=16 ItestAmp=__ItestAmp__ ItestFreq=__ItestFreq__
+RSHUNT DRV SPK {RSH}
+EISIG ISIG 0 VALUE={50*V(SPK,DRV)}
+BVK VK 0 V={Rx_cmd(time)/10}
+BMUL MUL 0 V={V(ISIG)*V(VK)/10}
+EPOST VCMD 0 VALUE={20*V(MUL)}
+BOPA DRV 0 V={min(max(1e5*(V(VCMD)-V(SPK)),-VDRVLIM),VDRVLIM)}
+RSNUB DRV NSNUB __RSNUB__
+CSNUB NSNUB 0 __CSNUB__
+LVC SPK NL {Le}
+RVC NL NR {Re}
+VCOIL NR NEMF 0
+BBEMF NEMF 0 V={Bl*V(VEL)}
+CMASS VEL 0 {Mms} IC=0
+RDAMP VEL 0 {1/Rms}
+LCOMP VEL 0 {Cms} IC=0
+RMECHLEAK VEL 0 1e9
+BPRESS 0 VEL I={soft(time)*Sd*Pamp*sin(TWOPI*fa*time)}
+BMOTOR VEL 0 I={-Bl*I(VCOIL)}
+GVEL XNODE 0 VALUE={V(VEL)}
+CX XNODE 0 1 IC=0
+RXLEAK XNODE 0 1e12
+B_EINJ 0 SPK I={soft(time)*ItestAmp*sin(TWOPI*ItestFreq*time)}
+B_RDES RDES 0 V={Rt_des(time)}
+B_RXDES RXDES 0 V={Rx_des(time)}
+B_RTARGET RTARGET 0 V={Rt_cmd(time)}
+B_RX RXNODE 0 V={Rx_cmd(time)}
+B_REMM REMNODE 0 V={Bl*Bl/max(Rt_cmd(time),1e-9)}
+B_QEFF QNODE 0 V={W0*Mms/(Rms+Bl*Bl/max(Rt_cmd(time),1e-9))}
+B_IPORT IPORT 0 V={(V(SPK)-V(DRV))/RSH}
+B_REFF REFF 0 V={Re+V(SPK)/(V(IPORT)+1e-15)}
+B_ERR ERR 0 V={V(REFF)-V(RTARGET)}
+B_SYNERR SYNERR 0 V={V(SPK)-V(RXNODE)*V(IPORT)}
+B_CMDERR CMDERR 0 V={V(VCMD)-V(RXNODE)*V(IPORT)}
+B_XMAXABS XMAXABS 0 V={abs(V(XNODE))/XMAX}
+.control
+set wr_singlescale
+set wr_vecnames
+tran __tstep__ __tstop__
+wrdata __DATAFILE__ time v(rdes) v(rxdes) v(rtarget) v(rxnode) v(reff) v(remnode) v(qnode) v(vel) v(xnode) v(spk) v(drv) v(vcmd) v(isig) v(vk) v(mul) v(iport) v(err) v(synerr) v(cmderr) v(xmaxabs)
+.endc
+.end

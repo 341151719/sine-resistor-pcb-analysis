@@ -1,0 +1,26 @@
+=== dynamic split: fm=10Hz ===
+RUN signoff_dynamic_fm10_carrier10k [full]
+Done: /mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/split_dynamic_fm10 | simulation_failures=0 | acceptance_failures=1
+=== dynamic split: fm=30Hz ===
+RUN signoff_dynamic_fm30_carrier10k [full]
+Done: /mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/split_dynamic_fm30 | simulation_failures=0 | acceptance_failures=1
+=== dynamic split: fm=100Hz ===
+RUN signoff_dynamic_fm100_carrier10k [full]
+Done: /mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/split_dynamic_fm100 | simulation_failures=0 | acceptance_failures=1
+=== dynamic split: fm=300Hz ===
+RUN signoff_dynamic_fm300_carrier10k [full]
+Done: /mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/split_dynamic_fm300 | simulation_failures=0 | acceptance_failures=1
+=== dynamic split: fm=1000Hz ===
+RUN signoff_dynamic_fm1000_carrier10k [full]
+Done: /mnt/c/Users/Administrator/Documents/SPICE20260904/validation_workspace_20260904_19wI9s/project/SPICE_project_repaired_20260710_FINAL/1SPICE_SPICE_SIM/split_dynamic_fm1000 | simulation_failures=0 | acceptance_failures=1
+{
+  "cases": 5,
+  "simulation_failures": 0,
+  "acceptance_failures": 5,
+  "simulation_status_counts": {
+    "completed": 5
+  },
+  "acceptance_status_counts": {
+    "fail": 5
+  }
+}

@@ -1,0 +1,1533 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-09-04T19:57:13",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.4",
+    "schematic_parity": [],
+    "source": "project.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint D3",
+                    "pos": {
+                        "x": 155.8355,
+                        "y": 83.263
+                    },
+                    "uuid": "17c07a42-7bb1-46f4-89e8-ccdc1618410e"
+                },
+                {
+                    "description": "Footprint D2",
+                    "pos": {
+                        "x": 159.9845,
+                        "y": 83.263
+                    },
+                    "uuid": "9f85c87f-9abf-402b-912f-4bc540265df7"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP5",
+                    "pos": {
+                        "x": 181.786,
+                        "y": 114.378
+                    },
+                    "uuid": "1be29c77-e7aa-47e0-95fe-2b73f626cf56"
+                },
+                {
+                    "description": "Footprint TP3",
+                    "pos": {
+                        "x": 187.247,
+                        "y": 114.378
+                    },
+                    "uuid": "85a39307-9536-4c40-97f4-d8fabee7cf5e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R10",
+                    "pos": {
+                        "x": 176.96,
+                        "y": 88.978
+                    },
+                    "uuid": "215239a6-56fe-4e98-9209-1766d05966ed"
+                },
+                {
+                    "description": "Footprint C5",
+                    "pos": {
+                        "x": 176.071,
+                        "y": 95.328
+                    },
+                    "uuid": "62538331-dc63-4f86-9581-483ac210fa19"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP16",
+                    "pos": {
+                        "x": 93.14,
+                        "y": 95.455
+                    },
+                    "uuid": "218490ed-d81a-4b9b-91dc-dfb9f8e308e3"
+                },
+                {
+                    "description": "Footprint J6",
+                    "pos": {
+                        "x": 99.236,
+                        "y": 104.472
+                    },
+                    "uuid": "e4beb0b4-105c-4eb4-b495-95f1701d8ccc"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP2",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 88.216
+                    },
+                    "uuid": "264e192c-a672-4cef-a0b9-8abc0f86f3a1"
+                },
+                {
+                    "description": "Footprint TP9",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 93.677
+                    },
+                    "uuid": "6cc8eddf-8a00-4eb0-909f-eb241f1b8341"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP13",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 99.138
+                    },
+                    "uuid": "2d58b785-e350-42c1-9d06-dc817c6f1dfc"
+                },
+                {
+                    "description": "Footprint TP4",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 104.599
+                    },
+                    "uuid": "34e365b6-7a27-43fe-8148-ef8e5c034386"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP13",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 99.138
+                    },
+                    "uuid": "2d58b785-e350-42c1-9d06-dc817c6f1dfc"
+                },
+                {
+                    "description": "Footprint TP9",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 93.677
+                    },
+                    "uuid": "6cc8eddf-8a00-4eb0-909f-eb241f1b8341"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U6",
+                    "pos": {
+                        "x": 122.741,
+                        "y": 132.5635
+                    },
+                    "uuid": "33d7b65c-2f34-4309-886d-9e3e9176d2a3"
+                },
+                {
+                    "description": "Footprint C1",
+                    "pos": {
+                        "x": 125.535,
+                        "y": 127.3565
+                    },
+                    "uuid": "8764d86c-7b13-4905-bca3-bece56d9e83f"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint D1",
+                    "pos": {
+                        "x": 164.133,
+                        "y": 83.263
+                    },
+                    "uuid": "3c5bfcf6-df1b-4baa-b503-e75bf8a71cf8"
+                },
+                {
+                    "description": "Footprint D2",
+                    "pos": {
+                        "x": 159.9845,
+                        "y": 83.263
+                    },
+                    "uuid": "9f85c87f-9abf-402b-912f-4bc540265df7"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R21",
+                    "pos": {
+                        "x": 134.5645,
+                        "y": 103.6145
+                    },
+                    "uuid": "3d2671d7-a744-4e25-bf2a-8a681f08cb2e"
+                },
+                {
+                    "description": "Footprint R19",
+                    "pos": {
+                        "x": 134.5645,
+                        "y": 107.42
+                    },
+                    "uuid": "7257c02b-2abe-473d-ae05-999769de0c3e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP1",
+                    "pos": {
+                        "x": 203.376,
+                        "y": 118.696
+                    },
+                    "uuid": "494165bc-f495-47b6-a7eb-d643d2d0dda6"
+                },
+                {
+                    "description": "Footprint J4",
+                    "pos": {
+                        "x": 197.534,
+                        "y": 111.711
+                    },
+                    "uuid": "89444da7-588a-47d6-a33c-a11891e597d8"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1",
+                    "pos": {
+                        "x": 176.96,
+                        "y": 76.786
+                    },
+                    "uuid": "6ab612d6-0a52-46cc-8084-4c2363abcd03"
+                },
+                {
+                    "description": "Footprint TP10",
+                    "pos": {
+                        "x": 177.722,
+                        "y": 69.928
+                    },
+                    "uuid": "92e604b8-76e8-4e02-96da-4aa938a88f3c"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP11",
+                    "pos": {
+                        "x": 97.331,
+                        "y": 111.192
+                    },
+                    "uuid": "db4eae1f-f608-4cf4-a36d-18489f1981f5"
+                },
+                {
+                    "description": "Footprint J6",
+                    "pos": {
+                        "x": 99.236,
+                        "y": 104.472
+                    },
+                    "uuid": "e4beb0b4-105c-4eb4-b495-95f1701d8ccc"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint TP11",
+                    "pos": {
+                        "x": 97.331,
+                        "y": 111.192
+                    },
+                    "uuid": "db4eae1f-f608-4cf4-a36d-18489f1981f5"
+                },
+                {
+                    "description": "Footprint TP7",
+                    "pos": {
+                        "x": 93.013,
+                        "y": 113.362
+                    },
+                    "uuid": "e927a924-786b-4b40-9150-55e2c864551b"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J6",
+                    "pos": {
+                        "x": 99.236,
+                        "y": 104.472
+                    },
+                    "uuid": "e4beb0b4-105c-4eb4-b495-95f1701d8ccc"
+                },
+                {
+                    "description": "Footprint TP7",
+                    "pos": {
+                        "x": 93.013,
+                        "y": 113.362
+                    },
+                    "uuid": "e927a924-786b-4b40-9150-55e2c864551b"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Rear solder mask aperture bridges items with different nets",
+            "items": [
+                {
+                    "description": "Pad 1 [<no net>] of FID6 on Bottom Layer",
+                    "pos": {
+                        "x": 93.0,
+                        "y": 135.0
+                    },
+                    "uuid": "d7f3a0f6-b357-43ff-8df9-21c90bd072e1"
+                },
+                {
+                    "description": "Zone [DGND] on Bottom Layer, priority 497",
+                    "pos": {
+                        "x": 87.933,
+                        "y": 164.7405
+                    },
+                    "uuid": "35ad62f8-90a3-438f-b435-a3b7c7793d2d"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "Front solder mask aperture bridges items with different nets",
+            "items": [
+                {
+                    "description": "Pad 1 [<no net>] of FID3 on Top Layer",
+                    "pos": {
+                        "x": 93.0,
+                        "y": 135.0
+                    },
+                    "uuid": "df60e490-af8e-495d-9b95-d205a44e05cb"
+                },
+                {
+                    "description": "Zone [DGND] on Top Layer, priority 498",
+                    "pos": {
+                        "x": 207.649,
+                        "y": 165.2505
+                    },
+                    "uuid": "3d1f5a27-72d3-442c-aa6e-964e24e02041"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "Front solder mask aperture bridges items with different nets",
+            "items": [
+                {
+                    "description": "Pad 1 [<no net>] of FID1 on Top Layer",
+                    "pos": {
+                        "x": 195.0,
+                        "y": 55.0
+                    },
+                    "uuid": "03f56dcb-18d4-42fc-b949-4e9404a5b9b4"
+                },
+                {
+                    "description": "Zone [PWR_N] on Top Layer, priority 497",
+                    "pos": {
+                        "x": 121.969,
+                        "y": 49.227
+                    },
+                    "uuid": "c36673a6-3f6b-4acd-87d8-3375b2745839"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "Rear solder mask aperture bridges items with different nets",
+            "items": [
+                {
+                    "description": "Pad 1 [<no net>] of FID5 on Bottom Layer",
+                    "pos": {
+                        "x": 93.0,
+                        "y": 70.0
+                    },
+                    "uuid": "48dff12d-8d72-416d-a329-fd6efd1c12fd"
+                },
+                {
+                    "description": "Zone [AGND] on Bottom Layer, priority 500",
+                    "pos": {
+                        "x": 133.1285,
+                        "y": 50.878
+                    },
+                    "uuid": "37c1d85d-ac1c-4493-99b2-aac31df2fe38"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "Front solder mask aperture bridges items with different nets",
+            "items": [
+                {
+                    "description": "Pad 1 [<no net>] of FID2 on Top Layer",
+                    "pos": {
+                        "x": 93.0,
+                        "y": 70.0
+                    },
+                    "uuid": "0715f9f5-8a14-43ae-bd05-83a28ddff5f9"
+                },
+                {
+                    "description": "Zone [AGND] on Top Layer, priority 499",
+                    "pos": {
+                        "x": 89.457,
+                        "y": 51.513
+                    },
+                    "uuid": "a2facec2-961c-4722-aa1c-f28364d86a96"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "Rear solder mask aperture bridges items with different nets",
+            "items": [
+                {
+                    "description": "Pad 1 [<no net>] of FID4 on Bottom Layer",
+                    "pos": {
+                        "x": 195.0,
+                        "y": 55.0
+                    },
+                    "uuid": "bf8b6e78-59bf-42d1-8fd6-9314cb513ea7"
+                },
+                {
+                    "description": "Zone [PWR_N] on Bottom Layer, priority 496",
+                    "pos": {
+                        "x": 134.669,
+                        "y": 50.37
+                    },
+                    "uuid": "0a8407a2-c43d-4db4-9eb8-9f8724a84848"
+                }
+            ],
+            "severity": "error",
+            "type": "solder_mask_bridge"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of J6 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 91.601,
+                        "y": 110.536
+                    },
+                    "uuid": "60f4fe85-9ae5-41f0-8310-5f4d78a08155"
+                },
+                {
+                    "description": "PTH pad 1 [ANA_P] of TP11",
+                    "pos": {
+                        "x": 97.331,
+                        "y": 111.192
+                    },
+                    "uuid": "67f6b43b-f496-4a85-a76d-c75c4daf0d24"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 151.5625,
+                        "y": 100.14
+                    },
+                    "uuid": "d25a213d-c720-42d0-bc5c-a6657e86ed27"
+                },
+                {
+                    "description": "Pad 5 [AGND] of U3 on Top Layer",
+                    "pos": {
+                        "x": 150.514,
+                        "y": 95.709
+                    },
+                    "uuid": "58936b85-3d81-448b-8431-c79e7a613d34"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 151.5625,
+                        "y": 100.14
+                    },
+                    "uuid": "d25a213d-c720-42d0-bc5c-a6657e86ed27"
+                },
+                {
+                    "description": "Pad 6 [VSENSE_RAW] of U3 on Top Layer",
+                    "pos": {
+                        "x": 150.514,
+                        "y": 96.979
+                    },
+                    "uuid": "f91d3663-4363-4b65-b54d-505bb66b32d8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 151.5625,
+                        "y": 100.14
+                    },
+                    "uuid": "d25a213d-c720-42d0-bc5c-a6657e86ed27"
+                },
+                {
+                    "description": "Pad 7 [ANA_P] of U3 on Top Layer",
+                    "pos": {
+                        "x": 150.514,
+                        "y": 98.249
+                    },
+                    "uuid": "722df68c-4c6c-4e87-a6c0-5d2482fc1b45"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 151.5625,
+                        "y": 100.14
+                    },
+                    "uuid": "d25a213d-c720-42d0-bc5c-a6657e86ed27"
+                },
+                {
+                    "description": "Pad 8 [<no net>] of U3 on Top Layer",
+                    "pos": {
+                        "x": 150.514,
+                        "y": 99.519
+                    },
+                    "uuid": "1c6b92af-1218-46fd-a0ac-379a522a8787"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 154.6055,
+                        "y": 95.088
+                    },
+                    "uuid": "4be0b332-3828-48b9-9aee-f385d74c9bbe"
+                },
+                {
+                    "description": "Pad 3 [SENSE_SPK] of U3 on Top Layer",
+                    "pos": {
+                        "x": 155.654,
+                        "y": 96.979
+                    },
+                    "uuid": "095a7b6a-5a8a-40e3-99dd-2474efeb75e2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 154.6055,
+                        "y": 95.088
+                    },
+                    "uuid": "4be0b332-3828-48b9-9aee-f385d74c9bbe"
+                },
+                {
+                    "description": "Pad 4 [ANA_N] of U3 on Top Layer",
+                    "pos": {
+                        "x": 155.654,
+                        "y": 95.709
+                    },
+                    "uuid": "cf8a9cfb-cfab-4520-a951-e4219c582c9f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 154.6055,
+                        "y": 95.088
+                    },
+                    "uuid": "4be0b332-3828-48b9-9aee-f385d74c9bbe"
+                },
+                {
+                    "description": "Pad 1 [AGND] of U3 on Top Layer",
+                    "pos": {
+                        "x": 155.654,
+                        "y": 99.519
+                    },
+                    "uuid": "5380f536-ee58-43f9-85f1-1ec4feec0b46"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U3 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 154.6055,
+                        "y": 95.088
+                    },
+                    "uuid": "4be0b332-3828-48b9-9aee-f385d74c9bbe"
+                },
+                {
+                    "description": "Pad 2 [SENSE_DRV] of U3 on Top Layer",
+                    "pos": {
+                        "x": 155.654,
+                        "y": 98.249
+                    },
+                    "uuid": "a8601d41-a65f-48e6-b821-d68d72936be8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 119.697,
+                        "y": 112.4755
+                    },
+                    "uuid": "7d017e74-40aa-4906-b5c9-d04e24d2903d"
+                },
+                {
+                    "description": "Pad 5 [MUL_RAW] of U2 on Top Layer",
+                    "pos": {
+                        "x": 124.128,
+                        "y": 111.427
+                    },
+                    "uuid": "0129994b-4c44-41d2-a106-ed44da90ab88"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 119.697,
+                        "y": 112.4755
+                    },
+                    "uuid": "7d017e74-40aa-4906-b5c9-d04e24d2903d"
+                },
+                {
+                    "description": "Pad 6 [ANA_P] of U2 on Top Layer",
+                    "pos": {
+                        "x": 122.858,
+                        "y": 111.427
+                    },
+                    "uuid": "34c60fac-ed3d-4861-b02b-e4178ccdafa8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 119.697,
+                        "y": 112.4755
+                    },
+                    "uuid": "7d017e74-40aa-4906-b5c9-d04e24d2903d"
+                },
+                {
+                    "description": "Pad 7 [ISIG] of U2 on Top Layer",
+                    "pos": {
+                        "x": 121.588,
+                        "y": 111.427
+                    },
+                    "uuid": "929f09b7-8d3f-40a6-9940-904f3d7fd87e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 119.697,
+                        "y": 112.4755
+                    },
+                    "uuid": "7d017e74-40aa-4906-b5c9-d04e24d2903d"
+                },
+                {
+                    "description": "Pad 8 [AGND] of U2 on Top Layer",
+                    "pos": {
+                        "x": 120.318,
+                        "y": 111.427
+                    },
+                    "uuid": "a0e8852b-1e03-4d5d-a0cf-0ec270260a5e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 124.749,
+                        "y": 115.5185
+                    },
+                    "uuid": "746d8411-3b65-45fd-acd5-ba6568bba513"
+                },
+                {
+                    "description": "Pad 3 [ANA_N] of U2 on Top Layer",
+                    "pos": {
+                        "x": 122.858,
+                        "y": 116.567
+                    },
+                    "uuid": "5395432a-ce15-41bc-9de2-d8f62173c379"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 124.749,
+                        "y": 115.5185
+                    },
+                    "uuid": "746d8411-3b65-45fd-acd5-ba6568bba513"
+                },
+                {
+                    "description": "Pad 4 [AD633_Z] of U2 on Top Layer",
+                    "pos": {
+                        "x": 124.128,
+                        "y": 116.567
+                    },
+                    "uuid": "e141affc-70f3-4f39-8ba4-969c8bd7432e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 124.749,
+                        "y": 115.5185
+                    },
+                    "uuid": "746d8411-3b65-45fd-acd5-ba6568bba513"
+                },
+                {
+                    "description": "Pad 1 [VK] of U2 on Top Layer",
+                    "pos": {
+                        "x": 120.318,
+                        "y": 116.567
+                    },
+                    "uuid": "ff83f6e5-1472-43e0-94e7-913bba4e6d8c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U2 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 124.749,
+                        "y": 115.5185
+                    },
+                    "uuid": "746d8411-3b65-45fd-acd5-ba6568bba513"
+                },
+                {
+                    "description": "Pad 2 [AGND] of U2 on Top Layer",
+                    "pos": {
+                        "x": 121.588,
+                        "y": 116.567
+                    },
+                    "uuid": "0cfd2bfd-560b-4d38-a255-d47dbcfdfc65"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 120.0665,
+                        "y": 101.791
+                    },
+                    "uuid": "eeb43569-734b-4dce-b5fb-069721522f89"
+                },
+                {
+                    "description": "Pad 3 [VSENSE_RAW] of U4 on Top Layer",
+                    "pos": {
+                        "x": 119.018,
+                        "y": 99.9
+                    },
+                    "uuid": "fa8da0ac-f32e-4674-be67-980ac753920e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 120.0665,
+                        "y": 101.791
+                    },
+                    "uuid": "eeb43569-734b-4dce-b5fb-069721522f89"
+                },
+                {
+                    "description": "Pad 4 [ANA_N] of U4 on Top Layer",
+                    "pos": {
+                        "x": 119.018,
+                        "y": 101.17
+                    },
+                    "uuid": "66643270-872a-4e71-a987-3ebcaa54603c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 120.0665,
+                        "y": 101.791
+                    },
+                    "uuid": "eeb43569-734b-4dce-b5fb-069721522f89"
+                },
+                {
+                    "description": "Pad 1 [ISIG] of U4 on Top Layer",
+                    "pos": {
+                        "x": 119.018,
+                        "y": 97.36
+                    },
+                    "uuid": "6f22c810-2c10-40dd-837f-f2adf9cf90d8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 120.0665,
+                        "y": 101.791
+                    },
+                    "uuid": "eeb43569-734b-4dce-b5fb-069721522f89"
+                },
+                {
+                    "description": "Pad 2 [U4A_N] of U4 on Top Layer",
+                    "pos": {
+                        "x": 119.018,
+                        "y": 98.63
+                    },
+                    "uuid": "6f0a0996-7ec4-4e09-b7ff-5096bb66cfd0"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 123.1095,
+                        "y": 96.739
+                    },
+                    "uuid": "6601b427-6a4f-4604-9e27-506c89ef1a18"
+                },
+                {
+                    "description": "Pad 5 [MUL_RAW] of U4 on Top Layer",
+                    "pos": {
+                        "x": 124.158,
+                        "y": 101.17
+                    },
+                    "uuid": "70a535a0-8ce6-4b28-82fe-8eab32a51681"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 123.1095,
+                        "y": 96.739
+                    },
+                    "uuid": "6601b427-6a4f-4604-9e27-506c89ef1a18"
+                },
+                {
+                    "description": "Pad 6 [U4B_N] of U4 on Top Layer",
+                    "pos": {
+                        "x": 124.158,
+                        "y": 99.9
+                    },
+                    "uuid": "91fde211-094e-4b57-8369-fa396d6de08e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 123.1095,
+                        "y": 96.739
+                    },
+                    "uuid": "6601b427-6a4f-4604-9e27-506c89ef1a18"
+                },
+                {
+                    "description": "Pad 7 [VCMD] of U4 on Top Layer",
+                    "pos": {
+                        "x": 124.158,
+                        "y": 98.63
+                    },
+                    "uuid": "bd17dc5d-fb15-4b8c-bf24-fe5a9f5e8af0"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U4 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 123.1095,
+                        "y": 96.739
+                    },
+                    "uuid": "6601b427-6a4f-4604-9e27-506c89ef1a18"
+                },
+                {
+                    "description": "Pad 8 [ANA_P] of U4 on Top Layer",
+                    "pos": {
+                        "x": 124.158,
+                        "y": 97.36
+                    },
+                    "uuid": "f3f2be2d-7f7d-4a55-b8cc-18d613eccdd5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 132.651,
+                        "y": 93.6495
+                    },
+                    "uuid": "f6b7e1d9-4a9b-46fe-bd09-1a17dabda601"
+                },
+                {
+                    "description": "Pad 1 [DAC_BUF] of U8 on Top Layer",
+                    "pos": {
+                        "x": 137.082,
+                        "y": 92.601
+                    },
+                    "uuid": "f66de5f5-a20b-4376-a2f7-a0b8ae70dcce"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 132.651,
+                        "y": 93.6495
+                    },
+                    "uuid": "f6b7e1d9-4a9b-46fe-bd09-1a17dabda601"
+                },
+                {
+                    "description": "Pad 2 [DAC_BUF_N] of U8 on Top Layer",
+                    "pos": {
+                        "x": 135.812,
+                        "y": 92.601
+                    },
+                    "uuid": "3bd207eb-26c6-4314-9e83-7f7c59d680d7"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 132.651,
+                        "y": 93.6495
+                    },
+                    "uuid": "f6b7e1d9-4a9b-46fe-bd09-1a17dabda601"
+                },
+                {
+                    "description": "Pad 3 [DAC_R_FILT] of U8 on Top Layer",
+                    "pos": {
+                        "x": 134.542,
+                        "y": 92.601
+                    },
+                    "uuid": "957f6848-b5e0-4b30-8144-eef8d11c770c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 132.651,
+                        "y": 93.6495
+                    },
+                    "uuid": "f6b7e1d9-4a9b-46fe-bd09-1a17dabda601"
+                },
+                {
+                    "description": "Pad 4 [ANA_N] of U8 on Top Layer",
+                    "pos": {
+                        "x": 133.272,
+                        "y": 92.601
+                    },
+                    "uuid": "7b547c55-258a-4772-9544-80c2f1e8d09c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 137.703,
+                        "y": 96.6925
+                    },
+                    "uuid": "e4ce01cf-5f48-4535-9903-51a5565bbe83"
+                },
+                {
+                    "description": "Pad 5 [DAC_BUF] of U8 on Top Layer",
+                    "pos": {
+                        "x": 133.272,
+                        "y": 97.741
+                    },
+                    "uuid": "60899e4a-590b-4bb5-8c30-dd457afcf626"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 137.703,
+                        "y": 96.6925
+                    },
+                    "uuid": "e4ce01cf-5f48-4535-9903-51a5565bbe83"
+                },
+                {
+                    "description": "Pad 6 [VK_AMP_N] of U8 on Top Layer",
+                    "pos": {
+                        "x": 134.542,
+                        "y": 97.741
+                    },
+                    "uuid": "89cdd618-5a4b-46bb-9c93-89765ad0343f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 137.703,
+                        "y": 96.6925
+                    },
+                    "uuid": "e4ce01cf-5f48-4535-9903-51a5565bbe83"
+                },
+                {
+                    "description": "Pad 7 [VK_MCU] of U8 on Top Layer",
+                    "pos": {
+                        "x": 135.812,
+                        "y": 97.741
+                    },
+                    "uuid": "f517052a-b35c-4836-b77a-037e28f7b898"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U8 on Top Silkscreen Layer",
+                    "pos": {
+                        "x": 137.703,
+                        "y": 96.6925
+                    },
+                    "uuid": "e4ce01cf-5f48-4535-9903-51a5565bbe83"
+                },
+                {
+                    "description": "Pad 8 [ANA_P] of U8 on Top Layer",
+                    "pos": {
+                        "x": 137.082,
+                        "y": 97.741
+                    },
+                    "uuid": "cc4dfb81-fbf4-4144-a152-660c3026a567"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C7 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 168.44,
+                        "y": 78.8865
+                    },
+                    "uuid": "16d05b8a-fde1-4c42-948d-c811b8b6e150"
+                },
+                {
+                    "description": "Segment of C8 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 167.341,
+                        "y": 78.8325
+                    },
+                    "uuid": "821fb45a-e8f4-435d-83f9-1e4f9d23d1bc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C7 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 168.44,
+                        "y": 78.8865
+                    },
+                    "uuid": "16d05b8a-fde1-4c42-948d-c811b8b6e150"
+                },
+                {
+                    "description": "Arc of C8 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 167.341,
+                        "y": 78.68
+                    },
+                    "uuid": "c1d65837-101b-47a7-b09d-36587029c1c2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Arc of C7 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 166.937999,
+                        "y": 79.038999
+                    },
+                    "uuid": "7c8d95cd-a82f-47f4-8372-b44f97087753"
+                },
+                {
+                    "description": "Segment of C8 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 167.341,
+                        "y": 78.8325
+                    },
+                    "uuid": "821fb45a-e8f4-435d-83f9-1e4f9d23d1bc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 125.7815,
+                        "y": 143.475
+                    },
+                    "uuid": "fd45b6d1-46e8-4c7f-b683-6f4872dfb93b"
+                },
+                {
+                    "description": "Pad 1 [ZSERVO_OUT] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 124.733,
+                        "y": 147.906
+                    },
+                    "uuid": "e29812bc-a51a-4ce8-85ba-c7cc534a29a9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 125.7815,
+                        "y": 143.475
+                    },
+                    "uuid": "fd45b6d1-46e8-4c7f-b683-6f4872dfb93b"
+                },
+                {
+                    "description": "Pad 2 [SERVO_INT_N] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 124.733,
+                        "y": 146.636
+                    },
+                    "uuid": "54fac146-98a5-4eb3-88fc-a47fb6cec531"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 125.7815,
+                        "y": 143.475
+                    },
+                    "uuid": "fd45b6d1-46e8-4c7f-b683-6f4872dfb93b"
+                },
+                {
+                    "description": "Pad 3 [AGND] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 124.733,
+                        "y": 145.366
+                    },
+                    "uuid": "febe440e-ca71-44ee-8e8e-86001557a423"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 125.7815,
+                        "y": 143.475
+                    },
+                    "uuid": "fd45b6d1-46e8-4c7f-b683-6f4872dfb93b"
+                },
+                {
+                    "description": "Pad 4 [ANA_N] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 124.733,
+                        "y": 144.096
+                    },
+                    "uuid": "edfe6314-55ae-4b72-8dd1-b9d82c6d3822"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 128.8245,
+                        "y": 148.527
+                    },
+                    "uuid": "98741e7c-61b1-4d51-a26e-8b2f4a3ab838"
+                },
+                {
+                    "description": "Pad 5 [AGND] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 129.873,
+                        "y": 144.096
+                    },
+                    "uuid": "74e08b4a-99ee-42f4-944c-210da30ac59a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 128.8245,
+                        "y": 148.527
+                    },
+                    "uuid": "98741e7c-61b1-4d51-a26e-8b2f4a3ab838"
+                },
+                {
+                    "description": "Pad 6 [$1N56724] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 129.873,
+                        "y": 145.366
+                    },
+                    "uuid": "84db46ed-7cdc-488a-9ab2-18b9d294ac31"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 128.8245,
+                        "y": 148.527
+                    },
+                    "uuid": "98741e7c-61b1-4d51-a26e-8b2f4a3ab838"
+                },
+                {
+                    "description": "Pad 7 [$1N56724] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 129.873,
+                        "y": 146.636
+                    },
+                    "uuid": "3de6e083-ff2d-4a57-8d05-61f3eff85763"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U9 on Bottom Silkscreen Layer",
+                    "pos": {
+                        "x": 128.8245,
+                        "y": 148.527
+                    },
+                    "uuid": "98741e7c-61b1-4d51-a26e-8b2f4a3ab838"
+                },
+                {
+                    "description": "Pad 8 [ANA_P] of U9 on Bottom Layer",
+                    "pos": {
+                        "x": 129.873,
+                        "y": 147.906
+                    },
+                    "uuid": "e3bfdccb-53fb-41ae-9ec0-0b12b486331b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        }
+    ]
+}

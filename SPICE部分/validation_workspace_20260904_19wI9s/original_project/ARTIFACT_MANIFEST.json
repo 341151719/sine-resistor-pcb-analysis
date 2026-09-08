@@ -1,0 +1,482 @@
+{
+  "project": "active_acoustic_impedance_v3_3_pa5_limited_rerun",
+  "created": "2026-05-22",
+  "notes": "Default acoustic stress tests limited to <=5 Pa; generated netlists include only 1 Pa and 5 Pa stress cases.",
+  "files": [
+    {
+      "path": "README.md",
+      "size": 2231,
+      "sha256": "6962a3370dcefe08e7cc4c552f8b1b11bd7547f5e753ded5bcecc34de6ea9b51"
+    },
+    {
+      "path": "docs/ACOUSTIC_STRESS_LIMIT_V3_3.md",
+      "size": 775,
+      "sha256": "dbfc7f0ad0ef321549d90bb510068326e1ca0f438123ffadf0fc2f4fd67b46ef"
+    },
+    {
+      "path": "docs/BOM_PRELIMINARY.csv",
+      "size": 1000,
+      "sha256": "de3716538a00c9561364fc6ed9558218897487dd57a969cc5df02acb352731cf"
+    },
+    {
+      "path": "docs/METRICS_GUIDE_V3.md",
+      "size": 1461,
+      "sha256": "ef7fba5d77d0c9269874a3b784fb1399ba9cc51a6d7b18f45cdc212e860f1546"
+    },
+    {
+      "path": "docs/MODEL_VALIDATION_PLAN.md",
+      "size": 1480,
+      "sha256": "324ff18b7ec9e16e5e61c15e9caf42af883cc9284a375afb125588c4ca88bee7"
+    },
+    {
+      "path": "docs/NODE_DESCRIPTION.md",
+      "size": 1605,
+      "sha256": "7d7d40cf584fe53b4ea1328919e90e9ebe641318bd58b733bf35dd6702e18528"
+    },
+    {
+      "path": "docs/PLOT_AXIS_PLAN_V3_2.md",
+      "size": 2272,
+      "sha256": "ab7dd6ccd373398f295a296f9b0d01450d79bb72759f777948556a05af5b79ee"
+    },
+    {
+      "path": "docs/PLOT_FIX_NOTES_V3_1.md",
+      "size": 2039,
+      "sha256": "ea376cb4b18849aff28d557212ed8e13d3a1a898b776dbf2c4ca721d0a3c7283"
+    },
+    {
+      "path": "docs/REPAIR_NOTES_V2.md",
+      "size": 3071,
+      "sha256": "a5d2571a552494243e91cd11e270baa42f95f2c465e911724c3ac6a893cf5af9"
+    },
+    {
+      "path": "docs/REPAIR_NOTES_V3.md",
+      "size": 2768,
+      "sha256": "04f36abdd28cf36aa1b49ef137b893057ede87f86d13db421a9c4ef74f99e688"
+    },
+    {
+      "path": "docs/WEB_SOURCE_CHECK_2026-05-22.md",
+      "size": 874,
+      "sha256": "85c9e1f63fb0faf36abd4fefede7ef6bb9a8f3d7700c430a1579b1b8a3b9a3fe"
+    },
+    {
+      "path": "requirements.txt",
+      "size": 24,
+      "sha256": "de670d2176ad6e71244cb4525c98d2c5fce62bb136de29efee5e9916b3dc9feb"
+    },
+    {
+      "path": "results/all_summary.csv",
+      "size": 5244,
+      "sha256": "92afaa094bcde98871bea4c55d5e28c6571a61fdb5a3a4d5a7eb42415077b4c4"
+    },
+    {
+      "path": "results/cases/behavioral_dual_sine/behavioral_dual_sine.cir",
+      "size": 2198,
+      "sha256": "9f03a1675fb09ce13477ed047369f47659e00560467007fe6c844b5a2b1adb3a"
+    },
+    {
+      "path": "results/cases/behavioral_dual_sine/behavioral_dual_sine_config.json",
+      "size": 627,
+      "sha256": "4291b7f649851032430e72bc460fdc643419ea9db00a7ee502a11d4f48ea17bf"
+    },
+    {
+      "path": "results/cases/behavioral_single_sine/behavioral_single_sine.cir",
+      "size": 2199,
+      "sha256": "e70d158d10f5e8884c7082b9003795250a9cf8ae56279aaeb150480b84990e70"
+    },
+    {
+      "path": "results/cases/behavioral_single_sine/behavioral_single_sine_config.json",
+      "size": 634,
+      "sha256": "8ef527b21e1a5bb2278bfa5dfb2fb443bb8f8149f2398bf6df56700558bf0c72"
+    },
+    {
+      "path": "results/cases/full_acoustic_fa120/full_acoustic_fa120.cir",
+      "size": 5912,
+      "sha256": "33eb997c80d999a330bd32f593253221e0441163a02cdec0a4401e5f49e29f02"
+    },
+    {
+      "path": "results/cases/full_acoustic_fa120/full_acoustic_fa120_config.json",
+      "size": 630,
+      "sha256": "97f4f385ad72ef89831777dcd5e734b7e66323a1fea4962445dc0773867f2beb"
+    },
+    {
+      "path": "results/cases/full_acoustic_fa180/full_acoustic_fa180.cir",
+      "size": 5912,
+      "sha256": "ed311f3e47a88c17ae5080e1c419c42495907547999c4179f14ad9be4f350c7a"
+    },
+    {
+      "path": "results/cases/full_acoustic_fa180/full_acoustic_fa180_config.json",
+      "size": 630,
+      "sha256": "eba0523bbb643890bbb68cdf76375d6a20420120428a341793a21527cfb8b19f"
+    },
+    {
+      "path": "results/cases/full_acoustic_fa300/full_acoustic_fa300.cir",
+      "size": 5912,
+      "sha256": "ab6cc4c743b18b1dacde085ea9cb071137996d1b09887dea2993adf806cd934e"
+    },
+    {
+      "path": "results/cases/full_acoustic_fa300/full_acoustic_fa300_config.json",
+      "size": 630,
+      "sha256": "4d7def8ed271d1bebd32c08f4adb1ced1c5b1098557adea136de1a70ed63f285"
+    },
+    {
+      "path": "results/cases/full_acoustic_fa60/full_acoustic_fa60.cir",
+      "size": 5910,
+      "sha256": "90f461f8083cf968cbb7d412e50ddcbc8ace96099ec94b823646f6066e989841"
+    },
+    {
+      "path": "results/cases/full_acoustic_fa60/full_acoustic_fa60_config.json",
+      "size": 628,
+      "sha256": "1e217e0db3bfc62a330c8bbd88902b2ed33d1c1b535c583bc37d2717d5a7f764"
+    },
+    {
+      "path": "results/cases/full_acoustic_fa90/full_acoustic_fa90.cir",
+      "size": 5910,
+      "sha256": "52d461dcf8bd87b4377a10e76dc612d8f597b9738ae0aaac4bb8c709b5d4d9d8"
+    },
+    {
+      "path": "results/cases/full_acoustic_fa90/full_acoustic_fa90_config.json",
+      "size": 628,
+      "sha256": "051596ecca52187fce94e5d3d053dc2fa472b7e5e5f9896e028191aa10da603b"
+    },
+    {
+      "path": "results/cases/full_dual_sine/full_dual_sine.cir",
+      "size": 5908,
+      "sha256": "59e75797aea4c013f04e48b92b46aee371a870dcb47eb2bab2b9e064708101bd"
+    },
+    {
+      "path": "results/cases/full_dual_sine/full_dual_sine_config.json",
+      "size": 622,
+      "sha256": "789e0928d73448169b76b1816df7d4efb5c5e2484dfc107d27b7b7a6ceac6b71"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r100_f1000/full_einj_fixed_r100_f1000.cir",
+      "size": 5919,
+      "sha256": "b14e42dd8e1d574f31ad2fd20fe53f4639510659e29726f10fea6646511a641d"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r100_f1000/full_einj_fixed_r100_f1000_config.json",
+      "size": 629,
+      "sha256": "2cb97f302b993e7d9787405944103857a5dd01544cb5a6eeb7d67bfd0c5ae867"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r1_f100/full_einj_fixed_r1_f100.cir",
+      "size": 5913,
+      "sha256": "622b6c363a5ce37d1a1011a696d1896d8447621a7196d313bf50516e077b1a09"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r1_f100/full_einj_fixed_r1_f100_config.json",
+      "size": 625,
+      "sha256": "f6bbca261dccb9ab8aeabe1bcfba92e47e94a910b64a2e20d774b036e3ed0a5b"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r1_f1000/full_einj_fixed_r1_f1000.cir",
+      "size": 5915,
+      "sha256": "899bc59f4517be5d7d4c6193ae6d64b77c51347375cbaf5a3e24f28ab72e6886"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r1_f1000/full_einj_fixed_r1_f1000_config.json",
+      "size": 625,
+      "sha256": "1d7c9c76b3233eef4b5f9e76127c52730f89722c1b3f30c14bdc3e662afaf7fb"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r1_f5000/full_einj_fixed_r1_f5000.cir",
+      "size": 5915,
+      "sha256": "c3e3019fa31d8bcb70244f7b526ca4edd08264d420660e1552d5d84179965625"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r1_f5000/full_einj_fixed_r1_f5000_config.json",
+      "size": 627,
+      "sha256": "622023b7ee2537edf2e7cc56878d3c4cc75cf7b53d5bc6effd2ab2c7d876366a"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r20_f1000/full_einj_fixed_r20_f1000.cir",
+      "size": 5917,
+      "sha256": "906d6ba5f8d050757902cd626eb9f2699f250581c70455b31dcafb5f34dcfda8"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r20_f1000/full_einj_fixed_r20_f1000_config.json",
+      "size": 627,
+      "sha256": "5253ef02e99eb18f04dcb4db21f85ec319e90a9a0c1c59daf5f6cb1d3f5b311c"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r5_f1000/full_einj_fixed_r5_f1000.cir",
+      "size": 5915,
+      "sha256": "4e7f617bbd88ee250887649dcc4d0fc59ac7d9b334ef06ef1aab4b68f6f335ac"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r5_f1000/full_einj_fixed_r5_f1000_config.json",
+      "size": 625,
+      "sha256": "167aadd1455a5d0181e26a222707cda837403205f721128fee4cc248d47c881c"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r7p2_f1000/full_einj_fixed_r7p2_f1000.cir",
+      "size": 5919,
+      "sha256": "155dd806d16f36c0bfc255482afe17ff490ef98d67e151540fcdeb090768ec23"
+    },
+    {
+      "path": "results/cases/full_einj_fixed_r7p2_f1000/full_einj_fixed_r7p2_f1000_config.json",
+      "size": 629,
+      "sha256": "0abdd15bf6ab93b7a75eede3fdd8e2472fc54aa95e26151797b57744ed3384ae"
+    },
+    {
+      "path": "results/cases/full_einj_single_sine_mod_f1000/full_einj_single_sine_mod_f1000.cir",
+      "size": 5928,
+      "sha256": "19357da77e089ab8d237920f342025a19b5f2affa33bc34245a5610fe51bcbd8"
+    },
+    {
+      "path": "results/cases/full_einj_single_sine_mod_f1000/full_einj_single_sine_mod_f1000_config.json",
+      "size": 642,
+      "sha256": "072afea4e4b201111510109d04347ff220476b14361d74c5ac87b7fe0b0213a6"
+    },
+    {
+      "path": "results/cases/full_fixed_r1/full_fixed_r1.cir",
+      "size": 5900,
+      "sha256": "0ae9af16e41882540a4cc6f288147408b5dfe89583ecdccfcce429ba7f707b6d"
+    },
+    {
+      "path": "results/cases/full_fixed_r1/full_fixed_r1_config.json",
+      "size": 618,
+      "sha256": "2c588f637203b9895b3b2f43fb199fbdcd88750b6bbe499e9ef46e77576862d2"
+    },
+    {
+      "path": "results/cases/full_fixed_r100/full_fixed_r100.cir",
+      "size": 5904,
+      "sha256": "f96842b1b441a46c6e1db78475bbc522059472040020a7d2d867f8c647fff1e3"
+    },
+    {
+      "path": "results/cases/full_fixed_r100/full_fixed_r100_config.json",
+      "size": 622,
+      "sha256": "65fccdf6556689a8e0cbb193671690f83294aa2c77c762835f3ec6d6d1825799"
+    },
+    {
+      "path": "results/cases/full_fixed_r20/full_fixed_r20.cir",
+      "size": 5902,
+      "sha256": "e4829cd5d320c6fff399d2aa12060104b059bc77de111e7a684e0ce08e165d6f"
+    },
+    {
+      "path": "results/cases/full_fixed_r20/full_fixed_r20_config.json",
+      "size": 620,
+      "sha256": "87d053c3419cd511748f8169598bdd639119107fa10d4a792c647506a8c78279"
+    },
+    {
+      "path": "results/cases/full_fixed_r5/full_fixed_r5.cir",
+      "size": 5900,
+      "sha256": "0b227fe53e488411648820ba57726bdcdd108f33c86072430aa8fe9a356d3f79"
+    },
+    {
+      "path": "results/cases/full_fixed_r5/full_fixed_r5_config.json",
+      "size": 618,
+      "sha256": "3663293123747869487abc751a94e851dd3f2650c77b6d31938cb5feb9d874bf"
+    },
+    {
+      "path": "results/cases/full_fixed_r7p2/full_fixed_r7p2.cir",
+      "size": 5904,
+      "sha256": "3384f3686be19ea584897542c42fec5cc2a39f34dd77bdedd31e33e977d4ad48"
+    },
+    {
+      "path": "results/cases/full_fixed_r7p2/full_fixed_r7p2_config.json",
+      "size": 622,
+      "sha256": "636caf0d3f6a249405e337904170067bbf0a9eff6d9400377f9eb9b0cb7ae789"
+    },
+    {
+      "path": "results/cases/full_fm10/full_fm10.cir",
+      "size": 5901,
+      "sha256": "9578f46285fe858652342155ad5bb3b06df76f97940fd38eade59a72f68dd369"
+    },
+    {
+      "path": "results/cases/full_fm10/full_fm10_config.json",
+      "size": 619,
+      "sha256": "904cdf1e6893fb65a0c7eeafd48043cdeb0f6205049bf4f4d22ea4bf346a7f5a"
+    },
+    {
+      "path": "results/cases/full_fm100/full_fm100.cir",
+      "size": 5903,
+      "sha256": "a91d5801ef2ab2a285a358f036d9d3fd328a5d3273fe39ecce7a2bc66d0063ba"
+    },
+    {
+      "path": "results/cases/full_fm100/full_fm100_config.json",
+      "size": 621,
+      "sha256": "26385bb0d084a0735ca19f5952046665bfcdd5f150e585d61d498f529e0ad5a4"
+    },
+    {
+      "path": "results/cases/full_fm1000/full_fm1000.cir",
+      "size": 5905,
+      "sha256": "17bb28bca6865901ba77a8ef9cb90285d9b6d8e7ef6e3dfc56a0348b713b1214"
+    },
+    {
+      "path": "results/cases/full_fm1000/full_fm1000_config.json",
+      "size": 623,
+      "sha256": "45e210b7573f321613fc7e4e284279d7d6c817ff623d44bb4c667d1c6858b29e"
+    },
+    {
+      "path": "results/cases/full_fm30/full_fm30.cir",
+      "size": 5901,
+      "sha256": "b6aaaa3fe4089052ad790d6545e6285f658ec4a9b161175e7b5ae1107d448447"
+    },
+    {
+      "path": "results/cases/full_fm30/full_fm30_config.json",
+      "size": 619,
+      "sha256": "d1fa5321c3d1b0ad04325faf380d5c24c1a16df8525e4faa9331cdccfc7ba06c"
+    },
+    {
+      "path": "results/cases/full_fm300/full_fm300.cir",
+      "size": 5903,
+      "sha256": "6592779741f3d916162e7e40eaf198a88f7b72ba66803197354327a3addf49da"
+    },
+    {
+      "path": "results/cases/full_fm300/full_fm300_config.json",
+      "size": 621,
+      "sha256": "22b6785827747250b0b8fb96d5fae93412761d89b1dec7c7d7af53329d014140"
+    },
+    {
+      "path": "results/cases/full_single_sine/full_single_sine.cir",
+      "size": 5909,
+      "sha256": "b354c31813fc2e2f10c3607c9895daeea1f214ba229f372d5749bfd8da158d62"
+    },
+    {
+      "path": "results/cases/full_single_sine/full_single_sine_config.json",
+      "size": 629,
+      "sha256": "4901069f0d6e74bb3b65adf324eda78091c4525cec5fa2192a429c007ee5006b"
+    },
+    {
+      "path": "results/cases/full_single_sine_ilim2a/full_single_sine_ilim2a.cir",
+      "size": 5916,
+      "sha256": "0926a0c49c9826aad59d915dbf6c3196c5a931e4c25c5ae6212e9cc5f7cca63c"
+    },
+    {
+      "path": "results/cases/full_single_sine_ilim2a/full_single_sine_ilim2a_config.json",
+      "size": 636,
+      "sha256": "3c8c8def0e4d0530d0faf1d2deccb324306c2f35dba14900a6eac498d6a0ecb1"
+    },
+    {
+      "path": "results/cases/full_stress_pa1_fixed1ohm/full_stress_pa1_fixed1ohm.cir",
+      "size": 5912,
+      "sha256": "a6c6402e8df88c823753001405eea48e667b60a394a19378df364e284dc0cc6f"
+    },
+    {
+      "path": "results/cases/full_stress_pa1_fixed1ohm/full_stress_pa1_fixed1ohm_config.json",
+      "size": 628,
+      "sha256": "4b7ed463bb74ef59b979e1387096d6cf9f9dc7dcd8a411c27262144c87e8db4e"
+    },
+    {
+      "path": "results/cases/full_stress_pa1_mod/full_stress_pa1_mod.cir",
+      "size": 5912,
+      "sha256": "b93c5f6849bf67a7178f14614921bc613c93beab6de56dc79ccf82f5ada20811"
+    },
+    {
+      "path": "results/cases/full_stress_pa1_mod/full_stress_pa1_mod_config.json",
+      "size": 630,
+      "sha256": "8709ec685bb30e5d588cbcbe5b1fcd6109be55cf16fcf002c55ca784c42690b1"
+    },
+    {
+      "path": "results/cases/full_stress_pa5_fixed1ohm/full_stress_pa5_fixed1ohm.cir",
+      "size": 5912,
+      "sha256": "696c863d9283e9797ff9371a3bd1c20ee4e7590f80cabe364622cc4df64530b4"
+    },
+    {
+      "path": "results/cases/full_stress_pa5_fixed1ohm/full_stress_pa5_fixed1ohm_config.json",
+      "size": 628,
+      "sha256": "01b74ce75a6c0db4df825d2710badc5bea0ba6e961b68c4385840ac7fe83f645"
+    },
+    {
+      "path": "results/cases/full_stress_pa5_mod/full_stress_pa5_mod.cir",
+      "size": 5912,
+      "sha256": "a6f181800ff7b4f73c87607151134b4ca8e91b4a950882304b78a971e4878d11"
+    },
+    {
+      "path": "results/cases/full_stress_pa5_mod/full_stress_pa5_mod_config.json",
+      "size": 630,
+      "sha256": "11582980221fd48732b8a3ec130a3bdbdeb840176c6dba8624afbe9078f5959e"
+    },
+    {
+      "path": "results/cases/ideal_dual_sine/ideal_dual_sine.cir",
+      "size": 1870,
+      "sha256": "edddd09013cae6060909b907cb89213025cdbebae65124dc677dd353588e32e8"
+    },
+    {
+      "path": "results/cases/ideal_dual_sine/ideal_dual_sine_config.json",
+      "size": 624,
+      "sha256": "06cefbb3a218a86663506c4c9e0a9b126fe62efd7e9877a3b07421336eb9df64"
+    },
+    {
+      "path": "results/cases/ideal_single_sine/ideal_single_sine.cir",
+      "size": 1871,
+      "sha256": "cb22ac7d6bcd0da5f6fa2b58846c99fb25618e96e7a5defb769c1d027b4f758b"
+    },
+    {
+      "path": "results/cases/ideal_single_sine/ideal_single_sine_config.json",
+      "size": 631,
+      "sha256": "8bb02719b2afe1c7bb039b94451efb64c1e16a5070940fcf151b3fc67c156a99"
+    },
+    {
+      "path": "results/failures.csv",
+      "size": 5244,
+      "sha256": "92afaa094bcde98871bea4c55d5e28c6571a61fdb5a3a4d5a7eb42415077b4c4"
+    },
+    {
+      "path": "results/speaker_params.json",
+      "size": 239,
+      "sha256": "c995797acc5141119f92168e8c9ae652facdc24374edf2b19f55494b075d0787"
+    },
+    {
+      "path": "scripts/check_project.py",
+      "size": 4310,
+      "sha256": "17e7f6d640612e0a3f6091369629cfbdd504186cb69501eb10f60f8f447b7882"
+    },
+    {
+      "path": "scripts/fetch_vendor_models.py",
+      "size": 2433,
+      "sha256": "10ca53c7b13eae070fd6ee04c0f4fcab83da0fc9ea79fc847bc0f693ec6db3fe"
+    },
+    {
+      "path": "scripts/replot_existing_results.py",
+      "size": 3175,
+      "sha256": "57b3dab1e0c2e86b42efb0e41c8199e7abd49aec656a603e4eb89fbad753990f"
+    },
+    {
+      "path": "scripts/run_sweeps.py",
+      "size": 25814,
+      "sha256": "d5e3207286e36fb0a73ad67d1e3a1bb6bbb63ba09a774887778332c4a0df1e8e"
+    },
+    {
+      "path": "spice/circuits/behavioral_chain_template.cir",
+      "size": 2304,
+      "sha256": "c3ac5ab868d820d0da46c700945c3a65f96afeb3be29e067ba35549e488cca86"
+    },
+    {
+      "path": "spice/circuits/full_component_template.cir",
+      "size": 5996,
+      "sha256": "5e4c37ef9f1a3431178b4ae0c5ec19eb72c34206f2c3aa70cc3b1e8944f537f2"
+    },
+    {
+      "path": "spice/circuits/ideal_reference_template.cir",
+      "size": 1969,
+      "sha256": "3fe9f06ddd96b567ec9be27f45467f163296e7fc191cc0fe520934facd8c1f83"
+    },
+    {
+      "path": "spice/circuits/macro_smoke_tests.cir",
+      "size": 785,
+      "sha256": "6aa5890f667b51dc4d70de391df5e051486b773f4d9b6a1d2629e4a7eb8adb44"
+    },
+    {
+      "path": "spice/models/SOURCE_AUDIT.md",
+      "size": 1919,
+      "sha256": "214aa3cca11ee360b6a1146d12a7e4a31d1e7799349b7fb0f956f00ebca89c9b"
+    },
+    {
+      "path": "spice/models/ngspice_compatible_macros.lib",
+      "size": 5025,
+      "sha256": "5c51a6d165cee2af988c6b89d1b8c76bd9cb934b0e04ac95bbcdd751dce735e3"
+    },
+    {
+      "path": "spice/models/ngspice_compatible_macros_faulty_legacy.lib",
+      "size": 5186,
+      "sha256": "64fcb14f561a8bf1e50e197d0a1766a5468ce1671aba66ef3320931f54ffe316"
+    },
+    {
+      "path": "spice/models/vendor_fetch_manifest.json",
+      "size": 1686,
+      "sha256": "9c91e08666b8ffaf61c1a785febbbe54a1a8619bd3580b17a986699fd27a8cf3"
+    }
+  ]
+}

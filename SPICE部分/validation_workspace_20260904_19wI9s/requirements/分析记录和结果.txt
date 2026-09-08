@@ -1,0 +1,1491 @@
+我希望用python+SPICE的方式，完成以上文档的所有仿真。
+请输出对应的python代码。 
+
+下面给你一份**可直接运行**的 Python 脚本。  
+它采用的是 **Python 调用 ngspice 批处理** 的方式，而不是 PySpice 绑定方式。这样做的优点是：
+
+1. **和 KiCad / ngspice 的工作流更一致**
+2. **更稳**，少很多 PySpice 安装兼容性问题
+3. 后面你要并入 **KiCad / Quilter** 流程时更方便
+
+这份脚本会完成你前面文档里需要的核心仿真内容：
+
+- **理想合成阻抗模型**
+- **实现级行为模型**（电流检测 + 乘法器 + 功率跟随器）
+- **固定目标阻值验证**：100 Ω、20 Ω、7.2 Ω、5 Ω、1 Ω
+- **单正弦调制**
+- **双正弦叠加调制**
+- 自动输出：
+  - `.cir` netlist
+  - ngspice `.log`
+  - `.dat` 原始数据
+  - `.csv` 结果表
+  - `.png` 图像
+  - `.json` 摘要
+  - 总汇总 `all_summary.csv`
+
+---
+
+## 运行前准备
+
+先安装 Python 依赖：
+
+```bash
+pip install numpy pandas matplotlib
+```
+
+然后确保你机器里已经安装了 **ngspice**，并且命令行能直接执行：
+
+```bash
+ngspice -v
+```
+
+---
+
+## Python 脚本
+
+把下面内容保存为例如：
+
+```text
+speaker_synth_impedance_sim.py
+```
+
+然后直接运行：
+
+```bash
+python speaker_synth_impedance_sim.py
+```
+
+---
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+speaker_synth_impedance_sim.py
+
+用途：
+    用 Python + ngspice 批处理，完成以下仿真：
+    1) 理想合成阻抗模型
+    2) 实现级行为模型（电流检测 + 乘法器 + 功率跟随器）
+    3) 固定目标阻值验证：100, 20, 7.2, 5, 1 Ω
+    4) 单正弦调制
+    5) 双正弦叠加调制
+
+依赖：
+    pip install numpy pandas matplotlib
+    并确保 ngspice 在 PATH 中
+
+运行：
+    python speaker_synth_impedance_sim.py
+
+输出目录：
+    ./sim_results/
+"""
+
+from __future__ import annotations
+
+import json
+import math
+import os
+import shutil
+import subprocess
+import textwrap
+from dataclasses import asdict, dataclass, replace
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
+
+# =========================
+# 全局配置
+# =========================
+
+NGSPICE_BIN = os.getenv("NGSPICE_BIN", "ngspice")
+
+try:
+    BASE_DIR = Path(__file__).resolve().parent
+except NameError:
+    BASE_DIR = Path.cwd()
+
+OUT_DIR = BASE_DIR / "sim_results"
+
+plt.rcParams["figure.dpi"] = 140
+plt.rcParams["axes.grid"] = True
+plt.rcParams["font.size"] = 10
+
+
+# =========================
+# 数据类
+# =========================
+
+@dataclass
+class SpeakerTS:
+    """用户给定 / 文档推导出的 T/S 参数"""
+    Re: float = 7.2          # Ω
+    Le: float = 0.2e-3       # H
+    Bl: float = 4.6          # T·m
+    Mms: float = 5.7e-3      # kg
+    fs: float = 90.0         # Hz
+    Qms: float = 2.29
+    Sd: float = 50e-4        # 50 cm^2 = 0.005 m^2
+
+    @property
+    def w0(self) -> float:
+        return 2.0 * math.pi * self.fs
+
+    @property
+    def Cms(self) -> float:
+        return 1.0 / (self.Mms * self.w0 * self.w0)
+
+    @property
+    def Kms(self) -> float:
+        return 1.0 / self.Cms
+
+    @property
+    def Rms(self) -> float:
+        return self.w0 * self.Mms / self.Qms
+
+
+@dataclass
+class SimConfig:
+    """
+    仿真配置：
+    Rtarget(t) = R0 + A1*sin(2π fm1 t + ph1) + A2*sin(2π fm2 t + ph2)
+    再裁剪到 [RMIN, RMAX]
+    """
+    R0: float = 50.5
+    A1: float = 49.5
+    fm1: float = 100.0
+    ph1: float = 0.0          # rad
+
+    A2: float = 0.0
+    fm2: float = 317.0
+    ph2: float = 0.0          # rad
+
+    RMIN: float = 1.0
+    RMAX: float = 100.0
+
+    Pamp: float = 1.0         # Pa，1 Pa ≈ 94 dB SPL
+    fa: float = 120.0         # 外界声压频率 Hz
+
+    tstop: float = 20e-3
+    tstep: float = 2e-6
+
+    # 实现级行为模型参数
+    RSH: float = 0.1          # 电流检测分流电阻
+    VDRVLIM: float = 16.0     # 功率跟随器等效输出饱和
+    RSNUB: float = 4.7
+    CSNUB: float = 47e-9
+
+
+# =========================
+# SPICE 模板
+# =========================
+
+IDEAL_TEMPLATE = r"""
+.title Ideal synthetic impedance shunt for electrodynamic membrane
+
+.options method=gear maxord=2
+.options reltol=1e-5 abstol=1e-9 vabstol=1e-6
+.temp 27
+
+* -----------------------------
+* Parameters
+* -----------------------------
+.param Re=__Re__
+.param Le=__Le__
+.param Bl=__Bl__
+.param Mms=__Mms__
+.param fs=__fs__
+.param Qms=__Qms__
+.param Sd=__Sd__
+
+.param TWOPI=6.283185307179586
+.param W0={TWOPI*fs}
+.param Cms={1/(Mms*W0*W0)}
+.param Rms={W0*Mms/Qms}
+.param Kms={1/Cms}
+
+* -----------------------------
+* Modulation settings
+* -----------------------------
+.param R0=__R0__
+.param A1=__A1__
+.param fm1=__fm1__
+.param ph1=__ph1__
+.param A2=__A2__
+.param fm2=__fm2__
+.param ph2=__ph2__
+.param RMIN=__RMIN__
+.param RMAX=__RMAX__
+
+.func Rraw(t) { R0 + A1*sin(TWOPI*fm1*t + ph1) + A2*sin(TWOPI*fm2*t + ph2) }
+.func Rt(t)   { min(max(Rraw(t), RMIN), RMAX) }
+.func Rx(t)   { Rt(t) - Re }
+
+* -----------------------------
+* Acoustic excitation
+* -----------------------------
+.param Pamp=__Pamp__
+.param fa=__fa__
+
+* -----------------------------
+* Node map
+*   SPK: speaker electrical port
+*   VEL: cone velocity node (V -> m/s)
+* -----------------------------
+
+* Ideal synthetic impedance:
+* V(SPK) = Rx(time) * Iport
+VZ SPK NZ 0
+BZ NZ 0 V = { Rx(time)*I(VZ) }
+
+* Voice coil + back EMF
+LVC SPK NL {Le}
+RVC NL NR {Re}
+VCOIL NR NEMF 0
+BBEMF NEMF 0 V = { Bl*V(VEL) }
+
+* Mechanical mobility analogy
+CMASS VEL 0 {Mms}
+RDAMP VEL 0 {1/Rms}
+LCOMP VEL 0 {Cms}
+RLEAK VEL 0 1e9
+
+* External acoustic pressure force
+BPRESS 0 VEL I = { Sd*Pamp*sin(TWOPI*fa*time) }
+
+* Electromagnetic reaction force
+BMOTOR VEL 0 I = { -Bl*I(VCOIL) }
+
+* Probes
+BRT    RTNODE    0 V = { Rt(time) }
+BRX    RXNODE    0 V = { Rx(time) }
+BREM   REMNODE   0 V = { Bl*Bl/Rt(time) }
+BQEFF  QNODE     0 V = { W0*Mms/(Rms + Bl*Bl/Rt(time)) }
+BIP    IPORTNODE 0 V = { I(VZ) }
+BREFF  REFFNODE  0 V = { Re + V(SPK)/(V(IPORTNODE)+1e-15) }
+BERR   ERRNODE   0 V = { Re + V(SPK)/(V(IPORTNODE)+1e-15) - Rt(time) }
+
+.control
+set wr_singlescale
+set wr_vecnames
+tran __tstep__ __tstop__
+wrdata __DATAFILE__ time v(rtnode) v(rxnode) v(reffnode) v(remnode) v(qnode) v(vel) v(spk) v(iportnode) v(errnode)
+.endc
+
+.end
+"""
+
+IMPLEMENTATION_TEMPLATE = r"""
+.title Implementation-level behavioral synthetic impedance
+
+.options method=gear maxord=2
+.options reltol=1e-5 abstol=1e-9 vabstol=1e-6
+.temp 27
+
+* -----------------------------
+* Parameters
+* -----------------------------
+.param Re=__Re__
+.param Le=__Le__
+.param Bl=__Bl__
+.param Mms=__Mms__
+.param fs=__fs__
+.param Qms=__Qms__
+.param Sd=__Sd__
+
+.param TWOPI=6.283185307179586
+.param W0={TWOPI*fs}
+.param Cms={1/(Mms*W0*W0)}
+.param Rms={W0*Mms/Qms}
+.param Kms={1/Cms}
+
+* -----------------------------
+* Modulation settings
+* -----------------------------
+.param R0=__R0__
+.param A1=__A1__
+.param fm1=__fm1__
+.param ph1=__ph1__
+.param A2=__A2__
+.param fm2=__fm2__
+.param ph2=__ph2__
+.param RMIN=__RMIN__
+.param RMAX=__RMAX__
+
+.func Rraw(t) { R0 + A1*sin(TWOPI*fm1*t + ph1) + A2*sin(TWOPI*fm2*t + ph2) }
+.func Rt(t)   { min(max(Rraw(t), RMIN), RMAX) }
+.func Rx(t)   { Rt(t) - Re }
+
+* -----------------------------
+* Acoustic excitation
+* -----------------------------
+.param Pamp=__Pamp__
+.param fa=__fa__
+
+* -----------------------------
+* Implementation-level behavior
+* -----------------------------
+.param RSH=__RSH__
+.param VDRVLIM=__VDRVLIM__
+.param RSNUB=__RSNUB__
+.param CSNUB=__CSNUB__
+
+* Node map
+*   SPK : speaker terminal / port
+*   DRV : power follower output
+*   VEL : cone velocity node
+*   ISIG: sensed current signal
+*   VK  : resistance-command signal
+*   MUL : multiplier output
+*   VCMD: command voltage to the power follower
+
+* Power stage output -> shunt resistor -> speaker port
+RSHUNT DRV SPK {RSH}
+
+* Current sense signal
+* Vs = V(SPK)-V(DRV) = RSH * ip
+* Gain 50 => ISIG = 50*Vs = 5*ip (because RSH=0.1)
+EISIG ISIG 0 VALUE = { 50*V(SPK,DRV) }
+
+* Command voltage VK = Rx / 10
+BVK VK 0 V = { Rx(time)/10 }
+
+* AD633 ideal behavior: MUL = ISIG * VK / 10
+BMUL MUL 0 V = { V(ISIG)*V(VK)/10 }
+
+* Post gain 20 => VCMD = Rx * ip
+EPOST VCMD 0 VALUE = { 20*V(MUL) }
+
+* Simplified power op-amp/follower with saturation
+BOPA DRV 0 V = { min(max(1e5*(V(VCMD)-V(SPK)), -VDRVLIM), VDRVLIM) }
+
+* Snubber
+RSNUB DRV NSNUB {RSNUB}
+CSNUB NSNUB 0   {CSNUB}
+
+* Voice coil + back EMF
+LVC SPK NL {Le}
+RVC NL NR {Re}
+VCOIL NR NEMF 0
+BBEMF NEMF 0 V = { Bl*V(VEL) }
+
+* Mechanical mobility analogy
+CMASS VEL 0 {Mms}
+RDAMP VEL 0 {1/Rms}
+LCOMP VEL 0 {Cms}
+RLEAK VEL 0 1e9
+
+* External acoustic pressure force
+BPRESS 0 VEL I = { Sd*Pamp*sin(TWOPI*fa*time) }
+
+* Electromagnetic reaction force
+BMOTOR VEL 0 I = { -Bl*I(VCOIL) }
+
+* Probes
+BRT    RTNODE    0 V = { Rt(time) }
+BRX    RXNODE    0 V = { Rx(time) }
+BREM   REMNODE   0 V = { Bl*Bl/Rt(time) }
+BQEFF  QNODE     0 V = { W0*Mms/(Rms + Bl*Bl/Rt(time)) }
+BIP    IPORTNODE 0 V = { (V(SPK)-V(DRV))/RSH }
+BREFF  REFFNODE  0 V = { Re + V(SPK)/(V(IPORTNODE)+1e-15) }
+BERR   ERRNODE   0 V = { Re + V(SPK)/(V(IPORTNODE)+1e-15) - Rt(time) }
+
+.control
+set wr_singlescale
+set wr_vecnames
+tran __tstep__ __tstop__
+wrdata __DATAFILE__ time v(rtnode) v(rxnode) v(reffnode) v(remnode) v(qnode) v(vel) v(spk) v(drv) v(vcmd) v(isig) v(iportnode) v(errnode)
+.endc
+
+.end
+"""
+
+
+# =========================
+# 工具函数
+# =========================
+
+def sf(x: float) -> str:
+    """数字转为 SPICE 友好的字符串"""
+    return f"{float(x):.12g}"
+
+
+def safe_name(x: float) -> str:
+    s = f"{x:g}"
+    return s.replace("-", "m").replace(".", "p")
+
+
+def fmt_val(x) -> str:
+    try:
+        xf = float(x)
+        if math.isnan(xf) or math.isinf(xf):
+            return "nan"
+        return f"{xf:.4g}"
+    except Exception:
+        return str(x)
+
+
+def render_template(template: str, mapping: dict) -> str:
+    txt = textwrap.dedent(template).strip() + "\n"
+    for k, v in mapping.items():
+        txt = txt.replace(f"__{k}__", str(v))
+    return txt
+
+
+def finite_only(a):
+    arr = np.asarray(a, dtype=float)
+    return arr[np.isfinite(arr)]
+
+
+def nanmin_f(a) -> float:
+    b = finite_only(a)
+    return float(np.min(b)) if b.size else float("nan")
+
+
+def nanmax_f(a) -> float:
+    b = finite_only(a)
+    return float(np.max(b)) if b.size else float("nan")
+
+
+def nanmean_f(a) -> float:
+    b = finite_only(a)
+    return float(np.mean(b)) if b.size else float("nan")
+
+
+def nanrms_f(a) -> float:
+    b = finite_only(a)
+    return float(np.sqrt(np.mean(b * b))) if b.size else float("nan")
+
+
+def combine_legends(ax1, ax2=None, loc="best", ncol=1):
+    h1, l1 = ax1.get_legend_handles_labels()
+    if ax2 is None:
+        ax1.legend(h1, l1, loc=loc, ncol=ncol)
+    else:
+        h2, l2 = ax2.get_legend_handles_labels()
+        ax1.legend(h1 + h2, l1 + l2, loc=loc, ncol=ncol)
+
+
+def check_ngspice():
+    try:
+        r = subprocess.run(
+            [NGSPICE_BIN, "-v"],
+            check=False,
+            capture_output=True,
+            text=True
+        )
+    except FileNotFoundError as e:
+        raise FileNotFoundError(
+            f"未找到 ngspice。请先安装 ngspice，或者设置环境变量 NGSPICE_BIN。\n"
+            f"当前 NGSPICE_BIN = {NGSPICE_BIN}"
+        ) from e
+
+    if r.returncode != 0:
+        raise RuntimeError(
+            f"ngspice 可执行文件存在，但执行失败。\n"
+            f"stdout:\n{r.stdout}\n\nstderr:\n{r.stderr}"
+        )
+
+
+def theory_for_target(spk: SpeakerTS, rtarget: float) -> tuple[float, float]:
+    rem = (spk.Bl ** 2) / rtarget
+    qeff = spk.w0 * spk.Mms / (spk.Rms + rem)
+    return rem, qeff
+
+
+def build_mapping(spk: SpeakerTS, cfg: SimConfig, datafile: str) -> dict:
+    return {
+        "Re": sf(spk.Re),
+        "Le": sf(spk.Le),
+        "Bl": sf(spk.Bl),
+        "Mms": sf(spk.Mms),
+        "fs": sf(spk.fs),
+        "Qms": sf(spk.Qms),
+        "Sd": sf(spk.Sd),
+
+        "R0": sf(cfg.R0),
+        "A1": sf(cfg.A1),
+        "fm1": sf(cfg.fm1),
+        "ph1": sf(cfg.ph1),
+        "A2": sf(cfg.A2),
+        "fm2": sf(cfg.fm2),
+        "ph2": sf(cfg.ph2),
+        "RMIN": sf(cfg.RMIN),
+        "RMAX": sf(cfg.RMAX),
+
+        "Pamp": sf(cfg.Pamp),
+        "fa": sf(cfg.fa),
+
+        "tstep": sf(cfg.tstep),
+        "tstop": sf(cfg.tstop),
+
+        "RSH": sf(cfg.RSH),
+        "VDRVLIM": sf(cfg.VDRVLIM),
+        "RSNUB": sf(cfg.RSNUB),
+        "CSNUB": sf(cfg.CSNUB),
+
+        "DATAFILE": datafile,
+    }
+
+
+def build_ideal_netlist(spk: SpeakerTS, cfg: SimConfig, datafile: str) -> str:
+    return render_template(IDEAL_TEMPLATE, build_mapping(spk, cfg, datafile))
+
+
+def build_impl_netlist(spk: SpeakerTS, cfg: SimConfig, datafile: str) -> str:
+    return render_template(IMPLEMENTATION_TEMPLATE, build_mapping(spk, cfg, datafile))
+
+
+def run_ngspice_case(netlist_text: str, workdir: Path, stem: str):
+    workdir.mkdir(parents=True, exist_ok=True)
+    cir_path = workdir / f"{stem}.cir"
+    log_path = workdir / f"{stem}.log"
+
+    cir_path.write_text(netlist_text, encoding="utf-8")
+
+    result = subprocess.run(
+        [NGSPICE_BIN, "-b", "-o", str(log_path), str(cir_path)],
+        cwd=workdir,
+        check=False,
+        capture_output=True,
+        text=True
+    )
+
+    if result.returncode != 0:
+        log_txt = log_path.read_text(encoding="utf-8", errors="ignore") if log_path.exists() else ""
+        raise RuntimeError(
+            f"ngspice 运行失败: {stem}\n"
+            f"returncode={result.returncode}\n"
+            f"stdout:\n{result.stdout}\n\n"
+            f"stderr:\n{result.stderr}\n\n"
+            f"log:\n{log_txt}"
+        )
+
+    return cir_path, log_path
+
+
+def read_wrdata(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        raise FileNotFoundError(f"未找到 ngspice 输出数据文件: {path}")
+
+    df = pd.read_csv(path, sep=r"\s+", engine="python")
+    df.columns = [str(c).strip().lower() for c in df.columns]
+
+    # 清理可能出现的重复/无用列
+    drop_cols = []
+    for c in df.columns:
+        if c.startswith("unnamed"):
+            drop_cols.append(c)
+        if c == "index":
+            drop_cols.append(c)
+        if c.startswith("time.") or c.startswith("scale."):
+            drop_cols.append(c)
+    if drop_cols:
+        df = df.drop(columns=drop_cols)
+
+    if "time" not in df.columns:
+        raise RuntimeError(
+            f"wrdata 解析失败，未发现 time 列。\n"
+            f"文件: {path}\n"
+            f"当前列名: {df.columns.tolist()}"
+        )
+
+    return df
+
+
+def add_derived_columns(df: pd.DataFrame, spk: SpeakerTS) -> pd.DataFrame:
+    """
+    从原始 wrdata 添加更稳健的派生量：
+    - reff_calc: 用 Python 重新计算的等效总电阻（对 Iport≈0 做掩码）
+    - reff_plot: 对绘图友好的插值版本
+    - err_calc / err_plot
+    - port_power_w
+    - rem_theory / qeff_theory
+    """
+    out = df.copy()
+
+    time = out["time"].to_numpy(dtype=float)
+    rt = out["v(rtnode)"].to_numpy(dtype=float)
+    vspk = out["v(spk)"].to_numpy(dtype=float)
+    iport = out["v(iportnode)"].to_numpy(dtype=float)
+
+    # 避免 I≈0 时比值发散
+    imax = np.nanmax(np.abs(iport)) if len(iport) else 0.0
+    ieps = max(1e-10, 1e-4 * float(imax))
+
+    reff = np.full_like(vspk, np.nan, dtype=float)
+    mask = np.abs(iport) > ieps
+    with np.errstate(divide="ignore", invalid="ignore"):
+        reff[mask] = spk.Re + vspk[mask] / iport[mask]
+
+    out["reff_calc"] = reff
+    out["reff_plot"] = pd.Series(reff).interpolate(limit_direction="both").to_numpy()
+    out["err_calc"] = out["reff_calc"] - rt
+    out["err_plot"] = out["reff_plot"] - rt
+    out["port_power_w"] = vspk * iport
+    out["rem_theory"] = (spk.Bl ** 2) / rt
+    out["qeff_theory"] = spk.w0 * spk.Mms / (spk.Rms + out["rem_theory"])
+    out["valid_reff_mask"] = mask.astype(int)
+    out["iport_eps_used"] = ieps
+
+    return out
+
+
+def summary_from_df(df: pd.DataFrame, spk: SpeakerTS, cfg: SimConfig, case_name: str, model: str) -> dict:
+    t = df["time"].to_numpy(dtype=float)
+    tail_mask = t >= (0.5 * np.max(t))
+    valid_mask = df["valid_reff_mask"].to_numpy(dtype=bool)
+    valid_tail = tail_mask & valid_mask
+
+    summary = {
+        "case": case_name,
+        "model": model,
+
+        "rtarget_min_ohm": nanmin_f(df["v(rtnode)"]),
+        "rtarget_max_ohm": nanmax_f(df["v(rtnode)"]),
+        "rx_ext_min_ohm": nanmin_f(df["v(rxnode)"]),
+        "rx_ext_max_ohm": nanmax_f(df["v(rxnode)"]),
+
+        "reff_mean_tail_ohm": nanmean_f(df.loc[valid_tail, "reff_calc"]),
+        "reff_min_valid_ohm": nanmin_f(df.loc[valid_mask, "reff_calc"]),
+        "reff_max_valid_ohm": nanmax_f(df.loc[valid_mask, "reff_calc"]),
+
+        "err_rms_tail_ohm": nanrms_f(df.loc[valid_tail, "err_calc"]),
+        "err_abs_max_tail_ohm": nanmax_f(np.abs(df.loc[valid_tail, "err_calc"])),
+
+        "iport_pk_a": nanmax_f(np.abs(df["v(iportnode)"])),
+        "vspk_pk_v": nanmax_f(np.abs(df["v(spk)"])),
+        "port_power_pk_w": nanmax_f(np.abs(df["port_power_w"])),
+        "vel_rms_tail_mps": nanrms_f(df.loc[tail_mask, "v(vel)"]),
+        "vel_pk_mps": nanmax_f(np.abs(df["v(vel)"])),
+
+        "rem_min_ns_per_m": nanmin_f(df["v(remnode)"]),
+        "rem_max_ns_per_m": nanmax_f(df["v(remnode)"]),
+        "qeff_min": nanmin_f(df["v(qnode)"]),
+        "qeff_max": nanmax_f(df["v(qnode)"]),
+
+        "valid_reff_points": int(np.sum(valid_mask)),
+        "total_points": int(len(df)),
+        "iport_eps_used_a": float(df["iport_eps_used"].iloc[0]),
+    }
+
+    if abs(cfg.A1) < 1e-15 and abs(cfg.A2) < 1e-15:
+        rem, qeff = theory_for_target(spk, cfg.R0)
+        summary["fixed_target_ohm"] = float(cfg.R0)
+        summary["theory_rem_ns_per_m"] = float(rem)
+        summary["theory_qeff"] = float(qeff)
+
+    return summary
+
+
+def plot_case(df: pd.DataFrame, case_name: str, out_png: Path):
+    t_ms = df["time"].to_numpy(dtype=float) * 1e3
+
+    fig, axes = plt.subplots(4, 1, figsize=(13, 11), sharex=True)
+
+    # 1) Rtarget / Reff / Rx
+    ax = axes[0]
+    ax.plot(t_ms, df["v(rtnode)"], label="Rtarget [Ω]", lw=1.8)
+    ax.plot(t_ms, df["reff_plot"], label="Reff(calc) [Ω]", lw=1.4, ls="--")
+    ax.plot(t_ms, df["v(rxnode)"], label="Rx(ext) [Ω]", lw=1.2, ls=":")
+    ax.set_ylabel("Resistance")
+    ax.set_title(case_name)
+    combine_legends(ax, None, loc="best", ncol=3)
+
+    # 2) Vspk / Iport / Vdrv / Vcmd
+    ax = axes[1]
+    ax.plot(t_ms, df["v(iportnode)"], label="Iport [A]", color="tab:blue", lw=1.2)
+    ax.set_ylabel("Iport [A]")
+    ax2 = ax.twinx()
+    ax2.plot(t_ms, df["v(spk)"], label="Vspk [V]", color="tab:red", lw=1.2)
+    if "v(drv)" in df.columns:
+        ax2.plot(t_ms, df["v(drv)"], label="Vdrv [V]", color="tab:orange", lw=1.0, alpha=0.8)
+    if "v(vcmd)" in df.columns:
+        ax2.plot(t_ms, df["v(vcmd)"], label="Vcmd [V]", color="tab:green", lw=1.0, alpha=0.8)
+    ax2.set_ylabel("Voltage [V]")
+    combine_legends(ax, ax2, loc="best", ncol=4)
+
+    # 3) Cone velocity / electromagnetic damping
+    ax = axes[2]
+    ax.plot(t_ms, df["v(vel)"], label="Cone velocity u [m/s]", color="tab:purple", lw=1.2)
+    ax.set_ylabel("u [m/s]")
+    ax2 = ax.twinx()
+    ax2.plot(t_ms, df["v(remnode)"], label="R_em = (Bl)^2 / Rtarget", color="tab:brown", lw=1.0)
+    ax2.set_ylabel("R_em [N·s/m]")
+    combine_legends(ax, ax2, loc="best", ncol=2)
+
+    # 4) Error / Qeff
+    ax = axes[3]
+    ax.plot(t_ms, df["err_plot"], label="Reff - Rtarget [Ω]", color="crimson", lw=1.2)
+    ax.set_ylabel("Error [Ω]")
+    ax2 = ax.twinx()
+    ax2.plot(t_ms, df["v(qnode)"], label="Qeff", color="darkgreen", lw=1.0)
+    ax2.set_ylabel("Qeff")
+    ax.set_xlabel("Time [ms]")
+    combine_legends(ax, ax2, loc="best", ncol=2)
+
+    fig.tight_layout()
+    fig.savefig(out_png, bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot_compare_models(df_ideal: pd.DataFrame, df_impl: pd.DataFrame, title: str, out_png: Path):
+    t1 = df_ideal["time"].to_numpy(dtype=float) * 1e3
+    t2 = df_impl["time"].to_numpy(dtype=float) * 1e3
+
+    fig, axes = plt.subplots(3, 1, figsize=(12, 9), sharex=True)
+
+    # Reff compare
+    ax = axes[0]
+    ax.plot(t1, df_ideal["v(rtnode)"], label="Rtarget", lw=1.8, color="black")
+    ax.plot(t1, df_ideal["reff_plot"], label="Ideal Reff", lw=1.2)
+    ax.plot(t2, df_impl["reff_plot"], label="Impl Reff", lw=1.2, ls="--")
+    ax.set_ylabel("Resistance [Ω]")
+    ax.set_title(title)
+    combine_legends(ax, None, loc="best", ncol=3)
+
+    # Error compare
+    ax = axes[1]
+    ax.plot(t1, df_ideal["err_plot"], label="Ideal error", lw=1.2)
+    ax.plot(t2, df_impl["err_plot"], label="Impl error", lw=1.2, ls="--")
+    ax.set_ylabel("Error [Ω]")
+    combine_legends(ax, None, loc="best", ncol=2)
+
+    # Velocity compare
+    ax = axes[2]
+    ax.plot(t1, df_ideal["v(vel)"], label="Ideal u", lw=1.2)
+    ax.plot(t2, df_impl["v(vel)"], label="Impl u", lw=1.2, ls="--")
+    ax.set_xlabel("Time [ms]")
+    ax.set_ylabel("u [m/s]")
+    combine_legends(ax, None, loc="best", ncol=2)
+
+    fig.tight_layout()
+    fig.savefig(out_png, bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot_fixed_target_family(results_map: dict, fixed_targets: list[float], out_png: Path):
+    fig, axes = plt.subplots(2, 1, figsize=(12, 9), sharex=True)
+
+    for rt in fixed_targets:
+        key = f"impl_fixed_r{safe_name(rt)}"
+        if key not in results_map:
+            continue
+        df = results_map[key]
+        t_ms = df["time"].to_numpy(dtype=float) * 1e3
+        axes[0].plot(t_ms, df["reff_plot"], label=f"Reff @ {rt:g} Ω", lw=1.2)
+        axes[1].plot(t_ms, df["v(vel)"], label=f"u @ {rt:g} Ω", lw=1.2)
+
+    axes[0].set_title("Fixed-target validation family")
+    axes[0].set_ylabel("Reff [Ω]")
+    axes[1].set_ylabel("u [m/s]")
+    axes[1].set_xlabel("Time [ms]")
+    combine_legends(axes[0], None, loc="best", ncol=2)
+    combine_legends(axes[1], None, loc="best", ncol=2)
+
+    fig.tight_layout()
+    fig.savefig(out_png, bbox_inches="tight")
+    plt.close(fig)
+
+
+def run_case(case_name: str, model: str, spk: SpeakerTS, cfg: SimConfig, out_root: Path):
+    case_dir = out_root / case_name
+    case_dir.mkdir(parents=True, exist_ok=True)
+
+    data_filename = f"{case_name}.dat"
+
+    if model == "ideal":
+        netlist = build_ideal_netlist(spk, cfg, data_filename)
+    elif model == "impl":
+        netlist = build_impl_netlist(spk, cfg, data_filename)
+    else:
+        raise ValueError(f"未知模型类型: {model}")
+
+    run_ngspice_case(netlist, case_dir, case_name)
+
+    df = read_wrdata(case_dir / data_filename)
+    df = add_derived_columns(df, spk)
+
+    # 保存 CSV
+    df.to_csv(case_dir / f"{case_name}.csv", index=False)
+
+    # 保存图
+    plot_case(df, case_name, case_dir / f"{case_name}.png")
+
+    # 保存配置
+    (case_dir / f"{case_name}_config.json").write_text(
+        json.dumps({
+            "speaker": {
+                **asdict(spk),
+                "w0": spk.w0,
+                "Cms": spk.Cms,
+                "Kms": spk.Kms,
+                "Rms": spk.Rms,
+            },
+            "sim": asdict(cfg),
+            "model": model,
+        }, ensure_ascii=False, indent=2),
+        encoding="utf-8"
+    )
+
+    # 保存摘要
+    summary = summary_from_df(df, spk, cfg, case_name, model)
+    (case_dir / f"{case_name}_summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2),
+        encoding="utf-8"
+    )
+
+    return df, summary
+
+
+# =========================
+# 主程序
+# =========================
+
+def main():
+    check_ngspice()
+
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    spk = SpeakerTS()
+    base = SimConfig()
+
+    # 保存整体参数
+    (OUT_DIR / "speaker_params.json").write_text(
+        json.dumps({
+            **asdict(spk),
+            "w0": spk.w0,
+            "Cms": spk.Cms,
+            "Kms": spk.Kms,
+            "Rms": spk.Rms,
+        }, ensure_ascii=False, indent=2),
+        encoding="utf-8"
+    )
+
+    # -------------------------
+    # 定义仿真场景
+    # -------------------------
+    cases = [
+        # 单正弦：覆盖 1~100 Ω
+        ("ideal_single_sine", "ideal", base),
+        ("impl_single_sine", "impl", base),
+
+        # 双正弦叠加：A1 + A2 = 49.5，不发生裁剪
+        ("ideal_dual_sine", "ideal", replace(base, A1=30.0, A2=19.5, fm1=100.0, fm2=317.0)),
+        ("impl_dual_sine", "impl", replace(base, A1=30.0, A2=19.5, fm1=100.0, fm2=317.0)),
+    ]
+
+    # 固定阻值验证
+    fixed_targets = [100.0, 20.0, 7.2, 5.0, 1.0]
+    for rt in fixed_targets:
+        cases.append((
+            f"impl_fixed_r{safe_name(rt)}",
+            "impl",
+            replace(base, R0=rt, A1=0.0, A2=0.0, tstop=30e-3)
+        ))
+
+    # 如果你想验证调制速度边界 10 Hz / 1000 Hz，可取消下面注释：
+    # cases.append(("impl_single_sine_fm10", "impl", replace(base, fm1=10.0)))
+    # cases.append(("impl_single_sine_fm1000", "impl", replace(base, fm1=1000.0)))
+
+    # -------------------------
+    # 执行仿真
+    # -------------------------
+    results_map = {}
+    summaries = []
+
+    print("开始运行仿真...")
+    print(f"输出目录: {OUT_DIR}")
+    print("-" * 80)
+
+    for case_name, model, cfg in cases:
+        print(f"[RUN ] {case_name:20s}  model={model}")
+        df, summary = run_case(case_name, model, spk, cfg, OUT_DIR)
+        results_map[case_name] = df
+        summaries.append(summary)
+        print(
+            f"[ OK ] {case_name:20s}  "
+            f"err_rms_tail={fmt_val(summary['err_rms_tail_ohm'])} Ω,  "
+            f"iport_pk={fmt_val(summary['iport_pk_a'])} A,  "
+            f"vel_pk={fmt_val(summary['vel_pk_mps'])} m/s"
+        )
+
+    print("-" * 80)
+
+    # -------------------------
+    # 汇总表
+    # -------------------------
+    summary_df = pd.DataFrame(summaries)
+    summary_df.to_csv(OUT_DIR / "all_summary.csv", index=False)
+
+    # 固定阻值汇总
+    fixed_rows = []
+    for rt in fixed_targets:
+        key = f"impl_fixed_r{safe_name(rt)}"
+        if key not in results_map:
+            continue
+        row = summary_df.loc[summary_df["case"] == key].iloc[0].to_dict()
+        rem, qeff = theory_for_target(spk, rt)
+        fixed_rows.append({
+            "target_ohm": rt,
+            "external_rx_ohm": rt - spk.Re,
+            "theory_rem_ns_per_m": rem,
+            "theory_qeff": qeff,
+            "reff_mean_tail_ohm": row.get("reff_mean_tail_ohm"),
+            "err_rms_tail_ohm": row.get("err_rms_tail_ohm"),
+            "err_abs_max_tail_ohm": row.get("err_abs_max_tail_ohm"),
+            "iport_pk_a": row.get("iport_pk_a"),
+            "vspk_pk_v": row.get("vspk_pk_v"),
+            "vel_pk_mps": row.get("vel_pk_mps"),
+            "vel_rms_tail_mps": row.get("vel_rms_tail_mps"),
+        })
+    pd.DataFrame(fixed_rows).to_csv(OUT_DIR / "fixed_target_validation.csv", index=False)
+
+    # -------------------------
+    # 对比图
+    # -------------------------
+    if "ideal_single_sine" in results_map and "impl_single_sine" in results_map:
+        plot_compare_models(
+            results_map["ideal_single_sine"],
+            results_map["impl_single_sine"],
+            "Single-sine modulation: Ideal vs Implementation",
+            OUT_DIR / "compare_single_sine_ideal_vs_impl.png"
+        )
+
+    if "ideal_dual_sine" in results_map and "impl_dual_sine" in results_map:
+        plot_compare_models(
+            results_map["ideal_dual_sine"],
+            results_map["impl_dual_sine"],
+            "Dual-sine modulation: Ideal vs Implementation",
+            OUT_DIR / "compare_dual_sine_ideal_vs_impl.png"
+        )
+
+    plot_fixed_target_family(
+        results_map,
+        fixed_targets,
+        OUT_DIR / "fixed_target_family.png"
+    )
+
+    # -------------------------
+    # 终端摘要
+    # -------------------------
+    print("仿真完成。生成文件包括：")
+    print(f"  - {OUT_DIR / 'all_summary.csv'}")
+    print(f"  - {OUT_DIR / 'fixed_target_validation.csv'}")
+    print(f"  - 各 case 子目录中的 .cir / .log / .dat / .csv / .png / .json")
+    print()
+
+    print("建议优先查看：")
+    print(f"  1) {OUT_DIR / 'compare_single_sine_ideal_vs_impl.png'}")
+    print(f"  2) {OUT_DIR / 'compare_dual_sine_ideal_vs_impl.png'}")
+    print(f"  3) {OUT_DIR / 'fixed_target_family.png'}")
+    print(f"  4) {OUT_DIR / 'all_summary.csv'}")
+
+    print()
+    print("说明：")
+    print("  - reff_calc 是 Python 侧根据 Vspk / Iport 重算的有效阻抗。")
+    print("  - 为避免 Iport≈0 导致数值发散，脚本对 Iport 很小的点做了掩码处理。")
+    print("  - 如果下一步你要接入 OPA548 官方宏模型，可以把实现级模板中的 BOPA 部分替换成 .include + XU1 子电路。")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+## 这份脚本做了哪些事情
+
+我再帮你快速梳理一下，这样你后面改起来更方便。
+
+### 1. 它已经覆盖了文档里的两类 SPICE 模型
+
+- **理想模型**
+  - 直接用行为源实现  
+    \(V_{SPK}=R_x(t)\cdot I_{port}\)
+
+- **实现级行为模型**
+  - 用：
+    - 电流检测
+    - 乘法器
+    - 后级放大
+    - 功率跟随器饱和
+  - 去近似真实硬件链路
+
+---
+
+### 2. 它已经自动跑这些场景
+
+- `ideal_single_sine`
+- `impl_single_sine`
+- `ideal_dual_sine`
+- `impl_dual_sine`
+- `impl_fixed_r100`
+- `impl_fixed_r20`
+- `impl_fixed_r7p2`
+- `impl_fixed_r5`
+- `impl_fixed_r1`
+
+---
+
+### 3. 它已经自动输出报告型数据
+
+每个 case 目录里会有：
+
+- `xxx.cir`：自动生成的 SPICE netlist
+- `xxx.log`：ngspice 日志
+- `xxx.dat`：原始 wrdata
+- `xxx.csv`：解析后的结果
+- `xxx.png`：波形图
+- `xxx_summary.json`：数值摘要
+
+根目录还有：
+
+- `all_summary.csv`
+- `fixed_target_validation.csv`
+- `compare_single_sine_ideal_vs_impl.png`
+- `compare_dual_sine_ideal_vs_impl.png`
+- `fixed_target_family.png`
+
+---
+
+## 如果你下一步要继续，我可以直接接着给你两种东西之一
+
+### 方案 A：继续完善仿真代码
+我可以继续给你：
+
+1. **接入 OPA548 宏模型版**
+2. **把 AD633 / INA149 / OPA1656 也换成更接近实器件的子电路**
+3. **增加参数扫描**
+   - 扫 `fm = 10, 30, 100, 300, 1000 Hz`
+   - 扫 `Rmin = 1, 3, 5, 7.2, 10 Ω`
+   - 扫 `Pamp`
+4. **自动导出论文式图表**
+   - Bode / transient / parameter sweep summary
+
+### 方案 B：直接往 KiCad / Quilter 前进一步
+我可以继续给你：
+
+1. **把这份 Python 脚本拆成工程化目录**
+2. **生成 KiCad 项目目录结构建议**
+3. **输出下一步原理图层级**
+4. **给出 BOM CSV**
+5. **准备可上传 Quilter 的工程文件骨架**
+
+---
+
+如果你愿意，我下一条可以直接继续输出：
+
+**“OPA548 宏模型接入版 Python+SPICE 脚本”**
+
+或者输出：
+
+**“把上面这份脚本拆成工程目录 + KiCad/Quilter 兼容结构”**
+
+C:\Users\Administrator\Documents\md2docx>python dianlu.py
+开始运行仿真...
+输出目录: C:\Users\Administrator\Documents\md2docx\sim_results
+--------------------------------------------------------------------------------
+[RUN ] ideal_single_sine     model=ideal
+[ OK ] ideal_single_sine     err_rms_tail=8.8e-08 Ω,  iport_pk=0.003019 A,  vel_pk=0.002059 m/s
+[RUN ] impl_single_sine      model=impl
+[ OK ] impl_single_sine      err_rms_tail=0.0005661 Ω,  iport_pk=0.003019 A,  vel_pk=0.002059 m/s
+[RUN ] ideal_dual_sine       model=ideal
+[ OK ] ideal_dual_sine       err_rms_tail=9.768e-08 Ω,  iport_pk=0.0006768 A,  vel_pk=0.002053 m/s
+[RUN ] impl_dual_sine        model=impl
+[ OK ] impl_dual_sine        err_rms_tail=0.0005831 Ω,  iport_pk=0.0006768 A,  vel_pk=0.002053 m/s
+[RUN ] impl_fixed_r100       model=impl
+[ OK ] impl_fixed_r100       err_rms_tail=0.0009266 Ω,  iport_pk=0.0001065 A,  vel_pk=0.002315 m/s
+[RUN ] impl_fixed_r20        model=impl
+[ OK ] impl_fixed_r20        err_rms_tail=0.000127 Ω,  iport_pk=0.0004011 A,  vel_pk=0.001744 m/s
+[RUN ] impl_fixed_r7p2       model=impl
+[ OK ] impl_fixed_r7p2       err_rms_tail=1e-06 Ω,  iport_pk=0.0007177 A,  vel_pk=0.001124 m/s
+[RUN ] impl_fixed_r5         model=impl
+[ OK ] impl_fixed_r5         err_rms_tail=2.3e-05 Ω,  iport_pk=0.0008371 A,  vel_pk=0.0009102 m/s
+[RUN ] impl_fixed_r1         model=impl
+[ OK ] impl_fixed_r1         err_rms_tail=6.3e-05 Ω,  iport_pk=0.001094 A,  vel_pk=0.0002404 m/s
+--------------------------------------------------------------------------------
+仿真完成。生成文件包括：
+  - C:\Users\Administrator\Documents\md2docx\sim_results\all_summary.csv
+  - C:\Users\Administrator\Documents\md2docx\sim_results\fixed_target_validation.csv
+  - 各 case 子目录中的 .cir / .log / .dat / .csv / .png / .json
+
+建议优先查看：
+  1) C:\Users\Administrator\Documents\md2docx\sim_results\compare_single_sine_ideal_vs_impl.png
+  2) C:\Users\Administrator\Documents\md2docx\sim_results\compare_dual_sine_ideal_vs_impl.png
+  3) C:\Users\Administrator\Documents\md2docx\sim_results\fixed_target_family.png
+  4) C:\Users\Administrator\Documents\md2docx\sim_results\all_summary.csv
+
+说明：
+  - reff_calc 是 Python 侧根据 Vspk / Iport 重算的有效阻抗。
+  - 为避免 Iport≈0 导致数值发散，脚本对 Iport 很小的点做了掩码处理。
+  - 如果下一步你要接入 OPA548 官方宏模型，可以把实现级模板中的 BOPA 部分替换成 .include + XU1 子电路。
+
+是否符合预期
+
+是的，**就你现在这版仿真的目标来说，结果是符合预期的**。  
+但我建议把这句话说得更精确一点：
+
+> **它符合“系统级 / 行为级仿真”的预期。**  
+> **还不能等价于“真实器件级闭环电路已经完全验证”。**
+
+---
+
+## 一句话结论
+
+如果你的当前验收目标是：
+
+1. 验证 **Python + SPICE 流程跑通**
+2. 验证 **理想模型** 和 **实现级行为模型** 都能实现目标阻抗
+3. 验证 **单正弦 / 双正弦调制**
+4. 验证 **固定阻值 100、20、7.2、5、1 Ω**
+5. 验证 **跨过 \(R_x=0\)** 和 **进入负阻区** 时模型不崩
+
+那么这次结果可以判定为：
+
+# **通过**
+
+---
+
+## 为什么说“符合预期”
+
+### 1. 最核心的验收指标已经通过了
+
+你前面文档里最关键的验收标准其实就是这个：
+
+- `V(RTNODE)` 代表目标阻抗 \(R_\text{target}(t)\)
+- `V(REFFNODE)` 或 Python 重算的 `reff_calc` 代表实际实现出来的等效阻抗
+
+你现在打印出来的误差是：
+
+- `ideal_single_sine`: `8.8e-08 Ω`
+- `impl_single_sine`: `5.661e-04 Ω`
+- `ideal_dual_sine`: `9.768e-08 Ω`
+- `impl_dual_sine`: `5.831e-04 Ω`
+
+这说明：
+
+- **理想模型**几乎是数学上完全重合
+- **实现级行为模型**误差也只有 **亚毫欧级**
+
+对于你这个目标阻抗范围：
+
+\[
+1 \sim 100\ \Omega
+\]
+
+来说，`0.0005~0.0009 Ω` 的误差是非常小的，已经足够说明：
+
+- 合成逻辑正确
+- Python 生成 SPICE 的链路正确
+- 行为级实现没有明显公式错误
+
+---
+
+### 2. 最难的点：穿越 \(R_x=0\) 已经跑通了
+
+这个其实很重要。
+
+因为你的设计不是普通固定 NIC，而是一个**可实时变化**的有源合成阻抗。最敏感的点就是：
+
+\[
+R_\text{target}=7.2\ \Omega
+\]
+
+这时外部合成阻抗：
+
+\[
+R_x = R_\text{target} - R_e = 7.2 - 7.2 = 0
+\]
+
+也就是说，你的外部网络正好从正阻区过渡到负阻区的边界。
+
+你现在的结果：
+
+- `impl_fixed_r7p2`
+- `err_rms_tail = 1e-06 Ω`
+
+这个结果非常好。说明你这版**电压型合成阻抗思路**在零点附近没有出现数值奇异。
+
+这正好证明了你前面方案里“**不用 \(i=v/R_x\) 型，而改用 \(v=R_x i\) 型**”的选型是对的。
+
+---
+
+### 3. 负阻区也正常
+
+更进一步看：
+
+- `impl_fixed_r5` 对应外部 \(R_x = -2.2\ \Omega\)
+- `impl_fixed_r1` 对应外部 \(R_x = -6.2\ \Omega\)
+
+结果分别是：
+
+- `impl_fixed_r5`: `err_rms_tail = 2.3e-05 Ω`
+- `impl_fixed_r1`: `err_rms_tail = 6.3e-05 Ω`
+
+这说明：
+
+- **负阻抗区已经可实现**
+- 至少在当前行为模型里没有失稳、没有发散、没有仿真崩溃
+
+这点非常关键，因为这恰恰是你要实现“把线圈等效阻抗从 7.2Ω 拉低到 1Ω”的必要条件。
+
+---
+
+### 4. 力学趋势也是对的
+
+你给出的 `vel_pk` 非常有说服力：
+
+- `100 Ω` → `0.002315 m/s`
+- `20 Ω` → `0.001744 m/s`
+- `7.2 Ω` → `0.001124 m/s`
+- `5 Ω` → `0.0009102 m/s`
+- `1 Ω` → `0.0002404 m/s`
+
+这个趋势是：
+
+# **目标阻抗越小，膜片速度越小**
+
+这和理论完全一致。
+
+因为电磁附加阻尼：
+
+\[
+R_\text{em}=\frac{(B\ell)^2}{R_\text{target}}
+\]
+
+随着 \(R_\text{target}\) 变小而变大。
+
+按你的参数：
+
+\[
+(B\ell)^2 = 4.6^2 = 21.16
+\]
+
+所以：
+
+- \(R_\text{target}=100\Omega\) 时，\(R_\text{em}\approx 0.212\)
+- \(R_\text{target}=20\Omega\) 时，\(R_\text{em}\approx 1.058\)
+- \(R_\text{target}=7.2\Omega\) 时，\(R_\text{em}\approx 2.94\)
+- \(R_\text{target}=5\Omega\) 时，\(R_\text{em}\approx 4.23\)
+- \(R_\text{target}=1\Omega\) 时，\(R_\text{em}\approx 21.16\)
+
+因此速度被压低是完全正确的。
+
+注意这里**不会严格按 100 倍**下降，因为系统总阻尼不只包含电磁阻尼，还包含：
+
+- 机械损耗 \(R_\mathrm{ms}\)
+- 非谐振点激励频率影响
+- 线圈电感和系统动态项
+
+所以你看到速度从 `0.002315` 降到 `0.0002404`，这是**很合理的**，不是异常。
+
+---
+
+### 5. 电流方向也合理
+
+固定阻值时的峰值电流：
+
+- `100 Ω` → `0.0001065 A`
+- `20 Ω` → `0.0004011 A`
+- `7.2 Ω` → `0.0007177 A`
+- `5 Ω` → `0.0008371 A`
+- `1 Ω` → `0.001094 A`
+
+也是**阻抗越低，电流越大**。方向正确。
+
+另外，`100 Ω` 这组误差相对稍大一点：
+
+- `err_rms_tail = 0.0009266 Ω`
+
+这其实不奇怪，因为在高阻状态下，`Iport` 很小，拿 `V/I` 重建电阻时会更容易受数值阈值和插值影响。  
+但它仍然不到 1 mΩ，所以完全可以接受。
+
+---
+
+## 但我为什么说“只是行为级符合预期”
+
+这里要特别谨慎。  
+你现在验证的是：
+
+# **行为级实现正确**
+
+不是：
+
+# **真实电路已经可以直接下板**
+
+因为你现在的实现级模型里，最关键的功率级还是这个近似：
+
+- `BOPA`：高增益 + 饱和的行为源
+
+它不是实际的：
+
+- OPA548 有限带宽
+- OPA548 相位延迟
+- OPA548 输出电流限制动态
+- OPA548 负载稳定性
+- AD633 / INA149 / OPA1656 的真实频响与失调
+
+所以，**从数学结构上看，你已经走通了**；  
+但从**真实硬件稳定性**上看，还差至少一轮甚至两轮仿真。
+
+---
+
+## 现在这份结果，比较准确的评价应该是
+
+### 可以确认的
+
+- Python + ngspice 工作流没问题
+- 文档中的 SPICE 结构被正确实现
+- 单正弦和双正弦调制正常
+- 目标阻抗实现精度很好
+- \(R_x=0\) 穿越点稳定
+- 负阻区可运行
+- 力学响应方向与理论一致
+
+### 还不能确认的
+
+- 真实 OPA548 闭环下是否仍然稳定
+- 实际元器件频宽是否足够支撑 10–1000 Hz 的阻值调制
+- 90 Hz 附近以及更高频下是否出现相位裕度不足
+- 更高外界声压下是否出现电流/电压饱和
+- 线圈温升导致 \(R_e\) 漂移后，能否仍保持目标阻抗
+- 高于 1 Pa 激励时是否会出现更明显的能量回灌问题
+
+---
+
+## 我建议你现在把结果判定为“三段式结论”
+
+你可以在文档里这样写：
+
+### 结论 1：理论可行
+已验证在行为级模型下，可通过有源合成阻抗使该动圈单元的等效电学阻抗按设定正弦规律在 `1–100 Ω` 范围内实时变化，并支持单正弦及双正弦叠加调制。
+
+### 结论 2：本轮仿真通过
+理想模型与实现级行为模型均能稳定运行；`Rtarget` 与 `Reff` 高度重合；在 `Rtarget = 7.2 Ω` 处成功跨越 `Rx = 0`；在 `Rtarget = 1 Ω` 时成功实现 `Rx = -6.2 Ω`。
+
+### 结论 3：仍需器件级验证
+当前结果尚未包含 OPA548、AD633、INA149、OPA1656 的真实宏模型与相位特性，不能直接等价为硬件级稳定性结论，后续需开展器件级与应力级仿真。
+
+---
+
+## 我建议你下一步一定补的 5 组仿真
+
+### 1. 调制频率边界测试
+你需求写的是：
+
+\[
+10 \sim 1000\ \text{Hz}
+\]
+
+但当前只测了：
+
+- `100 Hz`
+- `317 Hz`
+
+所以还要补：
+
+- `fm = 10 Hz`
+- `fm = 30 Hz`
+- `fm = 1000 Hz`
+
+---
+
+### 2. 声学激励频率扫描
+现在外界声压只用了：
+
+- `fa = 120 Hz`
+
+但你这个单元的谐振频率是：
+
+- `fs = 90 Hz`
+
+所以必须补：
+
+- `fa = 60 Hz`
+- `fa = 90 Hz`
+- `fa = 120 Hz`
+- `fa = 180 Hz`
+- `fa = 300 Hz`
+
+尤其要看 **90 Hz 附近**。
+
+---
+
+### 3. 声压幅值扫描
+你当前是：
+
+- `Pamp = 1 Pa`
+
+也就是大约 `94 dB SPL`。
+
+建议至少补：
+
+- `1 Pa`
+- `5 Pa`
+- `10 Pa`
+- `20 Pa`
+- `63 Pa`
+
+这样才能更接近真实环境声压应力。
+
+---
+
+### 4. 真实功率级模型替换
+把 `BOPA` 替换成：
+
+- `.include OPA548` 宏模型
+- 必要时再给 AD633 / OPA1656 增加真实模型
+
+这一步很关键。
+
+---
+
+### 5. 自动判据
+建议增加自动 pass/fail 条件，比如：
+
+- `err_rms_tail < 0.01 Ω`
+- `|Vdrv| < 0.9 * Vsupply`
+- `无明显高频振荡`
+- `无 log 中的 convergence / timestep too small / singular matrix 报警`
+- `Rtarget` 降低时 `vel_pk` 单调下降
+
+你目前打印出来的数据，**前两三项其实已经很接近通过**了。
+
+---
+
+## 最后给你的判断
+
+如果你问我一句最直接的话：
+
+> “这次跑出来的结果，能不能说明我的 Python+SPICE 仿真框架和当前模型方向是对的？”
+
+我的回答是：
+
+# **能，而且结果是漂亮的。**
+
+如果你问得更严格一点：
+
+> “这是否说明我已经可以放心按真实 OPA548 电路直接出 KiCad 并进 Quilter？”
+
+我的回答是：
+
+# **还不能，必须先补器件级宏模型和边界条件扫描。**
+
+---
+
+如果你愿意，我下一条可以直接给你两样东西之一：
+
+1. **把你当前 Python 脚本升级成“自动扫频 + 自动出 pass/fail 报告”的版本**
+2. **直接给你“OPA548 宏模型接入版”的 Python+SPICE 代码框架**
+
+如果你要，我建议我下一步直接做 **第 2 个：OPA548 宏模型接入版**。
