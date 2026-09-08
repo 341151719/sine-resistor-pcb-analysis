@@ -1,0 +1,2 @@
+* Parse TI's PSpice-style VSWITCH models using ngspice's PSpice mode.
+set ngbehavior=ps

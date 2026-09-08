@@ -1,0 +1,143 @@
+* H07: one U4 positive-rail series element becomes high resistance.
+* RAPS is the extracted APBEAD--U4 positive branch element; only this value
+* changes.  The local source impedance and C15/C11/C16/C10/C12 remain.
+* Official TI OPA1656 + OPA548, J2=+/-10 V, J1=+/-5 V, E/S OFF.
+.include "/mnt/c/Users/Administrator/Documents/稳定性原因分析CODEX/实际遇到的问题/opa548_shutdown_branch_spice_20260904/models/OPA548.LIB"
+.include "/mnt/c/Users/Administrator/Documents/稳定性原因分析CODEX/实际遇到的问题/opa548_shutdown_branch_spice_20260904/models/OPA1656.LIB"
+.param TEMP=27 RFAULT=3.5586m
+.options method=gear reltol=2e-4 abstol=1e-11 vntol=1e-8 gmin=1e-12 rshunt=1e12 maxord=2
+
+* AGND/PGND bridge and extracted U4/J2 supply path.
+VAG AGND 0 0
+RG3 AGND G3M 5m
+LG3 G3M PGND 2n
+VJ2P J2P AGND PWL(0 0 10u 10 10.1u 10)
+RFBP J2P FBP 0.25
+LFBP FBP APBEAD 240n
+RAPS APBEAD APSM {RFAULT}
+LAPS APSM APU4 2.9988n
+RC15T APU4 C15TM 28.715m
+LC15T C15TM C15N 9.303n
+CC15TA APU4 AGND 0.77525p
+CC15TB C15N AGND 0.77525p
+C15 C15N AGND 100n
+RC11T APU4 C11TM 49.5m
+LC11T C11TM C11N 19.8n
+CC11TA APU4 AGND 1.65p
+CC11TB C11N AGND 1.65p
+C11 C11N AGND 1u
+VJ2N J2N AGND PWL(0 0 10u -10 10.1u -10)
+RFBN J2N FBN 0.25
+LFBN FBN ANBEAD 240n
+RANS ANBEAD ANSM 49.93m
+LANS ANSM ANU4 20.106n
+RC16T ANU4 C16TM 43.775m
+LC16T C16TM C16N 16.6236n
+CC16TA ANU4 AGND 1.3853p
+CC16TB C16N AGND 1.3853p
+C16 C16N AGND 100n
+RC10T ANU4 C10TM 46.639m
+LC10T C10TM C10N 17.9382n
+CC10TA ANU4 AGND 1.49485p
+CC10TB C10N AGND 1.49485p
+C10 C10N AGND 100n
+RC12T ANU4 C12TM 49.318m
+LC12T C12TM C12N 19.215n
+CC12TA ANU4 AGND 1.60125p
+CC12TB C12N AGND 1.60125p
+C12 C12N AGND 1u
+
+* Both OPA1656 channels share the nonideal rails.
+VUA U4AP AGND 0
+R13 U4AN AGND 1k
+R14 U4AO U4AN 49.9k
+XU4A U4AP U4AN APU4 ANU4 U4AO OPA1656
+RU4AL U4AO AGND 100k
+VINPUT SRC AGND PULSE(0 1m 10u 20n 20n 2u 1)
+RIN SRC U4P 100
+CIN U4P AGND 2p
+XU4B U4P U4N APU4 ANU4 U4O OPA1656
+
+* Extracted U4B feedback route; C39 remains DNP pad capacitance.
+ROR16 U4O OR16M 5.380m
+LOR16 OR16M R16O 4.1652n
+COR16A U4O AGND 0.3471p
+COR16B R16O AGND 0.3471p
+RNR16 U4N NR16M 5.780m
+LNR16 NR16M R16N 4.4694n
+CNR16A U4N AGND 0.37245p
+CNR16B R16N AGND 0.37245p
+RNR15 U4N NR15M 6.723m
+LNR15 NR15M R15N 5.6334n
+CNR15A U4N AGND 0.46945p
+CNR15B R15N AGND 0.46945p
+R16 R16O R16N 39k
+R15 R15N AGND 1k
+CDNP14 R16O R16N 0.05p
+CDNP37 R16O R16N 0.05p
+CDNP38 R16O R16N 0.05p
+CDNP39 R16O R16N 0.05p
+CDNP40 R16O R16N 0.05p
+CDNP41 R16O R16N 0.05p
+
+* TP8 is before populated R5.  OPA548 is the official OFF model.
+RTP8 U4O TP8 1m
+RTP8P TP8 AGND 10Meg
+RVR5 U4O VR5M 59.938m
+LVR5 VR5M R5V 35.2578n
+CVR5A U4O AGND 2.93815p
+CVR5B R5V AGND 2.93815p
+R5 R5V OPA_P 100
+
+* J1 rails include lead inductance and local bulk/high-frequency capacitors.
+VPPS PP_SRC PGND PWL(0 0 10u 5 10.1u 5)
+RPSRC PP_SRC PPRE 20m
+LPP PPRE PWR_P 0.2u
+RPP PWR_P PWR_PM 50m
+C5 PWR_PM PGND 470u
+C7 PWR_PM PGND 100n
+C27 PWR_PM PWR_NM 10p
+VPNS PN_SRC PGND PWL(0 0 10u -5 10.1u -5)
+RNSRC PN_SRC PNRE 20m
+LPN PNRE PWR_N 0.2u
+RPN PWR_N PWR_NM 50m
+C6 PWR_NM PGND 470u
+C8 PWR_NM PGND 100n
+
+* E/S held in the OFF range; optical details are outside this single fault.
+VES ES VMINUS 0.6
+RUNIT OPA_OUT OPA_N 1m
+RILIM ILIM VMINUS 57.6k
+XU1 OPA_P OPA_N ILIM VMINUS VPLUS OPA_OUT ES OPA548
+RLOAD OPA_OUT SNUB 4.7
+CLOAD SNUB PGND 47n
+RLEAK SNUB PGND 1G
+
+.control
+set noaskquit
+echo "H07 U4+ series fault; RAPS values; J2=+/-10, J1=+/-5, E/S OFF"
+foreach rfv 3.5586m 1 10
+  alterparam RFAULT=$rfv
+  reset
+  tran 0.05u 0.5m 0 0.05u
+  meas tran TP8_MAX MAX v(TP8) from=0.25m to=0.5m
+  meas tran TP8_MIN MIN v(TP8) from=0.25m to=0.5m
+  meas tran OUT_MAX MAX v(OPA_OUT) from=0.25m to=0.5m
+  meas tran OUT_MIN MIN v(OPA_OUT) from=0.25m to=0.5m
+  meas tran AP_MAX MAX v(APU4) from=0.25m to=0.5m
+  meas tran AP_MIN MIN v(APU4) from=0.25m to=0.5m
+  meas tran AN_MAX MAX v(ANU4) from=0.25m to=0.5m
+  meas tran AN_MIN MIN v(ANU4) from=0.25m to=0.5m
+  meas tran TP8_FINAL FIND v(TP8) AT=0.5m
+  meas tran AP_FINAL FIND v(APU4) AT=0.5m
+  let TP8_PP=TP8_MAX-TP8_MIN
+  let OUT_PP=OUT_MAX-OUT_MIN
+  let AP_PP=AP_MAX-AP_MIN
+  let AN_PP=AN_MAX-AN_MIN
+  echo "CASE RAPS=$rfv"
+  print TP8_PP OUT_PP AP_PP AN_PP TP8_FINAL AP_FINAL
+  wrdata results/H07_U4rail_last_case.dat time v(TP8) v(U4O) v(OPA_OUT) v(APU4) v(ANU4)
+end
+quit
+.endc
+.end

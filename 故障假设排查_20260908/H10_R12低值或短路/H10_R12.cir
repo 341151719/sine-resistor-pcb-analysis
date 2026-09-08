@@ -1,0 +1,84 @@
+* H10: R12, the OPA548 output-to-47nF snubber isolation resistor, is too
+* small or shorted.  Only R12OHM changes; the load capacitor stays 47 nF.
+* Official TI OPA1656 + OPA548, J2=+/-10 V, J1=+/-5 V, E/S OFF.
+.include "/mnt/c/Users/Administrator/Documents/稳定性原因分析CODEX/实际遇到的问题/opa548_shutdown_branch_spice_20260904/models/OPA548.LIB"
+.include "/mnt/c/Users/Administrator/Documents/稳定性原因分析CODEX/实际遇到的问题/opa548_shutdown_branch_spice_20260904/models/OPA1656.LIB"
+.param TEMP=27 R12OHM=4.7
+.options method=gear reltol=2e-4 abstol=1e-11 vntol=1e-8 gmin=1e-12 rshunt=1e12 maxord=2
+
+* Fixed rails and OFF command for an isolated single-fault check.
+VJ2P U4PLUS 0 10
+VJ2N U4MINUS 0 -10
+VJ1P VPLUS 0 5
+VJ1N VMINUS 0 -5
+VES ES VMINUS 0.6
+
+* U4B loop with the extracted feedback-route parasitics.
+VINPUT SRC 0 PULSE(0 1m 10u 20n 20n 2u 1)
+RIN SRC U4P 100
+CIN U4P 0 2p
+VUA U4AP 0 0
+R13 U4AN 0 1k
+R14 U4AO U4AN 49.9k
+XU4A U4AP U4AN U4PLUS U4MINUS U4AO OPA1656
+RU4AL U4AO 0 100k
+ROR16 U4O OR16M 5.380m
+LOR16 OR16M R16O 4.1652n
+COR16A U4O 0 0.3471p
+COR16B R16O 0 0.3471p
+RNR16 U4N NR16M 5.780m
+LNR16 NR16M R16N 4.4694n
+CNR16A U4N 0 0.37245p
+CNR16B R16N 0 0.37245p
+RNR15 U4N NR15M 6.723m
+LNR15 NR15M R15N 5.6334n
+CNR15A U4N 0 0.46945p
+CNR15B R15N 0 0.46945p
+R16 R16O R16N 39k
+R15 R15N 0 1k
+CDNP14 R16O R16N 0.05p
+CDNP37 R16O R16N 0.05p
+CDNP38 R16O R16N 0.05p
+CDNP39 R16O R16N 0.05p
+CDNP40 R16O R16N 0.05p
+CDNP41 R16O R16N 0.05p
+XU4 U4P U4N U4PLUS U4MINUS U4O OPA1656
+
+* TP8 is before R5; R5 remains 100 ohm.
+RTP8 U4O TP8 1m
+RTP8P TP8 0 10Meg
+R5 TP8 OPA_P 100
+
+* Official OPA548 in unit-gain follower, with the real R12/C4 function.
+RUNIT OPA_OUT OPA_N 1m
+RILIM ILIM VMINUS 57.6k
+XU1 OPA_P OPA_N ILIM VMINUS VPLUS OPA_OUT ES OPA548
+R12 OPA_OUT SNUB {R12OHM}
+C4 SNUB 0 47n
+RLEAK SNUB 0 1G
+
+.control
+set noaskquit
+echo "H10 R12 isolation fault; J2=+/-10, J1=+/-5, E/S OFF; late=0.25--0.5 ms"
+foreach r12v 4.7 0.47 1m
+  alterparam R12OHM=$r12v
+  reset
+  tran 0.05u 0.5m 0 0.05u
+  meas tran TP8_MAX MAX v(TP8) from=0.25m to=0.5m
+  meas tran TP8_MIN MIN v(TP8) from=0.25m to=0.5m
+  meas tran OUT_MAX MAX v(OPA_OUT) from=0.25m to=0.5m
+  meas tran OUT_MIN MIN v(OPA_OUT) from=0.25m to=0.5m
+  meas tran SNUB_MAX MAX v(SNUB) from=0.25m to=0.5m
+  meas tran SNUB_MIN MIN v(SNUB) from=0.25m to=0.5m
+  meas tran TP8_FINAL FIND v(TP8) AT=0.5m
+  meas tran OUT_FINAL FIND v(OPA_OUT) AT=0.5m
+  let TP8_PP=TP8_MAX-TP8_MIN
+  let OUT_PP=OUT_MAX-OUT_MIN
+  let SNUB_PP=SNUB_MAX-SNUB_MIN
+  echo "CASE R12=$r12v"
+  print TP8_PP OUT_PP SNUB_PP TP8_FINAL OUT_FINAL
+  wrdata results/H10_R12_last_case.dat time v(TP8) v(U4O) v(OPA_OUT) v(SNUB)
+end
+quit
+.endc
+.end

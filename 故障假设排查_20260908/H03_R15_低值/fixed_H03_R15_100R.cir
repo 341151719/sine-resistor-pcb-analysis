@@ -1,0 +1,28 @@
+* H03: only R15 is changed from 1 kΩ to 100 Ω.
+.include "fault_r15_common.inc"
+.param R16VAL=39k R15VAL=100
+.control
+set noaskquit
+echo "CASE H03 R15=100R, R16=39k, J1=+/-5, J2=+/-10, OPA548 OFF"
+tran 0.05u 0.5m 0 0.05u
+meas tran TP8_MAX MAX v(TP8) from=0.25m to=0.5m
+meas tran TP8_MIN MIN v(TP8) from=0.25m to=0.5m
+meas tran OUT_MAX MAX v(OPA_OUT) from=0.25m to=0.5m
+meas tran OUT_MIN MIN v(OPA_OUT) from=0.25m to=0.5m
+meas tran TP8_EARLY_MAX MAX v(TP8) from=10u to=0.25m
+meas tran TP8_EARLY_MIN MIN v(TP8) from=10u to=0.25m
+meas tran U4O_MAX MAX v(U4O) from=0.25m to=0.5m
+meas tran U4O_MIN MIN v(U4O) from=0.25m to=0.5m
+meas tran IP_FINAL FIND i(VJ1P) AT=0.5m
+meas tran IN_FINAL FIND i(VJ1N) AT=0.5m
+meas tran I2P_FINAL FIND i(VJ2P) AT=0.5m
+meas tran I2N_FINAL FIND i(VJ2N) AT=0.5m
+let TP8_PP=TP8_MAX-TP8_MIN
+let OUT_PP=OUT_MAX-OUT_MIN
+let U4O_PP=U4O_MAX-U4O_MIN
+echo "RESULT H03"
+print TP8_PP OUT_PP U4O_PP TP8_EARLY_MAX TP8_EARLY_MIN IP_FINAL IN_FINAL I2P_FINAL I2N_FINAL
+wrdata results/fixed_H03_R15_100R.dat time v(TP8) v(U4O) v(OPA_OUT) v(ES) v(VPLUS) v(VMINUS) i(VJ1P) i(VJ1N) i(VJ2P) i(VJ2N)
+quit
+.endc
+.end

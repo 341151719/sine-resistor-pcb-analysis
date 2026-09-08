@@ -1,0 +1,31 @@
+* H09: R5 value fault; the TP8--OPA548 +IN isolation resistor is too low
+* or effectively shorted.  Only R5OHM changes in fault_fixed_common.inc.
+* Official TI models, J2=+/-10 V, J1=+/-5 V, E/S OFF, one startup pulse.
+.param R5OHM=100 R16VAL=39k TEMP=27
+.include "fault_fixed_common.inc"
+
+.control
+set noaskquit
+echo "H09 R5 value fault; J2=+/-10, J1=+/-5, E/S OFF; late=0.25--0.5 ms"
+foreach r5v 100 10 1m
+  alterparam R5OHM=$r5v
+  reset
+  tran 0.05u 0.5m 0 0.05u
+  meas tran TP8_MAX MAX v(TP8) from=0.25m to=0.5m
+  meas tran TP8_MIN MIN v(TP8) from=0.25m to=0.5m
+  meas tran OUT_MAX MAX v(OPA_OUT) from=0.25m to=0.5m
+  meas tran OUT_MIN MIN v(OPA_OUT) from=0.25m to=0.5m
+  meas tran IN_MAX MAX v(OPA_P) from=0.25m to=0.5m
+  meas tran IN_MIN MIN v(OPA_P) from=0.25m to=0.5m
+  meas tran TP8_FINAL FIND v(TP8) AT=0.5m
+  meas tran IN_FINAL FIND v(OPA_P) AT=0.5m
+  let TP8_PP=TP8_MAX-TP8_MIN
+  let OUT_PP=OUT_MAX-OUT_MIN
+  let IN_PP=IN_MAX-IN_MIN
+  echo "CASE R5=$r5v"
+  print TP8_PP OUT_PP IN_PP TP8_FINAL IN_FINAL
+  wrdata results/H09_R5_last_case.dat time v(TP8) v(U4O) v(OPA_P) v(OPA_OUT)
+end
+quit
+.endc
+.end

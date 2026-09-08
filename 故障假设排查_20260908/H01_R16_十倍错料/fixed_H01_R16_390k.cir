@@ -1,0 +1,25 @@
+* H1 single component fault: R16 body/value is 390 k ohm; copper unchanged.
+.param R16VAL=390k
+.include "fault_fixed_common.inc"
+.control
+set noaskquit
+echo "CASE H1 R16=390k, J1=+/-5, J2=+/-10, OPA548 OFF"
+tran 0.05u 0.5m 0 0.05u
+meas tran TP8_MAX MAX v(TP8) from=0.25m to=0.5m
+meas tran TP8_MIN MIN v(TP8) from=0.25m to=0.5m
+meas tran OUT_MAX MAX v(OPA_OUT) from=0.25m to=0.5m
+meas tran OUT_MIN MIN v(OPA_OUT) from=0.25m to=0.5m
+meas tran TP8_EARLY_MAX MAX v(TP8) from=10u to=0.25m
+meas tran TP8_EARLY_MIN MIN v(TP8) from=10u to=0.25m
+meas tran IP_FINAL FIND i(VJ1P) AT=0.5m
+meas tran IN_FINAL FIND i(VJ1N) AT=0.5m
+meas tran I2P_FINAL FIND i(VJ2P) AT=0.5m
+meas tran I2N_FINAL FIND i(VJ2N) AT=0.5m
+let TP8_PP=TP8_MAX-TP8_MIN
+let OUT_PP=OUT_MAX-OUT_MIN
+echo "RESULT H1"
+print TP8_PP OUT_PP TP8_EARLY_MAX TP8_EARLY_MIN IP_FINAL IN_FINAL I2P_FINAL I2N_FINAL
+wrdata results/fixed_H1_R16_390k.dat time v(TP8) v(U4O) v(OPA_OUT) v(ES) v(VPLUS) v(VMINUS) i(VJ1P) i(VJ1N) i(VJ2P) i(VJ2N)
+quit
+.endc
+.end
