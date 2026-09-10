@@ -1,0 +1,12 @@
+[V7] KICAD部分/给厂商的板子加工数据/正弦电阻V7_KiCad10.0.4_校正转换版/project.kicad_pcb
+  R10: value=100kR pads={'1': 'OPA_ES', '2': 'PWR_N'}
+  R5: value=100R pads={'1': 'VCMD', '2': 'OPA_IN_P'}
+  U1: value=OPA548F/500 pads={'1': 'OPA_IN_P', '2': 'OPA_IN_N', '3': 'ILIM_SET', '4': 'PWR_N', '5': 'PWR_P', '6': 'OPA_OUT', '7': 'OPA_ES', '8': 'PWR_N'}
+  U4: value=OPA1656IDR pads={'1': 'ISIG', '2': 'U4A_N', '3': 'VSENSE_RAW', '4': 'ANA_N', '5': 'MUL_RAW', '6': 'U4B_N', '7': 'VCMD', '8': 'ANA_P'}
+  U7: value=TLP185(GR-TPR,E pads={'1': 'OPA_EN_LED_A', '3': 'DGND', '4': 'OPA_ES', '6': 'PWR_P'}
+[V8] KICAD部分/正弦电阻V8_KiCad10.0.4_稳定性修正版_2026-09-04/project.kicad_pcb
+  R10: value=6.8kR pads={'1': 'OPA_ES', '2': 'PWR_N'}
+  R5: value=100R pads={'1': 'VCMD', '2': 'OPA_IN_P'}
+  U1: value=OPA548F/500 pads={'1': 'OPA_IN_P', '2': 'OPA_IN_N', '3': 'ILIM_SET', '4': 'PWR_N', '5': 'PWR_P', '6': 'OPA_OUT', '7': 'OPA_ES', '8': 'PWR_N'}
+  U4: value=OPA1656IDR pads={'1': 'ISIG', '2': 'U4A_N', '3': 'VSENSE_RAW', '4': 'ANA_N', '5': 'MUL_RAW', '6': 'U4B_N', '7': 'VCMD', '8': 'ANA_P'}
+  U7: value=TLP185(GR-TPR,E pads={'1': 'OPA_EN_LED_A', '3': 'DGND', '4': 'OPA_ES', '6': 'PWR_P'}

@@ -1,0 +1,37 @@
+Using SPARSE 1.3 as Direct Linear Solver
+Using SPARSE 1.3 as Direct Linear Solver
+Using SPARSE 1.3 as Direct Linear Solver
+
+Note: Compatibility modes selected: ps
+
+
+Circuit: * reproduce v7 opa548 e/s pull-down-margin problem with ti official macro.
+
+--- R10=100k (V7) ---
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1
+v(es)-v(vn) = 3.478609e+00
+i(vpp) = -4.26999e-03
+i(vnn) = 4.269858e-03
+--- R10=9.1k (100k || 10k experiment proxy) ---
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1
+v(es)-v(vn) = 6.140346e-01
+i(vpp) = -5.71793e-02
+i(vnn) = 5.718389e-02
+--- R10=6.8k (V8) ---
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1
+v(es)-v(vn) = 4.633957e-01
+i(vpp) = -5.71793e-02
+i(vnn) = 5.718389e-02
+ngspice-42 done

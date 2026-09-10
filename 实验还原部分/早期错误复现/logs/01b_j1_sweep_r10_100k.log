@@ -1,0 +1,93 @@
+Using SPARSE 1.3 as Direct Linear Solver
+Using SPARSE 1.3 as Direct Linear Solver
+Using SPARSE 1.3 as Direct Linear Solver
+Using SPARSE 1.3 as Direct Linear Solver
+Using SPARSE 1.3 as Direct Linear Solver
+Using SPARSE 1.3 as Direct Linear Solver
+Note: Starting dynamic gmin stepping
+Note: Dynamic gmin stepping completed
+Using SPARSE 1.3 as Direct Linear Solver
+
+Note: Compatibility modes selected: ps
+
+
+Circuit: * j1 dc sweep with v7 r10=100k, ti official opa548 macro.
+
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1
+v(vp) = 1.000000e+00
+v(vn) = -1.00000e+00
+v(es)-v(vn) = 2.521838e+00
+i(vpp) = -1.38358e-03
+i(vnn) = 1.384270e-03
+v(out) = -6.87646e-01
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1
+v(vp) = 1.500000e+00
+v(vn) = -1.50000e+00
+v(es)-v(vn) = 3.470052e+00
+i(vpp) = -3.36405e-03
+i(vnn) = 3.364359e-03
+v(out) = -3.10890e-01
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1
+v(vp) = 2.000000e+00
+v(vn) = -2.00000e+00
+v(es)-v(vn) = 3.478609e+00
+i(vpp) = -3.39824e-03
+i(vnn) = 3.398052e-03
+v(out) = 1.890679e-01
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1
+v(vp) = 2.500000e+00
+v(vn) = -2.50000e+00
+v(es)-v(vn) = 3.478609e+00
+i(vpp) = -4.17817e-03
+i(vnn) = 4.178159e-03
+v(out) = 4.641012e-03
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1
+v(vp) = 3.000000e+00
+v(vn) = -3.00000e+00
+v(es)-v(vn) = 3.478609e+00
+i(vpp) = -4.23262e-03
+i(vnn) = 4.232532e-03
+v(out) = 2.893694e-03
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1
+v(vp) = 4.000000e+00
+v(vn) = -4.00000e+00
+v(es)-v(vn) = 3.478609e+00
+i(vpp) = -4.26887e-03
+i(vnn) = 4.268739e-03
+v(out) = 2.812210e-03
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1
+v(vp) = 5.000000e+00
+v(vn) = -5.00000e+00
+v(es)-v(vn) = 3.478609e+00
+i(vpp) = -4.26999e-03
+i(vnn) = 4.269858e-03
+v(out) = 2.798049e-03
+ngspice-42 done

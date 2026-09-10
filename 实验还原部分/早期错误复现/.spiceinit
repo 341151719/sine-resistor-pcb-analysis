@@ -1,0 +1,2 @@
+* Parse TI PSpice-style macro syntax in ngspice.
+set ngbehavior=ps

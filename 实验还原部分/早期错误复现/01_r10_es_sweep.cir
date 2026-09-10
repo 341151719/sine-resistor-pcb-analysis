@@ -1,0 +1,26 @@
+* Reproduce V7 OPA548 E/S pull-down-margin problem with TI official macro.
+.include "models/OPA548.LIB"
+VPP VP 0 5
+VNN VN 0 -5
+VIN INP 0 0
+RFB OUT INN 1m
+RILIM ILIM VN 57.6k
+R10 ES VN 100k
+XU1 INP INN ILIM VN VP OUT ES OPA548
+RLOAD OUT 0 1Meg
+.control
+set noaskquit
+echo "--- R10=100k (V7) ---"
+op
+print v(es)-v(vn) i(VPP) i(VNN)
+echo "--- R10=9.1k (100k || 10k experiment proxy) ---"
+alter R10=9.0909k
+op
+print v(es)-v(vn) i(VPP) i(VNN)
+echo "--- R10=6.8k (V8) ---"
+alter R10=6.8k
+op
+print v(es)-v(vn) i(VPP) i(VNN)
+quit
+.endc
+.end

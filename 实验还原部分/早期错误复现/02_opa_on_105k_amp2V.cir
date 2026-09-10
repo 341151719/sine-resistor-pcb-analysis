@@ -1,0 +1,28 @@
+* OPA548 ON, observed 105 kHz VCMD imposed as diagnostic consequence test.
+.include "models/OPA548.LIB"
+VPP VP 0 5
+VNN VN 0 -5
+VIN INP 0 SIN(0 2 105k)
+RFB OUT INN 1m
+RILIM ILIM VN 57.6k
+VES ES VN 3.5
+XU1 INP INN ILIM VN VP OUT ES OPA548
+R12 OUT SNUB 4.7
+C4 SNUB 0 47n
+RLEAK OUT 0 100Meg
+.control
+set noaskquit
+tran 0.05u 0.5m 0.1m 0.05u
+meas tran IP_MIN MIN i(VPP) from=0.2m to=0.5m
+meas tran IP_MAX MAX i(VPP) from=0.2m to=0.5m
+meas tran IN_MIN MIN i(VNN) from=0.2m to=0.5m
+meas tran IN_MAX MAX i(VNN) from=0.2m to=0.5m
+meas tran OUT_MAX MAX v(OUT) from=0.2m to=0.5m
+meas tran OUT_MIN MIN v(OUT) from=0.2m to=0.5m
+let OUT_PP=OUT_MAX-OUT_MIN
+let IP_DRAW_PK=-IP_MIN
+let IN_DRAW_PK=IN_MAX
+print OUT_PP IP_DRAW_PK IN_DRAW_PK IP_MAX IN_MIN
+quit
+.endc
+.end

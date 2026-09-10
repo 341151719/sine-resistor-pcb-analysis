@@ -1,0 +1,21 @@
+* Reproduce measurement artifact: oscilloscope ground clip on TP8 shorts U4B output to AGND.
+.include "models/OPA1656.LIB"
+VJ2P VP 0 10
+VJ2N VN 0 -10
+VIN TP7 0 50m
+R15 U4N 0 1k
+R16 TP8 U4N 39k
+XU4B TP7 U4N VP VN TP8 OPA1656
+RPROBE TP8 0 1T
+.control
+set noaskquit
+echo "--- normal high-Z probe / no ground short ---"
+op
+print v(tp8) i(VJ2P) i(VJ2N)
+echo "--- wrong scope ground clip, ~50 milliohm clamp ---"
+alter RPROBE=50m
+op
+print v(tp8) i(VJ2P) i(VJ2N)
+quit
+.endc
+.end

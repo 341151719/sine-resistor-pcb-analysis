@@ -1,0 +1,23 @@
+R10 E/S sweep (TI OPA548 official):
+  100k   -> ES-V- = 3.478609 V
+  9.0909k-> ES-V- = 0.614035 V
+  6.8k   -> ES-V- = 0.463396 V
+
+OPA548 ON + imposed 105 kHz diagnostic:
+  1 Vpk -> OUT 2.0728 Vpp, rail peak ~37.8 mA
+  2 Vpk -> OUT 4.1112 Vpp, rail peak ~69.1 mA
+  3 Vpk -> OUT 6.1403 Vpp, +rail peak ~101.0 mA
+  4 Vpk -> OUT 7.2090 Vpp, +rail peak ~132.1 mA
+
+Wrong scope ground clip on TP8 equivalent:
+  normal: TP8=2.019571 V, +10V rail draw=3.950 mA
+  TP8 clamped by 50mOhm: TP8=4.455 mV, +10V rail draw=93.004 mA
+
+Healthy official baseline:
+  10084 transient rows
+  late TP8_PP=0 V
+  sustained 100-110 kHz: NOT reproduced
+
+H12 dynamic E/S comparison (prior validated deck):
+  V7-like, actual ON: 453.3 kHz; OPA548 OUT 0.140 Vpp; TP8 55.7 uVpp
+  not equivalent to measured OPA-OFF TP8 multi-volt 105 kHz.

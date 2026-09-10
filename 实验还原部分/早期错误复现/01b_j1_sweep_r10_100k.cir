@@ -1,0 +1,22 @@
+* J1 DC sweep with V7 R10=100k, TI official OPA548 macro.
+.include "models/OPA548.LIB"
+VPP VP 0 1
+VNN VN 0 -1
+VIN INP 0 0
+RFB OUT INN 1m
+RILIM ILIM VN 57.6k
+R10 ES VN 100k
+XU1 INP INN ILIM VN VP OUT ES OPA548
+RLOAD OUT 0 1Meg
+.control
+set noaskquit
+foreach j 1 1.5 2 2.5 3 4 5
+ alter VPP $j
+ let nj=-$j
+ alter VNN nj
+ op
+ print v(vp) v(vn) v(es)-v(vn) i(VPP) i(VNN) v(out)
+end
+quit
+.endc
+.end
