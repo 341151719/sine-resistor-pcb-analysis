@@ -1,0 +1,1605 @@
+Using SPARSE 1.3 as Direct Linear Solver
+Note: Starting dynamic gmin stepping
+Warning: Dynamic gmin stepping failed
+Note: Starting true gmin stepping
+Warning: True gmin stepping failed
+Note: Starting source stepping
+Warning: source stepping failed
+Note: Transient op started
+Note: Transient op finished successfully
+
+Note: Compatibility modes selected: ps
+
+
+Circuit: * h07: one u4 positive-rail series element becomes high resistance.
+
+H07 U4+ series fault; RAPS values; J2=+/-10, J1=+/-5, E/S OFF
+Reset re-loads circuit * h07: one u4 positive-rail series element becomes high resistance.
+
+Circuit: * h07: one u4 positive-rail series element becomes high resistance.
+
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+agnd                                         0
+g3m                                1.16598e-12
+pgnd                               1.09886e-12
+j2p                                          0
+fbp                                -0.00194956
+apbead                             -0.00194707
+apsm                               -0.00197482
+apu4                               -0.00197479
+c15tm                              -0.00197478
+c15n                               -0.00197477
+c11tm                               -0.0019747
+c11n                               -0.00197451
+j2n                                          0
+fbn                                 0.00195106
+anbead                              0.00194992
+ansm                                0.00233958
+anu4                                0.00233949
+c16tm                                0.0023395
+c16n                                 0.0023395
+c10tm                                0.0023395
+c10n                                 0.0023395
+c12tm                               0.00233967
+c12n                                0.00233959
+u4ap                                         0
+u4an                               3.22016e-05
+u4ao                                 0.0016388
+xu4a.n24458                        0.000133747
+xu4a.n24659                        0.000134484
+xu4a.n37029                        0.000160023
+xu4a.n37037                        0.000160023
+xu4a.mid                           0.000134484
+xu4a.n39473                          0.0182192
+xu4a.n39884                          0.0182147
+xu4a.n39892                        0.000315268
+xu4a.n2425309                      -0.00197478
+xu4a.n2425287                      0.000134484
+xu4a.n2425325                       0.00233949
+xu4a.n56849                          0.0507039
+xu4a.n57325                          0.0503871
+xu4a.n59747                        0.000134484
+xu4a.n59865                        0.000134484
+xu4a.n25921                        0.000835013
+xu4a.n25929                        0.000134474
+xu4a.n65579                        0.000134484
+xu4a.n65697                        0.000134484
+xu4a.n68774                           0.318466
+xu4a.n72398                         -0.0489306
+xu4a.n72391                          0.0518914
+xu4a.n81574                        0.000134483
+xu4a.n81664                          0.0289527
+xu4a.sw_ol_opa1656                     1.00013
+xu4a.vclp                           0.00163908
+xu4a.vimon                         0.000183068
+xu4a.n27785                        0.000122045
+xu4a.n27793                        0.000134482
+xu4a.vout_s                          0.0016388
+xu4a.n2402147                      0.000134484
+xu4a.n2402155                      0.000134484
+xu4a.n2707598                          2.19312
+xu4a.n2707608                         0.318453
+xu4a.n2516408                        0.0182165
+xu4a.n2526910                         0.318452
+xu4a.n36262                           0.318452
+xu4a.n32347                        0.000475565
+xu4a.n2532013                         0.318466
+xu4a.n2549447                      0.000134482
+xu4a.n2549439                      0.000134483
+xu4a.clamp                            0.318466
+xu4a.esdp                         -3.02594e-10
+xu4a.esdn                          3.22017e-05
+xu4a.n158495                        0.00163908
+xu4a.cl_clamp                       0.00163908
+xu4a.n161937                         0.0016388
+xu4a.claw_clamp                     0.00163908
+xu4a.n45999                          0.0016388
+xu4a.n39124                          0.0180119
+xu4a.n39920                          0.0182164
+xu4a.n39417                          0.0182164
+xu4a.vcc_b                         -0.00197478
+xu4a.vee_b                          0.00233949
+xu4a.n25415                        0.000475587
+xu4a.n25397                        0.000475587
+xu4a.n25248                        0.000134484
+xu4a.vcc_clp                        -0.0489306
+xu4a.vee_clp                         0.0518914
+xu4a.n1356345                        -0.518361
+xu4a.n1356333                        -0.518361
+xu4a.n1356409                         0.310457
+xu4a.n1356429                         0.281639
+xu4a.n2531921                         0.318466
+xu4a.n2516366                        0.0182165
+xu4a.n2531913                         0.318466
+xu4a.vsense                           0.318466
+xu4a.n28678                        0.000475565
+xu4a.n28438                        0.000475587
+xu4a.n28311                        0.000134453
+xu4a.n24207                       -3.02594e-10
+xu4a.n31303                        3.22017e-05
+xu4a.n31389                           -2.25197
+xu4a.n31737                         0.00233949
+xu4a.n32236                        0.000475565
+xu4a.n32510                          0.0444708
+xu4a.n46041                          0.0182124
+xu4a.n55560                          0.0507039
+xu4a.n57321                          0.0503871
+xu4a.n59739                            89.1001
+xu4a.n59743                        0.000134484
+xu4a.n59881                        0.000134484
+xu4a.n59905                           -98.8199
+xu4a.n65567                            75.0001
+xu4a.n65575                        0.000134484
+xu4a.n65713                        0.000134484
+xu4a.n65737                           -82.9999
+xu4a.n72064                         -0.0489306
+xu4a.n72073                          0.0518914
+xu4a.v11                           0.000134483
+xu4a.v12                             0.0289527
+xu4a.n81756                            1.00013
+xu4a.n161737                       0.000183068
+xu4a.n1356115                         0.310457
+xu4a.n1356061                        -0.518361
+xu4a.x_u1.7                           0.833786
+xu4a.x_u1.8                           0.833786
+xu4a.x_u1.3                                  0
+xu4a.x_u1.6                                  0
+xu4a.x_u1.4                                  0
+xu4a.x_u1.5                                  0
+xu4a.x_u10.gvo+_int1                 0.0505694
+xu4a.x_u10.gvo-_int1                 0.0502526
+xu4a.x_u11.gvo+_int1                         0
+xu4a.x_u11.gvo-_int1                         0
+xu4a.x_u12.gvo+_int1                         0
+xu4a.x_u12.gvo-_int1                         0
+xu4a.x_u16.gsw+_int1                         1
+xu4a.x_u18.g1_int1                 4.69558e-05
+xu4a.x_u18.g1_int2                 4.85844e-05
+xu4a.x_u19.g1_int1                 4.95519e-05
+xu4a.x_u19.g1_int2                -4.85844e-05
+xu4a.x_u22.g1_int1                           0
+xu4a.x_u23.g1_int1                           0
+xu4a.x_u26.g1_int1                 4.85844e-08
+xu4a.x_u27.g1_int1                           0
+xu4a.x_u30.g1_int1                 4.43364e-08
+xu4a.x_u31.g1_int1                   0.0288186
+xu4a.x_u32.g1_int1                   0.0180784
+xu4a.x_u35.g1_int1                 0.000316813
+xu4a.x_u36.3                                 0
+xu4a.x_u36.5                                 0
+xu4a.x_u37.3                                 0
+xu4a.x_u37.5                                 0
+xu4a.x_u4.e1_int1                  0.000475587
+xu4a.x_u6.g1_int1                  0.000341082
+src                                          0
+u4p                               -1.51689e-09
+xu4b.n24458                        0.000133747
+xu4b.n24659                        0.000134484
+xu4b.n37029                        0.000159681
+xu4b.n37037                        0.000159681
+xu4b.mid                           0.000134484
+xu4b.n39473                          0.0179917
+xu4b.n39884                           0.017987
+xu4b.n39892                        0.000312991
+xu4b.n2425309                      -0.00197478
+xu4b.n2425287                      0.000134484
+xu4b.n2425325                       0.00233949
+xu4b.n56849                          0.0507036
+xu4b.n57325                          0.0503873
+xu4b.n59747                        0.000134484
+xu4b.n59865                        0.000134484
+xu4b.n25921                        0.000835013
+xu4b.n25929                        0.000134474
+xu4b.n65579                        0.000134484
+xu4b.n65697                        0.000134484
+xu4b.n68774                            0.31789
+xu4b.n72398                         -0.0489305
+xu4b.n72391                          0.0518915
+xu4b.n81574                        0.000134483
+xu4b.n81664                          0.0283826
+xu4b.sw_ol_opa1656                     1.00013
+xu4b.vclp                            0.0016389
+xu4b.vimon                         0.000175905
+xu4b.n27785                        0.000122045
+xu4b.n27793                        0.000134482
+xu4b.vout_s                         0.00163862
+xu4b.n2402147                      0.000134484
+xu4b.n2402155                      0.000134484
+xu4b.n2707598                          2.18915
+xu4b.n2707608                         0.317876
+xu4b.n2516408                        0.0179888
+xu4b.n2526910                         0.317876
+xu4b.n36262                           0.317875
+xu4b.n32347                        0.000475564
+xu4b.n2532013                          0.31789
+xu4b.n2549447                      0.000134482
+xu4b.n2549439                      0.000134483
+xu4b.clamp                             0.31789
+xu4b.esdp                         -1.82027e-09
+xu4b.esdn                          4.09703e-05
+xu4b.n158495                         0.0016389
+xu4b.cl_clamp                        0.0016389
+xu4b.n161937                        0.00163862
+u4o                                 0.00163862
+xu4b.claw_clamp                      0.0016389
+xu4b.n45999                         0.00163862
+xu4b.n39124                          0.0177728
+xu4b.n39920                          0.0179887
+xu4b.n39417                          0.0179887
+xu4b.vcc_b                         -0.00197478
+xu4b.vee_b                          0.00233949
+xu4b.n25415                        0.000475585
+xu4b.n25397                        0.000475585
+xu4b.n25248                        0.000134484
+xu4b.vcc_clp                        -0.0489305
+xu4b.vee_clp                         0.0518915
+xu4b.n1356345                        -0.518361
+xu4b.n1356333                        -0.518361
+xu4b.n1356409                         0.309887
+xu4b.n1356429                         0.281639
+xu4b.n2531921                          0.31789
+xu4b.n2516366                        0.0179888
+xu4b.n2531913                          0.31789
+xu4b.vsense                            0.31789
+xu4b.n28678                        0.000475564
+xu4b.n28438                        0.000475585
+xu4b.n28311                        0.000134453
+xu4b.n24207                       -1.82027e-09
+xu4b.n31303                        4.09703e-05
+xu4b.n31389                           -2.25197
+xu4b.n31737                         0.00233949
+u4n                                4.09702e-05
+xu4b.n32236                        0.000475564
+xu4b.n32510                          0.0435938
+xu4b.n46041                          0.0179847
+xu4b.n55560                          0.0507036
+xu4b.n57321                          0.0503873
+xu4b.n59739                            89.1001
+xu4b.n59743                        0.000134484
+xu4b.n59881                        0.000134484
+xu4b.n59905                           -98.8199
+xu4b.n65567                            75.0001
+xu4b.n65575                        0.000134484
+xu4b.n65713                        0.000134484
+xu4b.n65737                           -82.9999
+xu4b.n72064                         -0.0489305
+xu4b.n72073                          0.0518915
+xu4b.v11                           0.000134483
+xu4b.v12                             0.0283826
+xu4b.n81756                            1.00013
+xu4b.n161737                       0.000175905
+xu4b.n1356115                         0.309887
+xu4b.n1356061                        -0.518361
+xu4b.x_u1.7                           0.833786
+xu4b.x_u1.8                           0.833786
+xu4b.x_u1.3                                  0
+xu4b.x_u1.6                                  0
+xu4b.x_u1.4                                  0
+xu4b.x_u1.5                                  0
+xu4b.x_u10.gvo+_int1                 0.0505691
+xu4b.x_u10.gvo-_int1                 0.0502528
+xu4b.x_u11.gvo+_int1                         0
+xu4b.x_u11.gvo-_int1                         0
+xu4b.x_u12.gvo+_int1                         0
+xu4b.x_u12.gvo-_int1                         0
+xu4b.x_u16.gsw+_int1                         1
+xu4b.x_u18.g1_int1                 4.69557e-05
+xu4b.x_u18.g1_int2                 4.14216e-05
+xu4b.x_u19.g1_int1                  4.9552e-05
+xu4b.x_u19.g1_int2                -4.14216e-05
+xu4b.x_u22.g1_int1                           0
+xu4b.x_u23.g1_int1                           0
+xu4b.x_u26.g1_int1                 4.14216e-08
+xu4b.x_u27.g1_int1                           0
+xu4b.x_u30.g1_int1                 4.34594e-08
+xu4b.x_u31.g1_int1                   0.0282485
+xu4b.x_u32.g1_int1                   0.0178508
+xu4b.x_u35.g1_int1                 0.000316236
+xu4b.x_u36.3                                 0
+xu4b.x_u36.5                                 0
+xu4b.x_u37.3                                 0
+xu4b.x_u37.5                                 0
+xu4b.x_u4.e1_int1                  0.000475587
+xu4b.x_u6.g1_int1                   0.00034108
+or16m                               0.00163862
+r16o                                0.00163862
+nr16m                              4.09704e-05
+r16n                               4.09704e-05
+nr15m                              4.09699e-05
+r15n                               4.09699e-05
+tp8                                 0.00163862
+vr5m                                0.00163862
+r5v                                 0.00163862
+opa_p                               0.00163858
+pp_src                             1.09886e-12
+ppre                               6.04298e-05
+pwr_p                               6.3256e-05
+pwr_pm                              5.4473e-05
+pwr_nm                            -5.71763e-05
+pn_src                             1.09895e-12
+pnre                              -6.25908e-05
+pwr_n                             -6.05521e-05
+es                                    0.599939
+opa_out                               0.362642
+opa_n                                 0.362642
+ilim                                  0.577129
+xu1.17                                -1.19286
+xu1.13                                -1.19286
+xu1.14                                -1.19286
+xu1.12                                0.362642
+xu1.15                            -6.05526e-05
+xu1.16                             -6.0552e-05
+xu1.26                                0.608214
+xu1.260                            2.24386e-11
+xu1.160                            5.78581e-10
+xu1.19                                -1.21469
+xu1.30                                 1.99346
+xu1.20                               -0.595888
+xu1.23                             6.69597e-05
+xu1.25                                0.123771
+xu1.27                                0.608171
+xu1.24                             0.000127633
+xu1.22                               -0.202396
+xu1.21                               -0.202396
+xu1.48                                0.323811
+xu1.49                                0.683499
+xu1.45                                0.123782
+xu1.47                                 0.32381
+xu1.40                                0.683559
+xu1.35                                0.559019
+xu1.37                              -0.0822073
+xu1.38                              -0.0798794
+xu1.39                            -6.05516e-05
+xu1.31                                 1.41433
+xu1.36                                0.683559
+xu1.34                                0.784499
+xu1.33                                 1.33851
+xu1.32                                 2.03029
+xu1.28                                 4.74994
+xu1.42                                0.644163
+xu1.41                                  1.8208
+xu1.43                              -0.0822073
+xu1.52                                 1.05018
+xu1.51                                 2.50442
+xu1.53                                 0.32381
+xu1.10                                0.193712
+xu1.54                                 1.13993
+xu1.55                                 3.49994
+xu1.18                                0.107137
+xu1.29                                0.999939
+xu1.11                              0.00163827
+snub                                  0.362643
+b.xu4b.x_u6.bg1#branch             -3.4108e-16
+b.xu4b.x_u4.be1#branch            -4.75587e-16
+b.xu4b.x_u35.bg1#branch           -3.16236e-16
+b.xu4b.x_u32.bg1#branch           -1.78508e-14
+b.xu4b.x_u31.bg1#branch           -2.82485e-14
+b.xu4b.x_u30.bg1#branch           -4.34594e-20
+b.xu4b.x_u27.bg1#branch                      0
+b.xu4b.x_u26.bg1#branch           -4.14216e-20
+b.xu4b.x_u23.bg1#branch                      0
+b.xu4b.x_u22.bg1#branch                      0
+b.xu4b.x_u19.bg1#branch            4.14216e-17
+b.xu4b.x_u18.bg1#branch           -4.14216e-17
+b.xu4b.x_u16.bgsw+#branch               -1e-12
+b.xu4b.x_u12.bgvo-#branch                    0
+b.xu4b.x_u12.bgvo+#branch                    0
+b.xu4b.x_u11.bgvo-#branch                    0
+b.xu4b.x_u11.bgvo+#branch                    0
+b.xu4b.x_u10.bgvo-#branch         -5.02528e-14
+b.xu4b.x_u10.bgvo+#branch         -5.05691e-14
+b.xu4a.x_u6.bg1#branch            -3.41082e-16
+b.xu4a.x_u4.be1#branch            -4.75587e-16
+b.xu4a.x_u35.bg1#branch           -3.16813e-16
+b.xu4a.x_u32.bg1#branch           -1.80784e-14
+b.xu4a.x_u31.bg1#branch           -2.88186e-14
+b.xu4a.x_u30.bg1#branch           -4.43364e-20
+b.xu4a.x_u27.bg1#branch                      0
+b.xu4a.x_u26.bg1#branch           -4.85844e-20
+b.xu4a.x_u23.bg1#branch                      0
+b.xu4a.x_u22.bg1#branch                      0
+b.xu4a.x_u19.bg1#branch            4.85844e-17
+b.xu4a.x_u18.bg1#branch           -4.85844e-17
+b.xu4a.x_u16.bgsw+#branch               -1e-12
+b.xu4a.x_u12.bgvo-#branch                    0
+b.xu4a.x_u12.bgvo+#branch                    0
+b.xu4a.x_u11.bgvo-#branch                    0
+b.xu4a.x_u11.bgvo+#branch                    0
+b.xu4a.x_u10.bgvo-#branch         -5.02526e-14
+b.xu4a.x_u10.bgvo+#branch         -5.05694e-14
+h.xu1.hhref#branch                -5.00864e-12
+v.xu1.v475#branch                 -0.000303477
+h.xu1.hlref#branch                 -1.8208e-12
+h.xu4b.x_h3.h_h3#branch           -4.03444e-16
+v.xu4b.x_h3.vh_h3#branch            8.3896e-10
+h.xu4b.x_h2.h_h2#branch           -3.27278e-12
+v.xu4b.x_h2.vh_h2#branch             0.0282481
+h.xu4b.x_h1.h_h1#branch            1.05144e-13
+v.xu4b.x_h1.vh_h1#branch           4.14216e-08
+h.xu4a.x_h3.h_h3#branch           -4.03448e-16
+v.xu4a.x_h3.vh_h3#branch           8.39538e-10
+h.xu4a.x_h2.h_h2#branch            -2.6137e-12
+v.xu4a.x_h2.vh_h2#branch             0.0288183
+h.xu4a.x_h1.h_h1#branch            7.48132e-14
+v.xu4a.x_h1.vh_h1#branch           4.85844e-08
+lpn#branch                          0.00312954
+lpp#branch                         -0.00302149
+lvr5#branch                          3.024e-10
+lnr15#branch                       4.09699e-08
+lnr16#branch                      -4.09645e-08
+lor16#branch                       4.09636e-08
+lc12t#branch                      -3.58367e-06
+lc10t#branch                      -3.30846e-07
+lc16t#branch                      -3.30625e-07
+lans#branch                        -0.00780425
+lfbn#branch                        -0.00780425
+lc11t#branch                      -1.66827e-06
+lc15t#branch                      -1.79959e-07
+laps#branch                         0.00779824
+lfbp#branch                         0.00779824
+lg3#branch                        -2.33195e-10
+e.xu1.ehcl#branch                    0.0910461
+e.xu1.elcl#branch                    0.0910431
+e.xu1.e32#branch                   -0.00131995
+e.xu1.ebuf#branch                  7.98727e-08
+e.xu1.epole#branch                -5.56143e-13
+e.xu4b.x_u4.e1#branch             -3.30115e-15
+e.xu4b.x_u37.e1#branch                       0
+e.xu4b.x_u36.e1#branch                       0
+e.xu4b.x_u1.e3#branch              1.50033e-11
+e.xu4b.x_u1.e2#branch                        0
+e.xu4b.x_u1.e1#branch                        0
+e.xu4b.e_e3#branch                 2.53409e-12
+e.xu4b.e_e2#branch                 2.49724e-12
+e.xu4b.e_e1#branch                 1.09172e-11
+e.xu4a.x_u4.e1#branch             -3.30116e-15
+e.xu4a.x_u37.e1#branch                       0
+e.xu4a.x_u36.e1#branch                       0
+e.xu4a.x_u1.e3#branch              1.50033e-11
+e.xu4a.x_u1.e2#branch                        0
+e.xu4a.x_u1.e1#branch                        0
+e.xu4a.e_e3#branch                 2.53481e-12
+e.xu4a.e_e2#branch                 2.49854e-12
+e.xu4a.e_e1#branch                 1.09195e-11
+v.xu1.vclmp#branch                  -0.0030092
+v.xu1.vcm#branch                  -6.26348e-10
+v.xu1.ves#branch                  -5.91995e-12
+ves#branch                        -0.000641122
+vpns#branch                        -0.00312954
+vpps#branch                         0.00302149
+v.xu4b.v_v_orp#branch             -5.63278e-13
+v.xu4b.v_v_orn#branch              5.18361e-13
+v.xu4b.v_v_iscp#branch              -1.782e-10
+v.xu4b.v_v_iscn#branch              1.9764e-10
+v.xu4b.v_v_grp#branch                 -1.5e-10
+v.xu4b.v_v_grn#branch                 1.66e-10
+v.xu4b.v_vcm_min#branch           -4.54449e-15
+v.xu4b.v_vcm_max#branch            4.50408e-12
+vinput#branch                     -1.51689e-11
+v.xu4a.v_v_orp#branch             -5.63278e-13
+v.xu4a.v_v_orn#branch              5.18361e-13
+v.xu4a.v_v_iscp#branch              -1.782e-10
+v.xu4a.v_v_iscn#branch              1.9764e-10
+v.xu4a.v_v_grp#branch                 -1.5e-10
+v.xu4a.v_v_grn#branch                 1.66e-10
+v.xu4a.v_vcm_min#branch           -4.54449e-15
+v.xu4a.v_vcm_max#branch            4.50408e-12
+vua#branch                        -1.51297e-11
+vj2n#branch                         0.00780425
+vj2p#branch                        -0.00779824
+vag#branch                        -9.65092e-11
+a.xu4b.x_u19.ag1#branch_1_0        -4.9552e-17
+a.xu4b.x_u18.ag1#branch_1_0       -4.69557e-17
+a.xu4a.x_u19.ag1#branch_1_0       -4.95519e-17
+a.xu4a.x_u18.ag1#branch_1_0       -4.69558e-17
+
+ Reference value :  0.00000e+00 Reference value :  1.05677e-05 Reference value :  1.12562e-04 Reference value :  2.27162e-04 Reference value :  3.40562e-04 Reference value :  4.52112e-04Using SPARSE 1.3 as Direct Linear Solver
+Note: Starting dynamic gmin stepping
+Warning: Dynamic gmin stepping failed
+Note: Starting true gmin stepping
+Warning: True gmin stepping failed
+Note: Starting source stepping
+Warning: source stepping failed
+Note: Transient op started
+Note: Transient op finished successfully
+
+No. of Data Rows : 11086
+tp8_max             =  1.956889e-02 at=  2.500622e-04
+tp8_min             =  1.956889e-02 at=  4.999622e-04
+out_max             =  -4.635847e+00 at=  2.500122e-04
+out_min             =  -4.636163e+00 at=  5.000000e-04
+ap_max              =  9.998022e+00 at=  5.000000e-04
+ap_min              =  9.998022e+00 at=  2.500122e-04
+an_max              =  -9.997661e+00 at=  5.000000e-04
+an_min              =  -9.997661e+00 at=  4.989622e-04
+tp8_final           =  1.956889e-02
+ap_final            =  9.998022e+00
+CASE RAPS=3.5586m
+tp8_pp = 0.000000e+00
+out_pp = 3.160000e-04
+ap_pp = 0.000000e+00
+an_pp = 0.000000e+00
+tp8_final = 1.956889e-02
+ap_final = 9.998022e+00
+Reset re-loads circuit * h07: one u4 positive-rail series element becomes high resistance.
+
+Circuit: * h07: one u4 positive-rail series element becomes high resistance.
+
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+agnd                                         0
+g3m                                1.45117e-12
+pgnd                               1.44505e-12
+j2p                                          0
+fbp                                -0.00194987
+apbead                             -0.00194998
+apsm                               -0.00974945
+apu4                               -0.00974945
+c15tm                              -0.00974945
+c15n                               -0.00974945
+c11tm                              -0.00974943
+c11n                               -0.00974943
+j2n                                          0
+fbn                                 0.00195115
+anbead                              0.00194995
+ansm                                0.00233964
+anu4                                0.00233954
+c16tm                               0.00233955
+c16n                                0.00233954
+c10tm                               0.00233955
+c10n                                0.00233955
+c12tm                               0.00233972
+c12n                                0.00233964
+u4ap                                         0
+u4an                              -4.40867e-05
+u4ao                               -0.00224431
+xu4a.n24458                        -0.00269608
+xu4a.n24659                        -0.00271092
+xu4a.n37029                        -0.00270687
+xu4a.n37037                        -0.00270687
+xu4a.mid                           -0.00271092
+xu4a.n39473                        0.000329336
+xu4a.n39884                        0.000326341
+xu4a.n39892                        -0.00268055
+xu4a.n2425309                      -0.00974944
+xu4a.n2425287                      -0.00271092
+xu4a.n2425325                       0.00233953
+xu4a.n56849                          0.0517481
+xu4a.n57325                          0.0514263
+xu4a.n59747                        -0.00271092
+xu4a.n59865                        -0.00271092
+xu4a.n25921                        -0.00110639
+xu4a.n25929                        -0.00271093
+xu4a.n65579                        -0.00271092
+xu4a.n65697                        -0.00271092
+xu4a.n68774                           0.319629
+xu4a.n72398                         -0.0567033
+xu4a.n72391                          0.0518929
+xu4a.n81574                        -0.00271092
+xu4a.n81664                          0.0311031
+xu4a.sw_ol_opa1656                    0.997289
+xu4a.vclp                          -0.00224426
+xu4a.vimon                         -0.00277746
+xu4a.n27785                        -0.00275243
+xu4a.n27793                        -0.00271092
+xu4a.vout_s                        -0.00224431
+xu4a.n2402147                      -0.00271092
+xu4a.n2402155                      -0.00271092
+xu4a.n2707598                          2.21789
+xu4a.n2707608                         0.319615
+xu4a.n2516408                      0.000326679
+xu4a.n2526910                         0.319615
+xu4a.n36262                           0.319614
+xu4a.n32347                        0.000476135
+xu4a.n2532013                         0.319629
+xu4a.n2549447                      -0.00271092
+xu4a.n2549439                      -0.00271091
+xu4a.clamp                            0.319629
+xu4a.esdp                         -3.16398e-10
+xu4a.esdn                         -4.40866e-05
+xu4a.n158495                       -0.00224426
+xu4a.cl_clamp                      -0.00224426
+xu4a.n161937                       -0.00224431
+xu4a.claw_clamp                    -0.00224426
+xu4a.n45999                        -0.00224431
+xu4a.n39124                        0.000125377
+xu4a.n39920                        0.000326617
+xu4a.n39417                        0.000326616
+xu4a.vcc_b                         -0.00974944
+xu4a.vee_b                          0.00233953
+xu4a.n25415                        0.000475589
+xu4a.n25397                        0.000475587
+xu4a.n25248                        -0.00271092
+xu4a.vcc_clp                        -0.0567033
+xu4a.vee_clp                         0.0518929
+xu4a.n1356345                        -0.522244
+xu4a.n1356333                        -0.522244
+xu4a.n1356409                          0.31157
+xu4a.n1356429                         0.277756
+xu4a.n2531921                         0.319629
+xu4a.n2516366                      0.000326641
+xu4a.n2531913                         0.319629
+xu4a.vsense                           0.319629
+xu4a.n28678                        0.000476135
+xu4a.n28438                        0.000475589
+xu4a.n28311                        -0.00271038
+xu4a.n24207                       -3.16398e-10
+xu4a.n31303                       -4.40866e-05
+xu4a.n31389                           -2.25975
+xu4a.n31737                         0.00233953
+xu4a.n32236                        0.000476135
+xu4a.n32510                          0.0493111
+xu4a.n46041                        0.000325951
+xu4a.n55560                          0.0517481
+xu4a.n57321                          0.0514263
+xu4a.n59739                            89.0973
+xu4a.n59743                        -0.00271092
+xu4a.n59881                        -0.00271092
+xu4a.n59905                           -98.8227
+xu4a.n65567                            74.9973
+xu4a.n65575                        -0.00271092
+xu4a.n65713                        -0.00271092
+xu4a.n65737                           -83.0027
+xu4a.n72064                         -0.0567033
+xu4a.n72073                          0.0518929
+xu4a.v11                           -0.00271092
+xu4a.v12                             0.0311031
+xu4a.n81756                           0.997289
+xu4a.n161737                       -0.00277746
+xu4a.n1356115                          0.31157
+xu4a.n1356061                        -0.522244
+xu4a.x_u1.7                           0.833786
+xu4a.x_u1.8                           0.833786
+xu4a.x_u1.3                                  0
+xu4a.x_u1.6                                  0
+xu4a.x_u1.4                                  0
+xu4a.x_u1.5                                  0
+xu4a.x_u10.gvo+_int1                  0.054459
+xu4a.x_u10.gvo-_int1                 0.0541372
+xu4a.x_u11.gvo+_int1                         0
+xu4a.x_u11.gvo-_int1                         0
+xu4a.x_u12.gvo+_int1                         0
+xu4a.x_u12.gvo-_int1                         0
+xu4a.x_u16.gsw+_int1                         1
+xu4a.x_u18.g1_int1                 4.69539e-05
+xu4a.x_u18.g1_int2                -6.65356e-05
+xu4a.x_u19.g1_int1                 4.95533e-05
+xu4a.x_u19.g1_int2                 6.65356e-05
+xu4a.x_u22.g1_int1                           0
+xu4a.x_u23.g1_int1                           0
+xu4a.x_u26.g1_int1                           0
+xu4a.x_u27.g1_int1                 6.65356e-08
+xu4a.x_u30.g1_int1                 5.20222e-08
+xu4a.x_u31.g1_int1                   0.0338143
+xu4a.x_u32.g1_int1                  0.00303695
+xu4a.x_u35.g1_int1                 0.000321858
+xu4a.x_u36.3                                 0
+xu4a.x_u36.5                                 0
+xu4a.x_u37.3                                 0
+xu4a.x_u37.5                                 0
+xu4a.x_u4.e1_int1                  0.000475587
+xu4a.x_u6.g1_int1                   0.00318705
+src                                          0
+u4p                               -1.60323e-09
+xu4b.n24458                        -0.00269608
+xu4b.n24659                        -0.00271092
+xu4b.n37029                        -0.00270638
+xu4b.n37037                        -0.00270638
+xu4b.mid                           -0.00271092
+xu4b.n39473                        0.000664723
+xu4b.n39884                         0.00066175
+xu4b.n39892                         -0.0026772
+xu4b.n2425309                      -0.00974944
+xu4b.n2425287                      -0.00271092
+xu4b.n2425325                       0.00233953
+xu4b.n56849                          0.0517485
+xu4b.n57325                          0.0514259
+xu4b.n59747                        -0.00271092
+xu4b.n59865                        -0.00271092
+xu4b.n25921                        -0.00110639
+xu4b.n25929                        -0.00271093
+xu4b.n65579                        -0.00271092
+xu4b.n65697                        -0.00271092
+xu4b.n68774                           0.320417
+xu4b.n72398                         -0.0567035
+xu4b.n72391                          0.0518927
+xu4b.n81574                        -0.00271092
+xu4b.n81664                          0.0318835
+xu4b.sw_ol_opa1656                    0.997289
+xu4b.vclp                          -0.00224402
+xu4b.vimon                         -0.00276689
+xu4b.n27785                        -0.00275243
+xu4b.n27793                        -0.00271092
+xu4b.vout_s                        -0.00224407
+xu4b.n2402147                      -0.00271092
+xu4b.n2402155                      -0.00271092
+xu4b.n2707598                          2.22331
+xu4b.n2707608                         0.320403
+xu4b.n2516408                       0.00066212
+xu4b.n2526910                         0.320403
+xu4b.n36262                           0.320402
+xu4b.n32347                        0.000476133
+xu4b.n2532013                         0.320417
+xu4b.n2549447                      -0.00271092
+xu4b.n2549439                      -0.00271091
+xu4b.clamp                            0.320417
+xu4b.esdp                         -1.92387e-09
+xu4b.esdn                         -5.60965e-05
+xu4b.n158495                       -0.00224402
+xu4b.cl_clamp                      -0.00224402
+xu4b.n161937                       -0.00224407
+u4o                                -0.00224407
+xu4b.claw_clamp                    -0.00224402
+xu4b.n45999                        -0.00224407
+xu4b.n39124                        0.000464934
+xu4b.n39920                        0.000662059
+xu4b.n39417                        0.000662059
+xu4b.vcc_b                         -0.00974944
+xu4b.vee_b                          0.00233953
+xu4b.n25415                        0.000475588
+xu4b.n25397                        0.000475585
+xu4b.n25248                        -0.00271092
+xu4b.vcc_clp                        -0.0567035
+xu4b.vee_clp                         0.0518927
+xu4b.n1356345                        -0.522244
+xu4b.n1356333                        -0.522244
+xu4b.n1356409                          0.31235
+xu4b.n1356429                         0.277756
+xu4b.n2531921                         0.320417
+xu4b.n2516366                      0.000662084
+xu4b.n2531913                         0.320417
+xu4b.vsense                           0.320417
+xu4b.n28678                        0.000476133
+xu4b.n28438                        0.000475588
+xu4b.n28311                        -0.00271038
+xu4b.n24207                       -1.92387e-09
+xu4b.n31303                       -5.60965e-05
+xu4b.n31389                           -2.25975
+xu4b.n31737                         0.00233953
+u4n                               -5.60966e-05
+xu4b.n32236                        0.000476133
+xu4b.n32510                           0.050512
+xu4b.n46041                        0.000661316
+xu4b.n55560                          0.0517485
+xu4b.n57321                          0.0514259
+xu4b.n59739                            89.0973
+xu4b.n59743                        -0.00271092
+xu4b.n59881                        -0.00271092
+xu4b.n59905                           -98.8227
+xu4b.n65567                            74.9973
+xu4b.n65575                        -0.00271092
+xu4b.n65713                        -0.00271092
+xu4b.n65737                           -83.0027
+xu4b.n72064                         -0.0567035
+xu4b.n72073                          0.0518927
+xu4b.v11                           -0.00271092
+xu4b.v12                             0.0318835
+xu4b.n81756                           0.997289
+xu4b.n161737                       -0.00276689
+xu4b.n1356115                          0.31235
+xu4b.n1356061                        -0.522244
+xu4b.x_u1.7                           0.833786
+xu4b.x_u1.8                           0.833786
+xu4b.x_u1.3                                  0
+xu4b.x_u1.6                                  0
+xu4b.x_u1.4                                  0
+xu4b.x_u1.5                                  0
+xu4b.x_u10.gvo+_int1                 0.0544595
+xu4b.x_u10.gvo-_int1                 0.0541368
+xu4b.x_u11.gvo+_int1                         0
+xu4b.x_u11.gvo-_int1                         0
+xu4b.x_u12.gvo+_int1                         0
+xu4b.x_u12.gvo-_int1                         0
+xu4b.x_u16.gsw+_int1                         1
+xu4b.x_u18.g1_int1                 4.69541e-05
+xu4b.x_u18.g1_int2                -5.59729e-05
+xu4b.x_u19.g1_int1                 4.95532e-05
+xu4b.x_u19.g1_int2                 5.59729e-05
+xu4b.x_u22.g1_int1                           0
+xu4b.x_u23.g1_int1                           0
+xu4b.x_u26.g1_int1                           0
+xu4b.x_u27.g1_int1                 5.59729e-08
+xu4b.x_u30.g1_int1                  5.3223e-08
+xu4b.x_u31.g1_int1                   0.0345949
+xu4b.x_u32.g1_int1                  0.00337233
+xu4b.x_u35.g1_int1                 0.000322646
+xu4b.x_u36.3                                 0
+xu4b.x_u36.5                                 0
+xu4b.x_u37.3                                 0
+xu4b.x_u37.5                                 0
+xu4b.x_u4.e1_int1                  0.000475587
+xu4b.x_u6.g1_int1                   0.00318705
+or16m                              -0.00224407
+r16o                               -0.00224407
+nr16m                             -5.60969e-05
+r16n                              -5.60969e-05
+nr15m                             -5.60962e-05
+r15n                              -5.60962e-05
+tp8                                -0.00224407
+vr5m                               -0.00224407
+r5v                                -0.00224407
+opa_p                               -0.0022441
+pp_src                             1.44505e-12
+ppre                               6.03711e-05
+pwr_p                              6.32443e-05
+pwr_pm                             5.43142e-05
+pwr_nm                            -5.71533e-05
+pn_src                             1.44508e-12
+pnre                               -6.2639e-05
+pwr_n                             -6.04089e-05
+es                                     0.59994
+opa_out                               0.362643
+opa_n                                 0.362643
+ilim                                  0.577129
+xu1.17                                -1.18889
+xu1.13                                -1.18889
+xu1.14                                -1.18889
+xu1.12                                0.362642
+xu1.15                            -6.04092e-05
+xu1.16                            -6.04088e-05
+xu1.26                                0.608213
+xu1.260                            3.92583e-10
+xu1.160                            4.26408e-10
+xu1.19                                -1.21469
+xu1.30                                 1.99346
+xu1.20                               -0.595888
+xu1.23                             6.75726e-05
+xu1.25                                0.123789
+xu1.27                                0.608169
+xu1.24                             0.000127668
+xu1.22                               -0.202396
+xu1.21                               -0.202396
+xu1.48                                0.323811
+xu1.49                                0.683498
+xu1.45                                0.123801
+xu1.47                                 0.32381
+xu1.40                                0.683558
+xu1.35                                0.559019
+xu1.37                              -0.0822073
+xu1.38                              -0.0798793
+xu1.39                            -6.04083e-05
+xu1.31                                 1.41433
+xu1.36                                0.683558
+xu1.34                                0.784499
+xu1.33                                 1.33851
+xu1.32                                 2.03029
+xu1.28                                 4.74994
+xu1.42                                0.644163
+xu1.41                                  1.8208
+xu1.43                              -0.0822073
+xu1.52                                 1.05018
+xu1.51                                 2.50442
+xu1.53                                 0.32381
+xu1.10                                0.193517
+xu1.54                                 1.13993
+xu1.55                                 3.49994
+xu1.18                                0.111107
+xu1.29                                 0.99994
+xu1.11                             -0.00224447
+snub                                  0.362643
+b.xu4b.x_u6.bg1#branch            -3.18705e-15
+b.xu4b.x_u4.be1#branch            -4.75587e-16
+b.xu4b.x_u35.bg1#branch           -3.22646e-16
+b.xu4b.x_u32.bg1#branch           -3.37233e-15
+b.xu4b.x_u31.bg1#branch           -3.45949e-14
+b.xu4b.x_u30.bg1#branch            -5.3223e-20
+b.xu4b.x_u27.bg1#branch           -5.59729e-20
+b.xu4b.x_u26.bg1#branch                      0
+b.xu4b.x_u23.bg1#branch                      0
+b.xu4b.x_u22.bg1#branch                      0
+b.xu4b.x_u19.bg1#branch           -5.59729e-17
+b.xu4b.x_u18.bg1#branch            5.59729e-17
+b.xu4b.x_u16.bgsw+#branch               -1e-12
+b.xu4b.x_u12.bgvo-#branch                    0
+b.xu4b.x_u12.bgvo+#branch                    0
+b.xu4b.x_u11.bgvo-#branch                    0
+b.xu4b.x_u11.bgvo+#branch                    0
+b.xu4b.x_u10.bgvo-#branch         -5.41368e-14
+b.xu4b.x_u10.bgvo+#branch         -5.44595e-14
+b.xu4a.x_u6.bg1#branch            -3.18705e-15
+b.xu4a.x_u4.be1#branch            -4.75587e-16
+b.xu4a.x_u35.bg1#branch           -3.21858e-16
+b.xu4a.x_u32.bg1#branch           -3.03695e-15
+b.xu4a.x_u31.bg1#branch           -3.38143e-14
+b.xu4a.x_u30.bg1#branch           -5.20222e-20
+b.xu4a.x_u27.bg1#branch           -6.65356e-20
+b.xu4a.x_u26.bg1#branch                      0
+b.xu4a.x_u23.bg1#branch                      0
+b.xu4a.x_u22.bg1#branch                      0
+b.xu4a.x_u19.bg1#branch           -6.65356e-17
+b.xu4a.x_u18.bg1#branch            6.65356e-17
+b.xu4a.x_u16.bgsw+#branch               -1e-12
+b.xu4a.x_u12.bgvo-#branch                    0
+b.xu4a.x_u12.bgvo+#branch                    0
+b.xu4a.x_u11.bgvo-#branch                    0
+b.xu4a.x_u11.bgvo+#branch                    0
+b.xu4a.x_u10.bgvo-#branch         -5.41372e-14
+b.xu4a.x_u10.bgvo+#branch          -5.4459e-14
+h.xu1.hhref#branch                -5.01087e-12
+v.xu1.v475#branch                 -0.000303477
+h.xu1.hlref#branch                 -1.8208e-12
+h.xu4b.x_h3.h_h3#branch            8.13276e-15
+v.xu4b.x_h3.vh_h3#branch           8.45391e-10
+h.xu4b.x_h2.h_h2#branch           -2.93738e-12
+v.xu4b.x_h2.vh_h2#branch             0.0345944
+h.xu4b.x_h1.h_h1#branch            4.57889e-14
+v.xu4b.x_h1.vh_h1#branch          -5.59729e-08
+h.xu4a.x_h3.h_h3#branch            8.13276e-15
+v.xu4a.x_h3.vh_h3#branch           8.44602e-10
+h.xu4a.x_h2.h_h2#branch           -2.17583e-12
+v.xu4a.x_h2.vh_h2#branch              0.033814
+h.xu4a.x_h1.h_h1#branch            6.62524e-14
+v.xu4a.x_h1.vh_h1#branch          -6.65357e-08
+lpn#branch                          0.00313195
+lpp#branch                         -0.00301855
+lvr5#branch                        3.61021e-10
+lnr15#branch                      -5.60962e-08
+lnr16#branch                       5.61023e-08
+lor16#branch                       -5.6103e-08
+lc12t#branch                       -3.7779e-06
+lc10t#branch                      -3.48058e-07
+lc16t#branch                      -3.47859e-07
+lans#branch                         -0.0078046
+lfbn#branch                         -0.0078046
+lc11t#branch                      -4.80223e-07
+lc15t#branch                      -4.68549e-08
+laps#branch                         0.00779947
+lfbp#branch                         0.00779947
+lg3#branch                        -2.90234e-10
+e.xu1.ehcl#branch                    0.0910461
+e.xu1.elcl#branch                    0.0910431
+e.xu1.e32#branch                   -0.00131996
+e.xu1.ebuf#branch                  7.99001e-08
+e.xu1.epole#branch                -3.38248e-14
+e.xu4b.x_u4.e1#branch              -3.3023e-15
+e.xu4b.x_u37.e1#branch                       0
+e.xu4b.x_u36.e1#branch                       0
+e.xu4b.x_u1.e3#branch              1.50033e-11
+e.xu4b.x_u1.e2#branch                        0
+e.xu4b.x_u1.e1#branch                        0
+e.xu4b.e_e3#branch                 1.96131e-12
+e.xu4b.e_e2#branch                 1.92373e-12
+e.xu4b.e_e1#branch                 1.12736e-11
+e.xu4a.x_u4.e1#branch              -3.3023e-15
+e.xu4a.x_u37.e1#branch                       0
+e.xu4a.x_u36.e1#branch                       0
+e.xu4a.x_u1.e3#branch              1.50033e-11
+e.xu4a.x_u1.e2#branch                        0
+e.xu4a.x_u1.e1#branch                        0
+e.xu4a.e_e3#branch                  1.9614e-12
+e.xu4a.e_e2#branch                 1.92398e-12
+e.xu4a.e_e1#branch                 1.13343e-11
+v.xu1.vclmp#branch                 -0.00300919
+v.xu1.vcm#branch                  -7.29674e-10
+v.xu1.ves#branch                  -5.91995e-12
+ves#branch                        -0.000641126
+vpns#branch                        -0.00313195
+vpps#branch                         0.00301855
+v.xu4b.v_v_orp#branch             -5.55513e-13
+v.xu4b.v_v_orn#branch              5.22244e-13
+v.xu4b.v_v_iscp#branch            -1.78197e-10
+v.xu4b.v_v_iscn#branch             1.97643e-10
+v.xu4b.v_v_grp#branch             -1.49997e-10
+v.xu4b.v_v_grn#branch              1.66003e-10
+v.xu4b.v_vcm_min#branch           -7.38998e-15
+v.xu4b.v_vcm_max#branch            4.51679e-12
+vinput#branch                     -1.60323e-11
+v.xu4a.v_v_orp#branch             -5.55512e-13
+v.xu4a.v_v_orn#branch              5.22244e-13
+v.xu4a.v_v_iscp#branch            -1.78197e-10
+v.xu4a.v_v_iscn#branch             1.97643e-10
+v.xu4a.v_v_grp#branch             -1.49997e-10
+v.xu4a.v_v_grn#branch              1.66003e-10
+v.xu4a.v_vcm_min#branch           -7.38998e-15
+v.xu4a.v_vcm_max#branch            4.51679e-12
+vua#branch                        -1.58199e-11
+vj2n#branch                          0.0078046
+vj2p#branch                        -0.00779947
+vag#branch                        -9.63083e-11
+a.xu4b.x_u19.ag1#branch_1_0       -4.95532e-17
+a.xu4b.x_u18.ag1#branch_1_0       -4.69541e-17
+a.xu4a.x_u19.ag1#branch_1_0       -4.95533e-17
+a.xu4a.x_u18.ag1#branch_1_0       -4.69539e-17
+
+ Reference value :  0.00000e+00 Reference value :  1.01724e-05 Reference value :  1.10854e-04 Reference value :  2.24104e-04 Reference value :  3.35004e-04 Reference value :  4.49454e-04Using SPARSE 1.3 as Direct Linear Solver
+Note: Starting dynamic gmin stepping
+Warning: Dynamic gmin stepping failed
+Note: Starting true gmin stepping
+Warning: True gmin stepping failed
+Note: Starting source stepping
+Warning: source stepping failed
+Note: Transient op started
+Error: Transient op failed, timestep too small
+
+
+Error: The operating point could not be simulated successfully.
+    Any of the following steps may fail.!
+
+
+No. of Data Rows : 11080
+tp8_max             =  1.959165e-02 at=  4.999543e-04
+tp8_min             =  1.959164e-02 at=  2.500043e-04
+out_max             =  -4.635847e+00 at=  2.500043e-04
+out_min             =  -4.636163e+00 at=  5.000000e-04
+ap_max              =  9.990248e+00 at=  5.000000e-04
+ap_min              =  9.990248e+00 at=  2.500043e-04
+an_max              =  -9.997661e+00 at=  4.999543e-04
+an_min              =  -9.997661e+00 at=  5.000000e-04
+tp8_final           =  1.959165e-02
+ap_final            =  9.990248e+00
+CASE RAPS=1
+tp8_pp = 1.000000e-08
+out_pp = 3.160000e-04
+ap_pp = 0.000000e+00
+an_pp = 0.000000e+00
+tp8_final = 1.959165e-02
+ap_final = 9.990248e+00
+Reset re-loads circuit * h07: one u4 positive-rail series element becomes high resistance.
+
+Circuit: * h07: one u4 positive-rail series element becomes high resistance.
+
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+Transient solution failed -
+
+Last Node Voltages
+------------------
+
+Node                                   Last Voltage        Previous Iter
+----                                   ------------        -------------
+agnd                                              0                    0
+g3m                                    -6.47358e-07         -6.47358e-07
+pgnd                                     0.00691833           0.00691906
+j2p                                               0                    0
+fbp                                     -0.00130134          -0.00130134
+apbead                                   -0.0083079           -0.0083079
+apsm                                     -0.0603615           -0.0603615
+apu4                                      -0.060449            -0.060449
+c15tm                                    -0.0603951           -0.0603951
+c15n                                     -0.0526676           -0.0526676
+c11tm                                    -0.0604053           -0.0604053
+c11n                                     -0.0526485           -0.0526485
+j2n                                               0                    0
+fbn                                      0.00130103           0.00130103
+anbead                                     0.010614             0.010614
+ansm                                      0.0108739            0.0108739
+anu4                                      0.0116542            0.0116542
+c16tm                                     0.0116087            0.0116087
+c16n                                     0.00155183           0.00155183
+c10tm                                     0.0116092            0.0116092
+c10n                                     0.00155103           0.00155103
+c12tm                                     0.0116098            0.0116098
+c12n                                     0.00154182           0.00154182
+u4ap                                              0                    0
+u4an                                   -0.000483508         -0.000483508
+u4ao                                     -0.0223512           -0.0223512
+xu4a.n24458                              -0.0254134           -0.0254134
+xu4a.n24659                              -0.0255533           -0.0255533
+xu4a.n37029                              -0.0406291           -0.0406291
+xu4a.n37037                              -0.0238112           -0.0238112
+xu4a.mid                                 -0.0255533           -0.0255533
+xu4a.n39473                              -0.0423449           -0.0423449
+xu4a.n39884                              -0.0319181           -0.0319181
+xu4a.n39892                              -0.0254095           -0.0254095
+xu4a.n2425309                            -0.0604491           -0.0604491
+xu4a.n2425287                            -0.0255533           -0.0255533
+xu4a.n2425325                             0.0116543            0.0116543
+xu4a.n56849                               0.0585083            0.0585083
+xu4a.n57325                               0.0591066            0.0591066
+xu4a.n59747                              -0.0255533           -0.0255533
+xu4a.n59865                              -0.0255533           -0.0255533
+xu4a.n25921                              -0.0137449           -0.0137449
+xu4a.n25929                              -0.0228236           -0.0228236
+xu4a.n65579                              -0.0255533           -0.0255533
+xu4a.n65697                              -0.0255533           -0.0255533
+xu4a.n68774                               -0.623902            -0.623902
+xu4a.n72398                                -0.10746             -0.10746
+xu4a.n72391                               0.0612617            0.0612617
+xu4a.n81574                               -0.019677            -0.019677
+xu4a.n81664                              -0.0255533           -0.0255533
+xu4a.sw_ol_opa1656                         0.786772             0.786772
+xu4a.vclp                                -0.0235719           -0.0235719
+xu4a.vimon                               -0.0262465           -0.0262465
+xu4a.n27785                              -0.0257591           -0.0257591
+xu4a.n27793                              -0.0255956           -0.0255956
+xu4a.vout_s                              -0.0233982           -0.0233982
+xu4a.n2402147                            -0.0255533           -0.0255533
+xu4a.n2402155                            -0.0255533           -0.0255533
+xu4a.n2707598                              -4.13317             -4.13317
+xu4a.n2707608                             -0.624109            -0.624109
+xu4a.n2516408                            -0.0409817           -0.0409817
+xu4a.n2526910                             -0.621626            -0.621626
+xu4a.n36262                               -0.620802            -0.620802
+xu4a.n32347                             -0.00457419          -0.00457419
+xu4a.n2532013                             -0.620535            -0.620535
+xu4a.n2549447                            -0.0255956           -0.0255956
+xu4a.n2549439                             -0.025592            -0.025592
+xu4a.clamp                                -0.623904            -0.623904
+xu4a.esdp                               4.83239e-07          4.83239e-07
+xu4a.esdn                              -0.000484414         -0.000484414
+xu4a.n158495                             -0.0225175           -0.0225175
+xu4a.cl_clamp                            -0.0225175           -0.0225175
+xu4a.n161937                             -0.0223512           -0.0223512
+xu4a.claw_clamp                          -0.0225175           -0.0225175
+xu4a.n45999                              -0.0223512           -0.0223512
+xu4a.n39124                                 1.19394              1.19394
+xu4a.n39920                              -0.0258702           -0.0258702
+xu4a.n39417                              -0.0258611           -0.0258611
+xu4a.vcc_b                               -0.0604491           -0.0604491
+xu4a.vee_b                                0.0116543            0.0116543
+xu4a.n25415                              0.00047609           0.00047609
+xu4a.n25397                              0.00047607           0.00047607
+xu4a.n25248                              -0.0255533           -0.0255533
+xu4a.vcc_clp                               -0.10746             -0.10746
+xu4a.vee_clp                              0.0612617            0.0612617
+xu4a.n1356345                             -0.543572            -0.623108 *
+xu4a.n1356333                             -0.543572            -0.543572
+xu4a.n1356409                              0.256428             0.256428
+xu4a.n1356429                              0.256428             0.256428
+xu4a.n2531921                              -0.62181             -0.62181
+xu4a.n2516366                            -0.0319166           -0.0319166
+xu4a.n2531913                             -0.623902            -0.623902
+xu4a.vsense                               -0.623902            -0.623902
+xu4a.n28678                             -0.00457416          -0.00457416
+xu4a.n28438                              0.00047609           0.00047609
+xu4a.n28311                              -0.0278738           -0.0278738
+xu4a.n24207                             4.83239e-07          4.83239e-07
+xu4a.n31303                            -0.000484414         -0.000484414
+xu4a.n31389                                -2.31045             -2.31045
+xu4a.n31737                               0.0116543            0.0116543
+xu4a.n32236                             -0.00457419          -0.00457419
+xu4a.n32510                                -0.43453             -0.43453
+xu4a.n46041                              -0.0111744           -0.0111744
+xu4a.n55560                               0.0585083            0.0585083
+xu4a.n57321                               0.0591066            0.0591066
+xu4a.n59739                                 89.0744              89.0744
+xu4a.n59743                              -0.0255533           -0.0255533
+xu4a.n59881                              -0.0255533           -0.0255533
+xu4a.n59905                                -98.8456             -98.8456
+xu4a.n65567                                 74.9744              74.9744
+xu4a.n65575                              -0.0255533           -0.0255533
+xu4a.n65713                              -0.0255533           -0.0255533
+xu4a.n65737                                -83.0256             -83.0256
+xu4a.n72064                                -0.10746             -0.10746
+xu4a.n72073                               0.0612617            0.0612617
+xu4a.v11                                 -0.0255533            0.0539831 *
+xu4a.v12                                 -0.0255533           -0.0255533
+xu4a.n81756                              -0.0175105           -0.0175105
+xu4a.n161737                             -0.0262151           -0.0262151
+xu4a.n1356115                              0.256428             0.256428
+xu4a.n1356061                             -0.543572            -0.623108 *
+xu4a.x_u1.7                                0.833786             0.833786
+xu4a.x_u1.8                                0.833786             0.833786
+xu4a.x_u1.3                                       0                    0
+xu4a.x_u1.6                                       0                    0
+xu4a.x_u1.4                                       0                    0
+xu4a.x_u1.5                                       0                    0
+xu4a.x_u10.gvo+_int1                      0.0840616            0.0840616
+xu4a.x_u10.gvo-_int1                      0.0846599            0.0846599
+xu4a.x_u11.gvo+_int1                              0                    0
+xu4a.x_u11.gvo-_int1                              0                    0
+xu4a.x_u12.gvo+_int1                              0                    0
+xu4a.x_u12.gvo-_int1                              0                    0
+xu4a.x_u16.gsw+_int1                              0                    0
+xu4a.x_u18.g1_int1                      4.69436e-05          4.69436e-05
+xu4a.x_u18.g1_int2                     -0.000693177         -0.000693177
+xu4a.x_u19.g1_int1                      4.95613e-05          4.95613e-05
+xu4a.x_u19.g1_int2                      0.000693177          0.000693177
+xu4a.x_u22.g1_int1                                0                    0
+xu4a.x_u23.g1_int1                                0                    0
+xu4a.x_u26.g1_int1                                0                    0
+xu4a.x_u27.g1_int1                      6.93177e-07          6.93177e-07
+xu4a.x_u30.g1_int1                     -4.08977e-07         -4.08977e-07
+xu4a.x_u31.g1_int1                        -0.265835            -0.265835
+xu4a.x_u32.g1_int1                        0.0143793            0.0143793
+xu4a.x_u35.g1_int1                     -0.000598285         -0.000598285
+xu4a.x_u36.3                                      0                    0
+xu4a.x_u36.5                                      0                    0
+xu4a.x_u37.3                                      0                    0
+xu4a.x_u37.5                                      0                    0
+xu4a.x_u4.e1_int1                       0.000475587          0.000475587
+xu4a.x_u6.g1_int1                         0.0209792            0.0209792
+src                                               0                    0
+u4p                                     4.29141e-05          4.29141e-05
+xu4b.n24458                              -0.0254132           -0.0254132
+xu4b.n24659                              -0.0255531           -0.0255531
+xu4b.n37029                               -0.472485            -0.472485
+xu4b.n37037                               -0.460062            -0.460062
+xu4b.mid                                 -0.0255533           -0.0255533
+xu4b.n39473                              -0.0836347           -0.0836347
+xu4b.n39884                                -3.02772             -3.02772
+xu4b.n39892                               -0.053714            -0.053714
+xu4b.n2425309                            -0.0604491           -0.0604491
+xu4b.n2425287                            -0.0255533           -0.0255533
+xu4b.n2425325                             0.0116543            0.0116543
+xu4b.n56849                               0.0583476            0.0583476
+xu4b.n57325                               0.0589367            0.0589367
+xu4b.n59747                              -0.0255533           -0.0255533
+xu4b.n59865                              -0.0255533           -0.0255533
+xu4b.n25921                              -0.0137449           -0.0137449
+xu4b.n25929                              -0.0228236           -0.0228236
+xu4b.n65579                              -0.0255533           -0.0255533
+xu4b.n65697                              -0.0255533           -0.0255533
+xu4b.n68774                               -0.618098            -0.618098
+xu4b.n72398                               -0.105818            -0.105818
+xu4b.n72391                               0.0625726            0.0625726
+xu4b.n81574                              -0.0198703           -0.0198703
+xu4b.n81664                              -0.0255533           -0.0255533
+xu4b.sw_ol_opa1656                         0.786772             0.786772
+xu4b.vclp                                 -0.026818            -0.026818
+xu4b.vimon                                -0.127886            -0.127886
+xu4b.n27785                              -0.0257591           -0.0257591
+xu4b.n27793                              -0.0255956           -0.0255956
+xu4b.vout_s                              -0.0219174           -0.0219174
+xu4b.n2402147                            -0.0255531           -0.0255531
+xu4b.n2402155                            -0.0255531           -0.0255531
+xu4b.n2707598                              -4.09335             -4.09335
+xu4b.n2707608                               -0.6183              -0.6183
+xu4b.n2516408                              -1.36592             -1.36592
+xu4b.n2526910                             -0.615848            -0.615848
+xu4b.n36262                               -0.615034            -0.615034
+xu4b.n32347                             -0.00451489          -0.00451489
+xu4b.n2532013                              -0.61477             -0.61477
+xu4b.n2549447                            -0.0255956           -0.0255956
+xu4b.n2549439                             -0.025592            -0.025592
+xu4b.clamp                                -0.618099            -0.618099
+xu4b.esdp                               5.88358e-05          5.88358e-05
+xu4b.esdn                              -0.000508971         -0.000508971
+xu4b.n158495                             -0.0259904           -0.0259904
+xu4b.cl_clamp                            -0.0259904           -0.0259904
+xu4b.n161937                             -0.0210234           -0.0210234
+u4o                                      -0.0210234           -0.0210234
+xu4b.claw_clamp                          -0.0259904           -0.0259904
+xu4b.n45999                              -0.0210234           -0.0210234
+xu4b.n39124                                -304.181             -304.181
+xu4b.n39920                                -4.13661             -4.13661
+xu4b.n39417                                -4.13827             -4.13827
+xu4b.vcc_b                               -0.0604491           -0.0604491
+xu4b.vee_b                                0.0116543            0.0116543
+xu4b.n25415                             0.000535384          0.000535384
+xu4b.n25397                             0.000534423          0.000534423
+xu4b.n25248                              -0.0255524           -0.0255524
+xu4b.vcc_clp                              -0.105818            -0.105818
+xu4b.vee_clp                              0.0625726            0.0625726
+xu4b.n1356345                             -0.546818            -0.617393 *
+xu4b.n1356333                             -0.546818            -0.546818
+xu4b.n1356409                              0.253182             0.253182
+xu4b.n1356429                              0.253182             0.253182
+xu4b.n2531921                              -0.61603             -0.61603
+xu4b.n2516366                                -3.028               -3.028
+xu4b.n2531913                             -0.618097            -0.618097
+xu4b.vsense                               -0.618098            -0.618098
+xu4b.n28678                             -0.00451486          -0.00451486
+xu4b.n28438                             0.000535384          0.000535384
+xu4b.n28311                              -0.0278738           -0.0278738
+xu4b.n24207                             5.88358e-05          5.88358e-05
+xu4b.n31303                            -0.000508971         -0.000508971
+xu4b.n31389                                -2.31045             -2.31045
+xu4b.n31737                               0.0116543            0.0116543
+u4n                                    -0.000466864         -0.000466864
+xu4b.n32236                             -0.00451489          -0.00451489
+xu4b.n32510                               -0.426145            -0.426145
+xu4b.n46041                                -2.84153             -2.84153
+xu4b.n55560                               0.0583476            0.0583476
+xu4b.n57321                               0.0589367            0.0589367
+xu4b.n59739                                 89.0744              89.0744
+xu4b.n59743                              -0.0255533           -0.0255533
+xu4b.n59881                              -0.0255533           -0.0255533
+xu4b.n59905                                -98.8456             -98.8456
+xu4b.n65567                                 74.9744              74.9744
+xu4b.n65575                              -0.0255533           -0.0255533
+xu4b.n65713                              -0.0255533           -0.0255533
+xu4b.n65737                                -83.0256             -83.0256
+xu4b.n72064                               -0.105818            -0.105818
+xu4b.n72073                               0.0625726            0.0625726
+xu4b.v11                                 -0.0255533            0.0450218 *
+xu4b.v12                                 -0.0255533           -0.0255533
+xu4b.n81756                              -0.0175105           -0.0175105
+xu4b.n161737                              -0.116531            -0.116531
+xu4b.n1356115                              0.253182             0.253182
+xu4b.n1356061                             -0.546818            -0.617393 *
+xu4b.x_u1.7                                0.833786             0.833786
+xu4b.x_u1.8                                0.833786             0.833786
+xu4b.x_u1.3                                       0                    0
+xu4b.x_u1.6                                       0                    0
+xu4b.x_u1.4                                       0                    0
+xu4b.x_u1.5                                       0                    0
+xu4b.x_u10.gvo+_int1                      0.0839009            0.0839009
+xu4b.x_u10.gvo-_int1                        0.08449              0.08449
+xu4b.x_u11.gvo+_int1                              0                    0
+xu4b.x_u11.gvo-_int1                              0                    0
+xu4b.x_u12.gvo+_int1                              0                    0
+xu4b.x_u12.gvo-_int1                              0                    0
+xu4b.x_u16.gsw+_int1                              0                    0
+xu4b.x_u18.g1_int1                      4.53038e-05          4.53038e-05
+xu4b.x_u18.g1_int2                        -0.102332            -0.102332
+xu4b.x_u19.g1_int1                      5.08708e-05          5.08708e-05
+xu4b.x_u19.g1_int2                         0.102332             0.102332
+xu4b.x_u22.g1_int1                                0                    0
+xu4b.x_u23.g1_int1                                0                    0
+xu4b.x_u26.g1_int1                                0                    0
+xu4b.x_u27.g1_int1                      0.000102332          0.000102332
+xu4b.x_u30.g1_int1                     -4.00592e-07         -4.00592e-07
+xu4b.x_u31.g1_int1                        -0.260384            -0.260384
+xu4b.x_u32.g1_int1                         -2.81606             -2.81606
+xu4b.x_u35.g1_int1                     -0.000589044         -0.000589044
+xu4b.x_u36.3                                      0                    0
+xu4b.x_u36.5                                      0                    0
+xu4b.x_u37.3                                      0                    0
+xu4b.x_u37.5                                      0                    0
+xu4b.x_u4.e1_int1                       0.000475587          0.000475587
+xu4b.x_u6.g1_int1                         0.0210385            0.0210385
+or16m                                    -0.0210234           -0.0210234
+r16o                                     -0.0212426           -0.0212426
+nr16m                                   -0.00046685          -0.00046685
+r16n                                   -0.000376096         -0.000376096
+nr15m                                  -0.000466863         -0.000466863
+r15n                                    -0.00048107          -0.00048107
+tp8                                      -0.0210234           -0.0210234
+vr5m                                     -0.0210147           -0.0210147
+r5v                                      -0.0187293           -0.0187293
+opa_p                                    -0.0316147            -0.031614
+pp_src                                   0.00691833           0.00691906
+ppre                                     0.00696292           0.00696365
+pwr_p                                     0.0397242             0.039725
+pwr_pm                                   0.00696292           0.00696365
+pwr_nm                                   0.00687368           0.00687441
+pn_src                                   0.00691833           0.00691906
+pnre                                     0.00687359           0.00687433
+pwr_n                                    -0.0267338           -0.0267331
+es                                         0.573266             0.573267
+opa_out                                    0.272746             0.272747
+opa_n                                      0.277812             0.277813
+ilim                                       0.580508             0.580509
+xu1.17                                     -1.24247             -1.24247
+xu1.13                                     -1.06447             -1.06447
+xu1.14                                    -0.999372            -0.999371
+xu1.12                                     0.227624             0.227625
+xu1.15                                   -0.0248347            -0.024834
+xu1.16                                   0.00475403           0.00475479
+xu1.26                                     0.434215             0.434215
+xu1.260                                 3.89287e-05          3.89287e-05
+xu1.160                                   0.0295887            0.0295888
+xu1.19                                     -1.16394             -1.16394
+xu1.30                                      1.84662              1.84662
+xu1.20                                    -0.555997            -0.555996
+xu1.23                                   0.00573263           0.00573337
+xu1.25                                     0.262991             0.262992
+xu1.27                                      0.55012             0.550121
+xu1.24                                   0.00585074           0.00585148
+xu1.22                                    -0.160886            -0.160885
+xu1.21                                    -0.160886            -0.160885
+xu1.48                                     0.334474             0.334475
+xu1.49                                     0.570887             0.570888
+xu1.45                                     0.253721             0.253722
+xu1.47                                     0.391309              0.39131
+xu1.40                                     0.557726             0.557726
+xu1.35                                     0.637361             0.637362
+xu1.37                                 -0.000898997         -0.000898125 *
+xu1.38                                   -0.0943274           -0.0943267
+xu1.39                                   -0.0123813           -0.0123806
+xu1.31                                       1.3577               1.3577
+xu1.36                                     0.632818             0.632819
+xu1.34                                     0.730667             0.730668
+xu1.33                                      1.20217              1.20217
+xu1.32                                      1.97105              1.97106
+xu1.28                                      4.72327              4.72327
+xu1.42                                     0.719206             0.719207
+xu1.41                                      1.78102              1.78102
+xu1.43                                 -0.000898997         -0.000898125 *
+xu1.52                                      1.11142              1.11142
+xu1.51                                      2.36547              2.36548
+xu1.53                                     0.391309              0.39131
+xu1.10                                     0.113054             0.113055
+xu1.54                                      1.33145              1.33145
+xu1.55                                      3.47327              3.47327
+xu1.18                                     0.057532            0.0575328
+xu1.29                                     0.973266             0.973267
+xu1.11                                   -0.0472063           -0.0472056
+snub                                       0.192566             0.192566
+b.xu4b.x_u6.bg1#branch                 -2.10385e-14         -2.10385e-14
+b.xu4b.x_u4.be1#branch                 -4.75587e-16         -4.75587e-16
+b.xu4b.x_u35.bg1#branch                 5.89044e-16          5.89044e-16
+b.xu4b.x_u32.bg1#branch                 2.81606e-12          2.81606e-12
+b.xu4b.x_u31.bg1#branch                 2.60384e-13          2.60384e-13
+b.xu4b.x_u30.bg1#branch                 4.00592e-19          4.00592e-19
+b.xu4b.x_u27.bg1#branch                -1.02332e-16         -1.02332e-16
+b.xu4b.x_u26.bg1#branch                           0                    0
+b.xu4b.x_u23.bg1#branch                           0                    0
+b.xu4b.x_u22.bg1#branch                           0                    0
+b.xu4b.x_u19.bg1#branch                -1.02332e-13         -1.02332e-13
+b.xu4b.x_u18.bg1#branch                 1.02332e-13          1.02332e-13
+b.xu4b.x_u16.bgsw+#branch                         0                    0
+b.xu4b.x_u12.bgvo-#branch                         0                    0
+b.xu4b.x_u12.bgvo+#branch                         0                    0
+b.xu4b.x_u11.bgvo-#branch                         0                    0
+b.xu4b.x_u11.bgvo+#branch                         0                    0
+b.xu4b.x_u10.bgvo-#branch                -8.449e-14           -8.449e-14
+b.xu4b.x_u10.bgvo+#branch              -8.39009e-14         -8.39009e-14
+b.xu4a.x_u6.bg1#branch                 -2.09792e-14         -2.09792e-14
+b.xu4a.x_u4.be1#branch                 -4.75587e-16         -4.75587e-16
+b.xu4a.x_u35.bg1#branch                 5.98285e-16          5.98285e-16
+b.xu4a.x_u32.bg1#branch                -1.43793e-14         -1.43793e-14
+b.xu4a.x_u31.bg1#branch                 2.65835e-13          2.65835e-13
+b.xu4a.x_u30.bg1#branch                 4.08977e-19          4.08977e-19
+b.xu4a.x_u27.bg1#branch                -6.93177e-19         -6.93177e-19
+b.xu4a.x_u26.bg1#branch                           0                    0
+b.xu4a.x_u23.bg1#branch                           0                    0
+b.xu4a.x_u22.bg1#branch                           0                    0
+b.xu4a.x_u19.bg1#branch                -6.93177e-16         -6.93177e-16
+b.xu4a.x_u18.bg1#branch                 6.93177e-16          6.93177e-16
+b.xu4a.x_u16.bgsw+#branch                         0                    0
+b.xu4a.x_u12.bgvo-#branch                         0                    0
+b.xu4a.x_u12.bgvo+#branch                         0                    0
+b.xu4a.x_u11.bgvo-#branch                         0                    0
+b.xu4a.x_u11.bgvo+#branch                         0                    0
+b.xu4a.x_u10.bgvo-#branch              -8.46599e-14         -8.46599e-14
+b.xu4a.x_u10.bgvo+#branch              -8.40616e-14         -8.40616e-14
+h.xu1.hhref#branch                     -4.73253e-12           -4.733e-12
+v.xu1.v475#branch                      -0.000301292         -0.000301292
+h.xu1.hlref#branch                     -1.78102e-12         -1.78102e-12
+h.xu4b.x_h3.h_h3#branch                 5.68303e-05         -0.000648921 *
+v.xu4b.x_h3.vh_h3#branch               -7.04715e-11           -0.0705752 *
+h.xu4b.x_h2.h_h2#branch                  9.9517e-14           9.9517e-14
+v.xu4b.x_h2.vh_h2#branch                -8.7353e-10          -8.7353e-10
+h.xu4b.x_h1.h_h1#branch                -0.000113544         -0.000113544
+v.xu4b.x_h1.vh_h1#branch               -9.09779e-05         -9.09779e-05
+h.xu4a.x_h3.h_h3#branch                 5.87636e-05         -0.000736601 *
+v.xu4a.x_h3.vh_h3#branch               -7.96284e-11           -0.0795365 *
+h.xu4a.x_h2.h_h2#branch                 1.02146e-13          1.02146e-13
+v.xu4a.x_h2.vh_h2#branch               -8.82605e-10         -8.82605e-10
+h.xu4a.x_h1.h_h1#branch                -3.14359e-07         -3.14359e-07
+v.xu4a.x_h1.vh_h1#branch               -6.61741e-07         -6.61741e-07
+lpn#branch                               0.00223672           0.00223672
+lpp#branch                              -0.00222955          -0.00222955
+lvr5#branch                            -0.000145235         -0.000145235
+lnr15#branch                            -2.0821e-07          -2.0821e-07
+lnr16#branch                           -2.47766e-06         -2.47766e-06
+lor16#branch                            7.52869e-06          7.52869e-06
+lc12t#branch                            0.000901259          0.000901259
+lc10t#branch                             0.00096486           0.00096486
+lc16t#branch                             0.00104108           0.00104108
+lans#branch                             -0.00520413          -0.00520413
+lfbn#branch                             -0.00520413          -0.00520413
+lc11t#branch                           -0.000882806         -0.000882806
+lc15t#branch                            -0.00187568          -0.00187568
+laps#branch                              0.00520536           0.00520536
+lfbp#branch                              0.00520536           0.00520536
+lg3#branch                              0.000129472          0.000129472
+e.xu1.ehcl#branch                         0.0818882            0.0818882
+e.xu1.elcl#branch                         0.0814042            0.0814042
+e.xu1.e32#branch                       -0.000141242         -0.000141241
+e.xu1.ebuf#branch                       0.000704225          0.000704224
+e.xu1.epole#branch                     -2.95498e-05         -2.95498e-05
+e.xu4b.x_u4.e1#branch                   6.38544e-15          6.38544e-15
+e.xu4b.x_u37.e1#branch                            0                    0
+e.xu4b.x_u36.e1#branch                            0                    0
+e.xu4b.x_u1.e3#branch                  -2.91038e-11         -2.91038e-11
+e.xu4b.x_u1.e2#branch                             0                    0
+e.xu4b.x_u1.e1#branch                             0                    0
+e.xu4b.e_e3#branch                     -8.94021e-06         -8.94021e-06
+e.xu4b.e_e2#branch                     -8.27649e-06         -8.27649e-06
+e.xu4b.e_e1#branch                      0.000295639          0.000265121 *
+e.xu4a.x_u4.e1#branch                   6.79606e-15          6.79606e-15
+e.xu4a.x_u37.e1#branch                            0                    0
+e.xu4a.x_u36.e1#branch                            0                    0
+e.xu4a.x_u1.e3#branch                   5.55627e-11          5.55627e-11
+e.xu4a.x_u1.e2#branch                             0                    0
+e.xu4a.x_u1.e1#branch                             0                    0
+e.xu4a.e_e3#branch                     -1.04701e-05         -1.04701e-05
+e.xu4a.e_e2#branch                     -1.05446e-05         -1.05446e-05
+e.xu4a.e_e1#branch                      0.000105121          0.000135638 *
+v.xu1.vclmp#branch                         -19.1721             -19.1721
+v.xu1.vcm#branch                       -3.23921e-05         -3.23921e-05
+v.xu1.ves#branch                           -17.1637             -17.1637
+ves#branch                                  6.70917              6.70917
+vpns#branch                             -0.00223672          -0.00223672
+vpps#branch                              0.00222955           0.00222955
+v.xu4b.v_v_orp#branch                             0                    0
+v.xu4b.v_v_orn#branch                   5.46818e-13          5.46818e-13
+v.xu4b.v_v_iscp#branch                 -1.78174e-10         -1.78174e-10
+v.xu4b.v_v_iscn#branch                  1.97666e-10          1.97666e-10
+v.xu4b.v_v_grp#branch                  -1.49974e-10         -1.49974e-10
+v.xu4b.v_v_grn#branch                   1.66026e-10          1.66026e-10
+v.xu4b.v_vcm_min#branch                -4.88619e-14         -4.88619e-14
+v.xu4b.v_vcm_max#branch                 4.59534e-12          4.59534e-12
+vinput#branch                           4.29141e-07          4.29141e-07
+v.xu4a.v_v_orp#branch                             0                    0
+v.xu4a.v_v_orn#branch                   5.43572e-13          5.43572e-13
+v.xu4a.v_v_iscp#branch                 -1.78174e-10         -1.78174e-10
+v.xu4a.v_v_iscn#branch                  1.97666e-10          1.97666e-10
+v.xu4a.v_v_grp#branch                  -1.49974e-10         -1.49974e-10
+v.xu4a.v_v_grn#branch                   1.66026e-10          1.66026e-10
+v.xu4a.v_vcm_min#branch                -4.88619e-14         -4.88619e-14
+v.xu4a.v_vcm_max#branch                 4.59534e-12          4.59534e-12
+vua#branch                              2.41619e-08          2.41619e-08
+vj2n#branch                              0.00520413           0.00520413
+vj2p#branch                             -0.00520536          -0.00520536
+vag#branch                             -0.000225517          -0.00022551
+a.xu4b.x_u19.ag1#branch_1_0            -5.08708e-17         -5.08708e-17
+a.xu4b.x_u18.ag1#branch_1_0            -4.53038e-17         -4.53038e-17
+a.xu4a.x_u19.ag1#branch_1_0            -4.95613e-17         -4.95613e-17
+a.xu4a.x_u18.ag1#branch_1_0            -4.69436e-17         -4.69436e-17
+
+
+doAnalyses: TRAN:  Timestep too small; initial timepoint: trouble with node "xu4a.n1356345"
+
+
+tran simulation(s) aborted
+Error: scale vector time, frequency or ?-sweep has no data.
+
+Error: measure  tp8_max  max(TRIG) : out of interval
+Error: scale vector time, frequency or ?-sweep has no data.
+
+Error: measure  tp8_min  min(TRIG) : out of interval
+Error: scale vector time, frequency or ?-sweep has no data.
+
+Error: measure  out_max  max(TRIG) : out of interval
+Error: scale vector time, frequency or ?-sweep has no data.
+
+Error: measure  out_min  min(TRIG) : out of interval
+Error: scale vector time, frequency or ?-sweep has no data.
+
+Error: measure  ap_max  max(TRIG) : out of interval
+Error: scale vector time, frequency or ?-sweep has no data.
+
+Error: measure  ap_min  min(TRIG) : out of interval
+Error: scale vector time, frequency or ?-sweep has no data.
+
+Error: measure  an_max  max(TRIG) : out of interval
+Error: scale vector time, frequency or ?-sweep has no data.
+
+Error: measure  an_min  min(TRIG) : out of interval
+Error: scale vector time, frequency or dc has no data.
+Error: scale vector time, frequency or dc has no data.
+Warning from checkvalid: vector tp8_max is not available or has zero length.
+Error: RHS "tp8_max-tp8_min" invalid
+Warning from checkvalid: vector out_max is not available or has zero length.
+Error: RHS "out_max-out_min" invalid
+Warning from checkvalid: vector ap_max is not available or has zero length.
+Error: RHS "ap_max-ap_min" invalid
+Warning from checkvalid: vector an_max is not available or has zero length.
+Error: RHS "an_max-an_min" invalid
+Warning from checkvalid: vector tp8_pp is not available or has zero length.
+Error: no such vector time
+
+No. of Data Rows : 0
+ meas tran tp8_max max v(tp8) from=0.25m to=0.5m failed!
+
+ meas tran tp8_min min v(tp8) from=0.25m to=0.5m failed!
+
+ meas tran out_max max v(opa_out) from=0.25m to=0.5m failed!
+
+ meas tran out_min min v(opa_out) from=0.25m to=0.5m failed!
+
+ meas tran ap_max max v(apu4) from=0.25m to=0.5m failed!
+
+ meas tran ap_min min v(apu4) from=0.25m to=0.5m failed!
+
+ meas tran an_max max v(anu4) from=0.25m to=0.5m failed!
+
+ meas tran an_min min v(anu4) from=0.25m to=0.5m failed!
+
+ meas tran tp8_final find v(tp8) at=0.5m failed!
+
+ meas tran ap_final find v(apu4) at=0.5m failed!
+
+CASE RAPS=10
+ngspice-42 done

@@ -1,0 +1,1 @@
+BOM=73 CPL=73 PCB_footprints=147 errors=0
