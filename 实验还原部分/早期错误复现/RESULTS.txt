@@ -4,6 +4,9 @@ R10 E/S sweep (TI OPA548 official):
   6.8k   -> ES-V- = 0.463396 V
 
 OPA548 ON + imposed 105 kHz diagnostic:
+  Evidence correction 2026-09-15: these are instantaneous rail peaks, not bench CC verification.
+  2 Vpk rerun -> mean draw +23.62349 mA / -rail draw 23.48368 mA.
+  Bench supply current-limit dynamics and board bulk capacitance are not modeled here.
   1 Vpk -> OUT 2.0728 Vpp, rail peak ~37.8 mA
   2 Vpk -> OUT 4.1112 Vpp, rail peak ~69.1 mA
   3 Vpk -> OUT 6.1403 Vpp, +rail peak ~101.0 mA
