@@ -22,24 +22,28 @@ status=0
 (
   cd "$audit_dir/corrected_decks"
   mkdir -p results
-  "$ngspice_bin" -b -o results/H07_U4rail_corrected.log H07_U4rail_corrected.cir
-  "$ngspice_bin" -b -o results/H08_decoupling_corrected.log H08_decoupling_corrected.cir
+  timeout 60s "$ngspice_bin" -b -o results/H07_U4rail_corrected.log H07_U4rail_corrected.cir
+  timeout 60s "$ngspice_bin" -b -o results/H08_decoupling_corrected.log H08_decoupling_corrected.cir
 )
 
-if grep -Eq 'tran simulation\(s\) aborted|measure .* failed|timestep too small' \
-  "$audit_dir/corrected_decks/results/H07_U4rail_corrected.log"; then
-  printf 'H07: INCOMPLETE (strong-fault points did not converge).\n' >&2
+if grep -Eqi 'tran simulation\(s\) aborted|measure .* failed|timestep too small|fatal error|^error[: ]' \
+  "$audit_dir/corrected_decks/results/H07_U4rail_corrected.log" \
+  || [ "$(grep -c '^CASE RAPS=' "$audit_dir/corrected_decks/results/H07_U4rail_corrected.log")" -ne 3 ] \
+  || [ "$(grep -c '^No. of Data Rows' "$audit_dir/corrected_decks/results/H07_U4rail_corrected.log")" -ne 3 ]; then
+  printf 'H07: INCOMPLETE (failure signature or missing case/data block).\n' >&2
   status=2
 else
-  printf 'H07: completed without the known failure signatures.\n'
+  printf 'H07: 3/3 fixed-bias cases completed.\n'
 fi
 
-if grep -Eq 'tran simulation\(s\) aborted|measure .* failed|timestep too small' \
-  "$audit_dir/corrected_decks/results/H08_decoupling_corrected.log"; then
-  printf 'H08: INCOMPLETE (see generated log).\n' >&2
+if grep -Eqi 'tran simulation\(s\) aborted|measure .* failed|timestep too small|fatal error|^error[: ]' \
+  "$audit_dir/corrected_decks/results/H08_decoupling_corrected.log" \
+  || [ "$(grep -c '^CASE C15=' "$audit_dir/corrected_decks/results/H08_decoupling_corrected.log")" -ne 3 ] \
+  || [ "$(grep -c '^No. of Data Rows' "$audit_dir/corrected_decks/results/H08_decoupling_corrected.log")" -ne 3 ]; then
+  printf 'H08: INCOMPLETE (failure signature or missing case/data block).\n' >&2
   status=2
 else
-  printf 'H08: completed without the known failure signatures.\n'
+  printf 'H08: 3/3 fixed-bias cases completed.\n'
 fi
 
 printf 'Audit outputs written to %s and corrected_decks/results/.\n' "$result_dir"

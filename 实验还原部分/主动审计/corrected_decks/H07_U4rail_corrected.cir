@@ -7,11 +7,12 @@
 .param TEMP=27 RFAULT=3.5586m
 .options method=gear reltol=2e-4 abstol=1e-11 vntol=1e-8 gmin=1e-12 rshunt=1e12 maxord=2
 
-* AGND/PGND bridge and extracted U4/J2 supply path.
+* AGND/PGND bridge and extracted U4/J2 supply path.  Fixed sources match the
+* declared fixed-bias hypothesis.  Power-up sequencing is outside this deck.
 VAG AGND 0 0
 RG3 AGND G3M 5m
 LG3 G3M PGND 2n
-VJ2P J2P AGND PWL(0 0 10u 10 10.1u 10)
+VJ2P J2P AGND 10
 RFBP J2P FBP 0.25
 LFBP FBP APBEAD 240n
 RAPS APBEAD APSM {RFAULT}
@@ -26,7 +27,7 @@ LC11T C11TM C11N 19.8n
 CC11TA APU4 AGND 1.65p
 CC11TB C11N AGND 1.65p
 C11 C11N AGND 1u
-VJ2N J2N AGND PWL(0 0 10u -10 10.1u -10)
+VJ2N J2N AGND -10
 RFBN J2N FBN 0.25
 LFBN FBN ANBEAD 240n
 RANS ANBEAD ANSM 49.93m
@@ -90,14 +91,14 @@ CVR5B R5V AGND 2.93815p
 R5 R5V OPA_P 100
 
 * J1 rails include lead inductance and local bulk/high-frequency capacitors.
-VPPS PP_SRC PGND PWL(0 0 10u 5 10.1u 5)
+VPPS PP_SRC PGND 5
 RPSRC PP_SRC PPRE 20m
 LPP PPRE PWR_P 0.2u
 RPP PWR_P PWR_PM 50m
 C5 PWR_PM PGND 470u
 C7 PWR_PM PGND 100n
 C27 PWR_PM PWR_NM 10n
-VPNS PN_SRC PGND PWL(0 0 10u -5 10.1u -5)
+VPNS PN_SRC PGND -5
 RNSRC PN_SRC PNRE 20m
 LPN PNRE PWR_N 0.2u
 RPN PWR_N PWR_NM 50m
