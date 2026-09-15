@@ -5,6 +5,8 @@
 
 主要内容：
 
+- `EVIDENCE_REASSESSMENT_20260915.md`：修正峰值取电与持续 CC 混淆、证据因果推断和历史状态冲突。
+- `reassess_evidence.py`：复跑四组平均/峰值电流、105 kHz 增益和四组较大启动扰动，并检查测量是否存在及有效。
 - `ACTIVE_AUDIT_REPORT.md`：最终审计结论和解释边界；
 - `spice_static_lint.py`：查找 E/S 硬钳、旧 C27/R10、绝对 include 路径和
   OPA548 供电节点断链特征；
@@ -13,6 +15,14 @@
 - `run_checks.sh`：在当前仓库重新生成检查结果。
 
 运行：
+
+证据复核使用 `python3 reassess_evidence.py`（可从任意目录通过脚本路径运行）。
+默认使用 ngspice-42，支持 `NGSPICE` 指定可执行文件；输出位于被忽略的
+`results_reassessment/`，含生成的诊断 deck、日志与 `summary.json`。
+生成的 deck 使用早期复现目录中的相对模型路径，手工复跑需以该目录为工作目录。
+每个案例限时 60 秒；超时、缺失测量、非有限值或错误返回均失败，失败时 summary 不保留旧成功状态。
+
+历史主动审计使用：
 
 ```bash
 ./run_checks.sh
@@ -26,4 +36,3 @@ NGSPICE=/绝对路径/ngspice ./run_checks.sh
 
 生成内容写入被 Git 忽略的 `results/`。H07 的 1 Ω/10 Ω 强故障仍可能发生
 收敛失败；这必须解释成“该参数点未得到有效结果”，不能解释成物理振荡或稳定。
-

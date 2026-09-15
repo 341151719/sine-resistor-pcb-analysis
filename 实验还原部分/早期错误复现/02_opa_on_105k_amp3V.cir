@@ -23,6 +23,12 @@ let OUT_PP=OUT_MAX-OUT_MIN
 let IP_DRAW_PK=-IP_MIN
 let IN_DRAW_PK=IN_MAX
 print OUT_PP IP_DRAW_PK IN_DRAW_PK IP_MAX IN_MIN
+* Mean rail draw is distinct from instantaneous peak; neither models bench CC.
+meas tran IP_AVG AVG i(VPP) from=0.2m to=0.5m
+meas tran IN_AVG AVG i(VNN) from=0.2m to=0.5m
+let IP_DRAW_AVG=-IP_AVG
+let IN_DRAW_AVG=IN_AVG
+print IP_DRAW_AVG IN_DRAW_AVG
 quit
 .endc
 .end
